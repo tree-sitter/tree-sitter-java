@@ -49,8 +49,6 @@ module.exports = grammar({
     [$.modifiers, $.annotated_type, $.receiver_parameter],
     [$.class_literal, $._unann_type], // TODO: remove
     [$._unann_type, $.class_literal, $.array_access],
-    [$.unann_class_or_interface_type, $.method_reference],
-    [$.unann_class_or_interface_type, $.scoped_identifier],
     [$.constant_declaration, $.local_variable_declaration],
     [$.variable_declarator_id],
     [$._lambda_parameters, $.inferred_parameters],
