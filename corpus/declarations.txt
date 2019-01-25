@@ -15,6 +15,7 @@ class A {
     (identifier)
     (class_body
       (method_declaration
+        (modifiers)
         (method_header
           (integral_type)
         (method_declarator
@@ -250,8 +251,8 @@ abstract class ColoredPoint extends Point {
 ---
 
 (program
-  (class_declaration (modifiers (accessibility_modifier)) (identifier) (class_body))
-  (class_declaration (modifiers (accessibility_modifier)) (identifier) (class_body))
+  (class_declaration (modifiers) (identifier) (class_body))
+  (class_declaration (modifiers) (identifier) (class_body))
   (class_declaration (modifiers) (identifier) (superclass (type_identifier)) (class_body)))
 
 ===
@@ -265,7 +266,7 @@ public class Dog implements ISpeak {
 
 (program
   (class_declaration
-     (modifiers (accessibility_modifier)) (identifier)
+     (modifiers) (identifier)
      (super_interfaces (interface_type_list (type_identifier))) (class_body)))
 
 ===
@@ -415,7 +416,7 @@ class Point {
     (identifier)
     (class_body
       (method_declaration
-        (modifier (accessibility_modifier))
+        (modifiers)
         (method_header
           (floating_point_type)
           (method_declarator
@@ -442,7 +443,7 @@ class JayZ {
     (identifier)
     (class_body
       (method_declaration
-        (modifier (accessibility_modifier))
+        (modifiers)
         (method_header
           (void_type)
           (method_declarator
