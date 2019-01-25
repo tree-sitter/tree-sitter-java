@@ -674,11 +674,15 @@ module.exports = grammar({
       $.class_body
     ),
 
-    modifier: $ => choice(
-      $._annotation,
+    _accessibility_modifier: $ => choice(
       'public',
       'protected',
-      'private',
+      'private'
+    ),
+
+    modifier: $ => choice(
+      $._annotation,
+      $.accessibility_modifier,
       'abstract',
       'static',
       'final',
