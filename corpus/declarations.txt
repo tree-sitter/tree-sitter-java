@@ -3,7 +3,7 @@ local variable
 ===
 
 class A {
-  int b() {
+  public int b() {
     int c = 5;
   }
 }
@@ -250,9 +250,9 @@ abstract class ColoredPoint extends Point {
 ---
 
 (program
-  (class_declaration (modifier (accessibility_modifier)) (identifier) (class_body))
-  (class_declaration (modifier (accessibility_modifier)) (identifier) (class_body))
-  (class_declaration (modifier) (identifier) (superclass (type_identifier)) (class_body)))
+  (class_declaration (modifiers (accessibility_modifier)) (identifier) (class_body))
+  (class_declaration (modifiers (accessibility_modifier)) (identifier) (class_body))
+  (class_declaration (modifiers) (identifier) (superclass (type_identifier)) (class_body)))
 
 ===
 class declaration with implements
@@ -265,7 +265,7 @@ public class Dog implements ISpeak {
 
 (program
   (class_declaration
-     (modifier (accessibility_modifier)) (identifier)
+     (modifiers (accessibility_modifier)) (identifier)
      (super_interfaces (interface_type_list (type_identifier))) (class_body)))
 
 ===

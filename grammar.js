@@ -45,7 +45,6 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
-    [$.modifier],
     [$.class_literal, $._unann_type], // TODO: remove
     [$._unann_type, $.class_literal, $.array_access],
     [$.unann_class_or_interface_type, $.method_reference],
@@ -426,7 +425,7 @@ module.exports = grammar({
     catch_clause: $ => seq('catch', '(', $.catch_formal_parameter, ')', $.block),
 
     catch_formal_parameter: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $.catch_type,
       $.variable_declarator_id
     ),
@@ -448,7 +447,7 @@ module.exports = grammar({
     ),
 
     resource: $ => choice(
-      seq(repeat($.modifier), $._unann_type, $.variable_declarator_id, '=', $._expression),
+      seq(optional($.modifiers), $._unann_type, $.variable_declarator_id, '=', $._expression),
       $.variable_access
     ),
 
@@ -486,7 +485,7 @@ module.exports = grammar({
     enhanced_for_statement: $ => seq(
       'for',
       '(',
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       $.variable_declarator_id,
       ':',
@@ -641,7 +640,7 @@ module.exports = grammar({
     asterisk: $ => '*',
 
     enum_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       'enum',
       $.identifier,
       optional($.super_interfaces),
@@ -658,14 +657,14 @@ module.exports = grammar({
     ),
 
     enum_constant: $ => (seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $.identifier,
       optional(seq('(', $.argument_list, ')')),
       optional($.class_body)
     )),
 
     class_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       'class',
       $.identifier,
       optional($.type_parameters),
@@ -674,13 +673,13 @@ module.exports = grammar({
       $.class_body
     ),
 
-    _accessibility_modifier: $ => choice(
+    accessibility_modifier: $ => choice(
       'public',
       'protected',
       'private'
     ),
 
-    modifier: $ => choice(
+    modifiers: $ => repeat1(choice(
       $._annotation,
       $.accessibility_modifier,
       'abstract',
@@ -692,7 +691,7 @@ module.exports = grammar({
       'native',
       'transient',
       'volatile'
-    ),
+    )),
 
     type_parameters: $ => seq(
       '<', commaSep1($.type_parameter), '>'
@@ -740,7 +739,7 @@ module.exports = grammar({
     ),
 
     constructor_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $.constructor_declarator,
       optional($.throws),
       $.constructor_body
@@ -788,7 +787,7 @@ module.exports = grammar({
     ),
 
     field_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       $.variable_declarator_list,
       $._semicolon
@@ -886,7 +885,7 @@ module.exports = grammar({
     ),
 
     annotation_type_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       '@interface',
       $.identifier,
       $.annotation_type_body
@@ -904,7 +903,7 @@ module.exports = grammar({
     ),
 
     annotation_type_element_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       $.identifier,
       '(', ')',
@@ -918,7 +917,7 @@ module.exports = grammar({
     ),
 
     normal_interface_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       'interface',
       $.identifier,
       optional($.type_parameters),
@@ -946,7 +945,7 @@ module.exports = grammar({
     ),
 
     constant_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       $.variable_declarator_list,
       $._semicolon
@@ -1054,7 +1053,7 @@ module.exports = grammar({
     ),
 
     formal_parameter: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       $.variable_declarator_id
     ),
@@ -1067,7 +1066,7 @@ module.exports = grammar({
     ),
 
     spread_parameter: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       '...',
       $.variable_declarator
@@ -1111,13 +1110,13 @@ module.exports = grammar({
     ),
 
     local_variable_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $._unann_type,
       $.variable_declarator_list
     ),
 
     method_declaration: $ => seq(
-      repeat($.modifier),
+      optional($.modifiers),
       $.method_header,
       $.method_body
     ),
