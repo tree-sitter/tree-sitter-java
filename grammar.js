@@ -45,6 +45,8 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
+    [$.module_declaration, $.package_declaration, $.modifiers, $.annotated_type],
+    [$.modifiers, $.annotated_type, $.receiver_parameter],
     [$.class_literal, $._unann_type], // TODO: remove
     [$._unann_type, $.class_literal, $.array_access],
     [$.unann_class_or_interface_type, $.method_reference],
@@ -673,15 +675,11 @@ module.exports = grammar({
       $.class_body
     ),
 
-    accessibility_modifier: $ => choice(
-      'public',
-      'protected',
-      'private'
-    ),
-
     modifiers: $ => repeat1(choice(
       $._annotation,
-      $.accessibility_modifier,
+      'public',
+      'protected',
+      'private',
       'abstract',
       'static',
       'final',
