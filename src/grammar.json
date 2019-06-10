@@ -5652,7 +5652,15 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_type"
+              "name": "_ambiguous_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "array_type"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "generic_type"
             },
             {
               "type": "SYMBOL",

@@ -870,7 +870,7 @@ module.exports = grammar({
     _parenthesized_argument_list: $ => seq('(', optional($.argument_list), ')'),
 
     method_reference: $ => seq(
-      choice($._type, $._primary),
+      choice($._ambiguous_name, $.array_type, $.generic_type, $._primary),
       '::',
       optional($._type_arguments),
       choice('new', $.identifier)

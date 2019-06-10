@@ -555,3 +555,43 @@ Box<Integer> integerBox = new Box<>();
 ---
 
 (program (binary_expression (binary_expression (identifier) (identifier)) (assignment_expression (lhs (identifier)) (class_instance_creation_expression (unqualified_class_instance_creation_expression (generic_type (type_identifier)))))))
+
+===
+method reference
+===
+
+action = bar::method;
+
+---
+
+(program (assignment_expression (lhs (identifier)) (method_reference (identifier) (identifier))))
+
+===
+qualified method reference
+===
+
+action = foo.bar::method;
+
+---
+
+(program (assignment_expression (lhs (identifier)) (method_reference (scoped_identifier (identifier) (identifier)) (identifier))))
+
+===
+new array reference
+===
+
+action = String[]::new;
+
+---
+
+(program (assignment_expression (lhs (identifier)) (method_reference (array_type (type_identifier) (dims)))))
+
+===
+parameterized type reference
+===
+
+action = Foo<T>::apply;
+
+---
+
+(program (assignment_expression (lhs (identifier)) (method_reference (generic_type (type_identifier) (type_argument (type_identifier))) (identifier))))
