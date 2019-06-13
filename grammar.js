@@ -980,7 +980,8 @@ module.exports = grammar({
       $._unann_type,
       $.annotated_type
     ),
-
+    
+    // un-annotated type
     _unann_type: $ => choice(
       $._primitive_type,
       $.identifier,
