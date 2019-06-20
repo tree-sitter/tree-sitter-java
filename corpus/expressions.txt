@@ -163,8 +163,8 @@ if (a)
     (identifier)
     (if_then_else_statement
       (identifier)
-      (method_invocation (identifier))
-      (method_invocation (identifier)))))
+      (method_invocation (method_name (identifier)))
+      (method_invocation (method_name (identifier))))))
 
 ===
 if-then shorthand
@@ -193,7 +193,7 @@ class ForDemo {
 
 ---
 
-(program (class_declaration (identifier) (class_body (method_declaration (modifier) (modifier) (method_header (void_type) (method_declarator (identifier) (formal_parameter (array_type (type_identifier) (dims)) (variable_declarator_id (identifier))))) (method_body (block (for_statement (basic_for_statement (for_init (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (binary_expression (identifier) (integer_literal (decimal_integer_literal))) (update_expression (identifier)) (block (method_invocation (scoped_identifier (identifier) (identifier)) (identifier) (argument_list (binary_expression (string_literal) (identifier)))))))))))))
+(program (class_declaration (identifier) (class_body (method_declaration (modifier) (modifier) (method_header (void_type) (method_declarator (identifier) (formal_parameter (array_type (type_identifier) (dims)) (variable_declarator_id (identifier))))) (method_body (block (for_statement (basic_for_statement (for_init (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (binary_expression (identifier) (integer_literal (decimal_integer_literal))) (update_expression (identifier)) (block (method_invocation (scoped_identifier (identifier) (identifier)) (method_name (identifier) (argument_list (binary_expression (string_literal) (identifier))))))))))))))
 
 ===
 while statement
@@ -248,11 +248,12 @@ class WhileDemo {
                     (method_invocation
                       (scoped_identifier
                         (identifier) (identifier))
-                      (identifier)
-                      (argument_list
-                        (binary_expression
-                          (string_literal)
-                          (identifier))))
+                      (method_name
+                        (identifier)
+                        (argument_list
+                          (binary_expression
+                            (string_literal)
+                            (identifier)))))
                     (update_expression
                       (identifier))))))))))
 
@@ -266,7 +267,7 @@ try (FileInputStream input = new FileInputStream("file.txt")) {
 
 ---
 
-(program (try_statement (try_with_resources_statement (resource_specification (resource (type_identifier) (variable_declarator_id (identifier)) (class_instance_creation_expression (unqualified_class_instance_creation_expression (type_identifier) (argument_list (string_literal)))))) (block (local_variable_declaration_statement (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (method_invocation (identifier) (identifier))))))))))
+(program (try_statement (try_with_resources_statement (resource_specification (resource (type_identifier) (variable_declarator_id (identifier)) (class_instance_creation_expression (unqualified_class_instance_creation_expression (type_identifier) (argument_list (string_literal)))))) (block (local_variable_declaration_statement (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (method_invocation (identifier) (method_name (identifier)))))))))))
 
 ===
 assignment
@@ -298,7 +299,7 @@ return fire(x);
   (return_statement (identifier))
   (return_statement (binary_expression (identifier) (identifier)))
   (return_statement (binary_expression (identifier) (integer_literal (decimal_integer_literal))))
-  (return_statement (method_invocation (identifier) (argument_list (identifier)))))
+  (return_statement (method_invocation (method_name (identifier) (argument_list (identifier))))))
 
 ===
 normal_annotation
@@ -375,7 +376,7 @@ class LambdaTest {
 
 ---
 
-(program (class_declaration (identifier) (class_body (method_declaration (method_header (void_type) (method_declarator (identifier))) (method_body (block (lambda_expression (identifier) (lambda_body (identifier))))))))) 
+(program (class_declaration (identifier) (class_body (method_declaration (method_header (void_type) (method_declarator (identifier))) (method_body (block (lambda_expression (identifier) (lambda_body (identifier)))))))))
 
 ===
 switch statement
@@ -402,7 +403,7 @@ public class SwitchDemo {
 
 ---
 
-(program (class_declaration (modifier) (identifier) (class_body (method_declaration (modifier) (modifier) (method_header (void_type) (method_declarator (identifier) (formal_parameter (array_type (type_identifier) (dims)) (variable_declarator_id (identifier))))) (method_body (block (local_variable_declaration_statement (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (local_variable_declaration_statement (local_variable_declaration (type_identifier) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)))))) (switch_statement (identifier) (switch_block (switch_label (integer_literal (decimal_integer_literal))) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement) (switch_label (integer_literal (decimal_integer_literal))) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement) (switch_label (integer_literal (decimal_integer_literal))) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement) (switch_label) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement))) (method_invocation (scoped_identifier (identifier) (identifier)) (identifier) (argument_list (identifier)))))))))
+(program (class_declaration (modifier) (identifier) (class_body (method_declaration (modifier) (modifier) (method_header (void_type) (method_declarator (identifier) (formal_parameter (array_type (type_identifier) (dims)) (variable_declarator_id (identifier))))) (method_body (block (local_variable_declaration_statement (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (local_variable_declaration_statement (local_variable_declaration (type_identifier) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)))))) (switch_statement (identifier) (switch_block (switch_label (integer_literal (decimal_integer_literal))) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement) (switch_label (integer_literal (decimal_integer_literal))) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement) (switch_label (integer_literal (decimal_integer_literal))) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement) (switch_label) (assignment_expression (lhs (identifier)) (string_literal)) (break_statement))) (method_invocation (scoped_identifier (identifier) (identifier)) (method_name (identifier) (argument_list (identifier))))))))))
 
 ===
 type arguments
@@ -514,7 +515,7 @@ class someClass <T> {
                         (identifier)
                           (type_argument
                             (type_identifier))
-                          (identifier))))
+                          (method_name (identifier)))))
                             (return_statement
                               (identifier)))))
         (method_declaration
@@ -544,7 +545,7 @@ class someClass <T> {
                       (identifier)
                         (type_argument
                           (type_identifier))
-                      (identifier))))))))))
+                      (method_name (identifier)))))))))))
 
 ===
 empty type arguments

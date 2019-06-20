@@ -626,7 +626,7 @@ module.exports = grammar({
     package_declaration: $ => seq(
       repeat($._annotation),
       'package',
-      $._ambiguous_name,
+      sep1($.identifier, '.'),
       $._semicolon
     ),
 
@@ -855,13 +855,15 @@ module.exports = grammar({
     ),
 
     method_invocation: $ => choice(
-      seq($.identifier, $._parenthesized_argument_list),
-      seq($._reserved_identifier, $._parenthesized_argument_list),
-      seq($._ambiguous_name, '.', optional($._type_arguments), $.identifier, $._parenthesized_argument_list),
-      seq($._primary, '.', optional($._type_arguments), $.identifier, $._parenthesized_argument_list),
-      seq($.super, '.', optional($._type_arguments), $.identifier, $._parenthesized_argument_list),
-      seq($._ambiguous_name, '.', $.super, '.', optional($._type_arguments), $.identifier, $._parenthesized_argument_list)
+      $.method_name,
+      seq($._ambiguous_name, '.', optional($._type_arguments), $.method_name),
+      seq($._primary, '.', optional($._type_arguments), $.method_name),
+      seq($.super, '.', optional($._type_arguments), $.method_name),
+      seq($._ambiguous_name, '.', $.super, '.', optional($._type_arguments), $.method_name),
+      seq($._reserved_identifier, $._parenthesized_argument_list)
     ),
+
+    method_name: $ => seq($.identifier, $._parenthesized_argument_list),
 
     argument_list: $ => seq(
       $._expression, repeat(seq(',', $._expression))

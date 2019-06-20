@@ -3988,8 +3988,29 @@
           "value": "package"
         },
         {
-          "type": "SYMBOL",
-          "name": "_ambiguous_name"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "."
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "identifier"
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -5427,30 +5448,8 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_parenthesized_argument_list"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_reserved_identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_parenthesized_argument_list"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "method_name"
         },
         {
           "type": "SEQ",
@@ -5477,11 +5476,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_parenthesized_argument_list"
+              "name": "method_name"
             }
           ]
         },
@@ -5510,11 +5505,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_parenthesized_argument_list"
+              "name": "method_name"
             }
           ]
         },
@@ -5543,11 +5534,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_parenthesized_argument_list"
+              "name": "method_name"
             }
           ]
         },
@@ -5584,13 +5571,22 @@
             },
             {
               "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_parenthesized_argument_list"
+              "name": "method_name"
             }
           ]
+        }
+      ]
+    },
+    "method_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_parenthesized_argument_list"
         }
       ]
     },
