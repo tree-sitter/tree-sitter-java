@@ -183,78 +183,87 @@ max = (a > b) ? a : b;
 for statement
 ===
 
-class ForDemo {
-    public static void main(String[] args){
-         for(int i=1; i<11; i++){
-              System.out.println("Count is: " + i);
-         }
-    }
+for(int i=1; i<11; i++) {
+    print(i);
 }
 
 ---
 
-(program (class_declaration (identifier) (class_body (method_declaration (modifier) (modifier) (method_header (void_type) (method_declarator (identifier) (formal_parameter (array_type (type_identifier) (dims)) (variable_declarator_id (identifier))))) (method_body (block (for_statement (basic_for_statement (for_init (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (binary_expression (identifier) (integer_literal (decimal_integer_literal))) (update_expression (identifier)) (block (method_invocation (scoped_identifier (identifier) (identifier)) (identifier) (argument_list (binary_expression (string_literal) (identifier)))))))))))))
+(program (for_statement (basic_for_statement (for_init (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (binary_expression (identifier) (integer_literal (decimal_integer_literal))) (update_expression (identifier)) (block (method_invocation (identifier) (argument_list (identifier)))))))
+
+===
+for statement without braces
+===
+
+for(int i=1; i<11; i++) 
+  print(i);
+
+---
+
+(program (for_statement (basic_for_statement (for_init (local_variable_declaration (integral_type) (variable_declarator_list (variable_declarator (variable_declarator_id (identifier)) (integer_literal (decimal_integer_literal)))))) (binary_expression (identifier) (integer_literal (decimal_integer_literal))) (update_expression (identifier)) (method_invocation (identifier) (argument_list (identifier))))))
+
+===
+for comprehension
+===
+
+for (var x : xs) {
+  print(x);
+}
+
+---
+
+(program (for_statement (enhanced_for_statement (type_identifier) (variable_declarator_id (identifier)) (identifier) (block (method_invocation (identifier) (argument_list (identifier))))))) 
+
+===
+for comprehension without braces
+===
+
+for (var x : xs) 
+  print(x);
+
+---
+
+(program (for_statement (enhanced_for_statement (type_identifier) (variable_declarator_id (identifier)) (identifier) (method_invocation (identifier) (argument_list (identifier)))))) 
 
 ===
 while statement
 ===
 
-class WhileDemo {
-    public static void main(String[] args){
-        int count = 1;
-        while (count < 11) {
-            System.out.println("Count is: " + count);
-            count++;
-        }
-    }
+while (count < 11) {
+    System.out.println("Count is: " + count);
+    count++;
 }
 
 ---
 
- (program
-  (class_declaration
-    (identifier)
-    (class_body
-      (method_declaration
-        (modifier)
-        (modifier)
-        (method_header
-          (void_type)
-          (method_declarator
-            (identifier)
-            (formal_parameter
-              (array_type
-              (type_identifier)
-                (dims))
-              (variable_declarator_id
-                (identifier)))))
-        (method_body
-          (block
-            (local_variable_declaration_statement
-              (local_variable_declaration
-                (integral_type)
-                  (variable_declarator_list
-                    (variable_declarator
-                      (variable_declarator_id
-                        (identifier))
-                      (integer_literal
-                        (decimal_integer_literal))))))
-                (while_statement
-                  (binary_expression
-                    (identifier)
-                    (integer_literal
-                      (decimal_integer_literal)))
-                  (block
-                    (method_invocation
-                      (scoped_identifier
-                        (identifier) (identifier))
-                      (identifier)
-                      (argument_list
-                        (binary_expression
-                          (string_literal)
-                          (identifier))))
-                    (update_expression
-                      (identifier))))))))))
+(program
+  (while_statement
+    (binary_expression
+      (identifier)
+      (integer_literal
+        (decimal_integer_literal)))
+    (block
+      (method_invocation
+        (scoped_identifier
+          (identifier) (identifier))
+        (identifier)
+        (argument_list
+          (binary_expression
+            (string_literal)
+            (identifier))))
+      (update_expression
+        (identifier)))))
+
+===
+while statement without braces
+===
+
+while (count < 11) 
+  print(count);
+
+---
+
+(program (while_statement (binary_expression (identifier) (integer_literal (decimal_integer_literal))) (method_invocation (identifier) (argument_list (identifier)))))
 
 ===
 try-with-resources statements

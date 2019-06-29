@@ -3135,7 +3135,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_method_statement"
+          "name": "_statement"
         }
       ]
     },
@@ -3213,7 +3213,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_method_statement"
+          "name": "_statement"
         }
       ]
     },
