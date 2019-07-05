@@ -605,7 +605,7 @@ module.exports = grammar({
     package_declaration: $ => seq(
       repeat($._annotation),
       'package',
-      $._ambiguous_name,
+      sep1($.identifier, '.'),
       $._semicolon
     ),
 
@@ -834,13 +834,15 @@ module.exports = grammar({
     ),
 
     method_invocation: $ => choice(
-      seq($.identifier, $.argument_list),
+      $.method_name,
       seq($._reserved_identifier, $.argument_list),
-      seq($._ambiguous_name, '.', optional($.type_arguments), $.identifier, $.argument_list),
-      seq($._primary, '.', optional($.type_arguments), $.identifier, $.argument_list),
-      seq($.super, '.', optional($.type_arguments), $.identifier, $.argument_list),
-      seq($._ambiguous_name, '.', $.super, '.', optional($.type_arguments), $.identifier, $.argument_list)
+      seq($._ambiguous_name, '.', optional($.type_arguments), $.method_name),
+      seq($._primary, '.', optional($.type_arguments), $.method_name),
+      seq($.super, '.', optional($.type_arguments), $.method_name),
+      seq($._ambiguous_name, '.', $.super, '.', optional($.type_arguments), $.method_name)
     ),
+
+    method_name: $ => seq($.identifier, $.argument_list),
 
     argument_list: $ => seq('(', commaSep($._expression), ')'),
 

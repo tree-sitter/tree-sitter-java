@@ -163,8 +163,8 @@ if (a)
     (identifier)
     (if_then_else_statement
       (identifier)
-      (method_invocation (identifier) (argument_list))
-      (method_invocation (identifier) (argument_list)))))
+      (method_invocation (method_name (identifier) (argument_list)))
+      (method_invocation (method_name (identifier) (argument_list))))))
 
 ==================================
 if-then shorthand
@@ -222,8 +222,9 @@ class ForDemo {
                   (block
                     (method_invocation
                       (scoped_identifier (identifier) (identifier))
-                      (identifier)
-                      (argument_list (binary_expression (string_literal) (identifier)))))))))))))
+                      (method_name
+                        (identifier)
+                        (argument_list (binary_expression (string_literal) (identifier))))))))))))))
 
 ==================================
 while statement
@@ -272,9 +273,10 @@ class WhileDemo {
                   (block
                     (method_invocation
                       (scoped_identifier (identifier) (identifier))
-                      (identifier)
-                      (argument_list
-                        (binary_expression (string_literal) (identifier))))
+                      (method_name
+                        (identifier)
+                        (argument_list
+                          (binary_expression (string_literal) (identifier)))))
                     (update_expression (identifier))))))))))
 
 ==================================
@@ -303,7 +305,7 @@ try (FileInputStream input = new FileInputStream("file.txt")) {
           (variable_declarator_list
             (variable_declarator
               (variable_declarator_id (identifier))
-              (method_invocation (identifier) (identifier) (argument_list))))))))))
+              (method_invocation (identifier) (method_name (identifier) (argument_list)))))))))))
 
 ==================================
 assignment
@@ -347,7 +349,7 @@ return fire(x);
   (return_statement (identifier))
   (return_statement (binary_expression (identifier) (identifier)))
   (return_statement (binary_expression (identifier) (decimal_integer_literal)))
-  (return_statement (method_invocation (identifier) (argument_list (identifier)))))
+  (return_statement (method_invocation (method_name (identifier) (argument_list (identifier))))))
 
 ==================================
 normal_annotation
@@ -514,8 +516,9 @@ public class SwitchDemo {
                 (break_statement)))
             (method_invocation
               (scoped_identifier (identifier) (identifier))
-              (identifier)
-              (argument_list (identifier)))))))))
+              (method_name
+                (identifier)
+                (argument_list (identifier))))))))))
 
 ==================================
 type arguments
@@ -626,8 +629,9 @@ class someClass <T> {
                         (method_invocation
                           (identifier)
                           (type_arguments (type_identifier))
-                          (identifier)
-                          (argument_list))))))
+                          (method_name
+                            (identifier)
+                            (argument_list)))))))
                 (return_statement (identifier)))))
         (method_declaration
           (modifiers)
@@ -655,8 +659,9 @@ class someClass <T> {
                         (method_invocation
                           (identifier)
                           (type_arguments (type_identifier))
-                          (identifier)
-                          (argument_list))))))))))))
+                          (method_name
+                            (identifier)
+                            (argument_list)))))))))))))
 
 ==================================
 empty type arguments

@@ -112,6 +112,16 @@ package myVector;
 
  (program (package_declaration (identifier)))
 
+==============================================
+package declaration with multiple identifiers
+==============================================
+
+package org.apache.spark.sql.execution;
+
+---
+
+ (program (package_declaration (identifier) (identifier) (identifier) (identifier) (identifier)))
+
 =================
 module directive
 =================

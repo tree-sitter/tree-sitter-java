@@ -4903,6 +4903,10 @@
           "named": true
         },
         {
+          "type": "method_name",
+          "named": true
+        },
+        {
           "type": "method_reference",
           "named": true
         },
@@ -4948,6 +4952,25 @@
         },
         {
           "type": "update_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "method_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "argument_list",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         }
       ]
@@ -5302,10 +5325,6 @@
         },
         {
           "type": "normal_annotation",
-          "named": true
-        },
-        {
-          "type": "scoped_identifier",
           "named": true
         },
         {
