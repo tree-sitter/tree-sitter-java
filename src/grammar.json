@@ -2820,10 +2820,6 @@
                       {
                         "type": "SYMBOL",
                         "name": "super"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "_ambiguous_name"
                       }
                     ]
                   }
