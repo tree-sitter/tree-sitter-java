@@ -1,10 +1,20 @@
 ; Methods
 
 (method_declaration
-  name: (identifier) @function.method)
+  name: (identifier) @method)
 (method_invocation
-  name: (identifier) @function.method)
+  name: (identifier) @method)
 (super) @function.builtin
+
+; Parameters
+(formal_parameter
+  name: (identifier) @parameter)
+
+;; Lambda parameter
+(inferred_parameters (identifier) @parameter) ; (x,y) -> ...
+(lambda_expression
+    parameters: (identifier) @parameter) ; x -> ...
+
 
 ; Annotations
 
@@ -13,7 +23,47 @@
 (marker_annotation
   name: (identifier) @attribute)
 
-"@" @operator
+
+; Operators
+
+[
+"@"
+"+"
+"?"
+":"
+"++"
+"-"
+"--"
+"&"
+"&&"
+"|"
+"||"
+"!="
+"=="
+"*"
+"/"
+"%"
+"<"
+"<="
+">"
+">="
+"="
+"-="
+"+="
+"*="
+"/="
+"%="
+"->"
+"^"
+"^="
+"&="
+"|="
+"~"
+">>"
+">>>"
+"<<"
+"::"
+] @operator
 
 ; Types
 
@@ -23,107 +73,137 @@
   name: (identifier) @type)
 (enum_declaration
   name: (identifier) @type)
+(constructor_declaration
+  name: (identifier) @type)
+(type_identifier) @type
+
+
 
 ((field_access
   object: (identifier) @type)
- (#match? @type "^[A-Z]"))
+  (#match? @type "^[A-Z]"))
 ((scoped_identifier
   scope: (identifier) @type)
- (#match? @type "^[A-Z]"))
-
-(constructor_declaration
-  name: (identifier) @type)
-
-(type_identifier) @type
+  (#match? @type "^[A-Z]"))
 
 [
-  (boolean_type)
-  (integral_type)
-  (floating_point_type)
-  (floating_point_type)
-  (void_type)
+(boolean_type)
+(integral_type)
+(floating_point_type)
+(void_type)
 ] @type.builtin
 
 ; Variables
 
 ((identifier) @constant
- (#match? @constant "^_*[A-Z][A-Z\d_]+"))
+  (#match? @constant "^_*[A-Z][A-Z\d_]+"))
 
-(identifier) @variable
 
-(this) @variable.builtin
 
 ; Literals
 
 [
-  (hex_integer_literal)
-  (decimal_integer_literal)
-  (octal_integer_literal)
-  (decimal_floating_point_literal)
-  (hex_floating_point_literal)
+(hex_integer_literal)
+(decimal_integer_literal)
+(octal_integer_literal)
+(binary_integer_literal)
 ] @number
 
 [
-  (character_literal)
-  (string_literal)
-] @string
+(decimal_floating_point_literal)
+(hex_floating_point_literal)
+] @float
 
-[
-  (true)
-  (false)
-  (null_literal)
-] @constant.builtin
+(character_literal) @character
+(string_literal) @string
+(null_literal) @constant.builtin
 
 (comment) @comment
+
+[
+(true)
+(false)
+] @boolean
 
 ; Keywords
 
 [
-  "abstract"
-  "assert"
-  "break"
-  "case"
-  "catch"
-  "class"
-  "continue"
-  "default"
-  "do"
-  "else"
-  "enum"
-  "exports"
-  "extends"
-  "final"
-  "finally"
-  "for"
-  "if"
-  "implements"
-  "import"
-  "instanceof"
-  "interface"
-  "module"
-  "native"
-  "new"
-  "open"
-  "opens"
-  "package"
-  "private"
-  "protected"
-  "provides"
-  "public"
-  "requires"
-  "return"
-  "static"
-  "strictfp"
-  "switch"
-  "synchronized"
-  "throw"
-  "throws"
-  "to"
-  "transient"
-  "transitive"
-  "try"
-  "uses"
-  "volatile"
-  "while"
-  "with"
+"abstract"
+"assert"
+"break"
+"catch"
+"class"
+"continue"
+"default"
+"enum"
+"exports"
+"extends"
+"final"
+"finally"
+"implements"
+"instanceof"
+"interface"
+"module"
+"native"
+"new"
+"open"
+"opens"
+"package"
+"private"
+"protected"
+"provides"
+"public"
+"requires"
+"return"
+"static"
+"strictfp"
+"synchronized"
+"throw"
+"throws"
+"to"
+"transient"
+"transitive"
+"try"
+"uses"
+"volatile"
+"with"
 ] @keyword
+
+; Conditionals
+
+[
+"if"
+"else"
+"switch"
+"case"
+] @conditional
+
+;
+
+[
+"for"
+"while"
+"do"
+] @repeat
+
+; Includes
+
+"import" @include
+"package" @include
+
+; Punctuation
+
+[
+";"
+"."
+","
+] @punctuation.delimiter
+
+[
+"["
+"]"
+"{"
+"}"
+"("
+")"
+] @punctuation.bracket
