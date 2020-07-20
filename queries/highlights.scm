@@ -96,9 +96,11 @@
 ; Variables
 
 ((identifier) @constant
-  (#match? @constant "^_*[A-Z][A-Z\d_]+"))
+ (#match? @constant "^_*[A-Z][A-Z\d_]+"))
 
+(identifier) @variable
 
+(this) @variable.builtin
 
 ; Literals
 
