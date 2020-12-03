@@ -2274,12 +2274,32 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "method_member_access_subject",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "method_member_access_subject",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
           }
         ]
       },
       "object": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "primary_expression",
@@ -2341,12 +2361,17 @@
     }
   },
   {
+    "type": "modifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "modifiers",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "annotation",
@@ -2354,6 +2379,10 @@
         },
         {
           "type": "marker_annotation",
+          "named": true
+        },
+        {
+          "type": "modifier",
           "named": true
         }
       ]

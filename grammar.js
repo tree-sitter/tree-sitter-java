@@ -326,18 +326,17 @@ module.exports = grammar({
     method_invocation: $ => seq(
       choice(
         field('name', choice($.identifier, $._reserved_identifier)),
-        seq(
-          field('object', choice($.primary_expression, $.super)),
-          '.',
-          optional(seq(
-            $.super,
-            '.'
-          )),
-          field('type_arguments', optional($.type_arguments)),
-          field('name', choice($.identifier, $._reserved_identifier)),
-        )
+        field('name', $.method_member_access_subject),
       ),
       field('arguments', $.argument_list)
+    ),
+
+    method_member_access_subject: $ => seq(
+        field('object', choice($.primary_expression, $.super)),
+        '.',
+        optional(seq($.super, '.' )),
+        field('type_arguments', optional($.type_arguments)),
+        field('name', choice($.identifier, $._reserved_identifier)),
     ),
 
     argument_list: $ => seq('(', commaSep($.expression), ')'),
@@ -688,6 +687,10 @@ module.exports = grammar({
 
     modifiers: $ => repeat1(choice(
       $._annotation,
+      $.modifier
+    )),
+
+    modifier: $ => choice(
       'public',
       'protected',
       'private',
@@ -700,7 +703,7 @@ module.exports = grammar({
       'native',
       'transient',
       'volatile'
-    )),
+    ),
 
     type_parameters: $ => seq(
       '<', commaSep1($.type_parameter), '>'

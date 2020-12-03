@@ -15,7 +15,7 @@ class A {
     name: (identifier)
     body: (class_body
       (method_declaration
-        (modifiers)
+        (modifiers (modifier))
         type: (integral_type)
         name: (identifier)
         parameters: (formal_parameters)
@@ -42,11 +42,11 @@ Integer[][] inputArrays = new Integer[0x100][];
       dimensions: (dimensions))
     declarator: (variable_declarator
       name: (identifier)
-      value: (method_invocation
+      value: (method_invocation name: (method_member_access_subject
         object: (method_invocation
           name: (identifier)
           arguments: (argument_list))
-        name: (identifier)
+        name: (identifier))
         arguments: (argument_list))))
   (local_variable_declaration
     type: (array_type
@@ -308,9 +308,9 @@ abstract class ColoredPoint extends Point {
 ---
 
 (program
-  (class_declaration (modifiers) (identifier) (class_body))
-  (class_declaration (modifiers) (identifier) (class_body))
-  (class_declaration (modifiers) (identifier) (superclass (type_identifier)) (class_body)))
+  (class_declaration (modifiers (modifier)) (identifier) (class_body))
+  (class_declaration (modifiers (modifier)) (identifier) (class_body))
+  (class_declaration (modifiers (modifier)) (identifier) (superclass (type_identifier)) (class_body)))
 
 ==================================
 class declaration with implements
@@ -323,7 +323,7 @@ public class Dog implements ISpeak {
 
 (program
   (class_declaration
-     (modifiers) (identifier)
+     (modifiers (modifier)) (identifier)
      (super_interfaces (interface_type_list (type_identifier))) (class_body)))
 
 ============================
@@ -535,7 +535,7 @@ class Point {
     (identifier)
     (class_body
       (method_declaration
-        (modifiers)
+        (modifiers (modifier))
         (floating_point_type)
         (identifier)
         (formal_parameters)
@@ -567,7 +567,7 @@ class JayZ {
     (identifier)
     (class_body
       (method_declaration
-        (modifiers)
+        (modifiers (modifier))
         (void_type)
         (identifier)
         (formal_parameters)
