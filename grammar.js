@@ -177,7 +177,7 @@ module.exports = grammar({
         $.field_access,
         $.array_access
       )),
-      field('operator', choice('=', '+=', '-=', '*=', '/=', '&=', '|=', '^=', '%=', '<<=', '>>=', '>>>=')),
+      choice('=', '+=', '-=', '*=', '/=', '&=', '|=', '^=', '%=', '<<=', '>>=', '>>>='),
       field('right', $.expression)
     )),
 
@@ -205,7 +205,7 @@ module.exports = grammar({
     ].map(([operator, precedence]) =>
       prec.left(precedence, seq(
         field('left', $.expression),
-        field('operator', operator),
+        operator,
         field('right', $.expression)
       ))
     )),
@@ -245,7 +245,7 @@ module.exports = grammar({
       ['~', PREC.NOT],
     ].map(([operator, precedence]) =>
       prec.left(precedence, seq(
-        field('operator', operator),
+        operator,
         field('operand', $.expression)
       ))
     )),
@@ -405,7 +405,7 @@ module.exports = grammar({
     ),
 
     labeled_statement: $ => seq(
-      $.identifier, ':', $.statement
+      field('label', $.identifier), ':', $.statement
     ),
 
     assert_statement: $ => choice(
@@ -756,7 +756,7 @@ module.exports = grammar({
     constructor_declaration: $ => seq(
       optional($.modifiers),
       $._constructor_declarator,
-      optional($.throws),
+      field('throws', optional($.throws)),
       field('body', $.constructor_body)
     ),
 
@@ -847,7 +847,7 @@ module.exports = grammar({
       'interface',
       field('name', $.identifier),
       field('type_parameters', optional($.type_parameters)),
-      optional($.extends_interfaces),
+      field('extends_interfaces', optional($.extends_interfaces)),
       field('body', $.interface_body)
     ),
 
@@ -978,7 +978,7 @@ module.exports = grammar({
       )),
       field('type', $._unannotated_type),
       $._method_declarator,
-      optional($.throws)
+      field('throws', optional($.throws))
     ),
 
     _method_declarator: $ => seq(
