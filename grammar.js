@@ -80,7 +80,8 @@ module.exports = grammar({
       $.false,
       $.character_literal,
       $.string_literal,
-      $.null_literal
+      $.null_literal,
+      $.reserved_unused_literal
     ),
 
     decimal_integer_literal: $ => token(seq(
@@ -148,6 +149,12 @@ module.exports = grammar({
     )),
 
     null_literal: $ => 'null',
+
+    // Reserved keywords that are unused in Java
+    reserved_unused_literal: $ => choice(
+      'const',
+      'goto'
+    ),
 
     // Expressions
 

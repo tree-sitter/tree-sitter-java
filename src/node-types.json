@@ -40,6 +40,10 @@
         "named": true
       },
       {
+        "type": "reserved_unused_literal",
+        "named": true
+      },
+      {
         "type": "string_literal",
         "named": true
       },
@@ -2696,6 +2700,11 @@
     "fields": {}
   },
   {
+    "type": "reserved_unused_literal",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "resource",
     "named": true,
     "fields": {
@@ -3591,6 +3600,10 @@
     "named": true
   },
   {
+    "type": "const",
+    "named": false
+  },
+  {
     "type": "continue",
     "named": false
   },
@@ -3648,6 +3661,10 @@
   },
   {
     "type": "for",
+    "named": false
+  },
+  {
+    "type": "goto",
     "named": false
   },
   {

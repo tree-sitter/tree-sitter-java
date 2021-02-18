@@ -163,6 +163,19 @@ null;
 (program
   (expression_statement (null_literal)))
 
+========================
+reserved unused literals
+========================
+
+const;
+goto;
+
+---
+
+(program
+  (expression_statement (reserved_unused_literal))
+  (expression_statement (reserved_unused_literal)))
+
 =========================================
 char escapes
 =========================================

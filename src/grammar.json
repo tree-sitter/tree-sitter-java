@@ -55,6 +55,10 @@
         {
           "type": "SYMBOL",
           "name": "null_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "reserved_unused_literal"
         }
       ]
     },
@@ -1100,6 +1104,19 @@
     "null_literal": {
       "type": "STRING",
       "value": "null"
+    },
+    "reserved_unused_literal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "const"
+        },
+        {
+          "type": "STRING",
+          "value": "goto"
+        }
+      ]
     },
     "expression": {
       "type": "CHOICE",
