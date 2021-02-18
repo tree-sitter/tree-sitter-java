@@ -220,31 +220,31 @@ for (j.init(i); j.check(); j.update()) {
     update: (update_expression (identifier))
     body: (block
       (expression_statement (method_invocation
-        object: (field_access
+        object: (primary_access (field_access
           object: (identifier)
-          field: (identifier))
+          field: (identifier)))
         name: (identifier)
         arguments: (argument_list (binary_expression
           left: (string_literal)
           right: (identifier)))))))
   (for_statement
     init: (method_invocation
-      object: (identifier)
+      object: (primary_access (identifier))
       name: (identifier)
       arguments: (argument_list (identifier)))
     condition: (method_invocation
-      object: (identifier)
+      object: (primary_access (identifier))
       name: (identifier)
       arguments: (argument_list))
     update: (method_invocation
-      object: (identifier)
+      object: (primary_access (identifier))
       name: (identifier)
       arguments: (argument_list))
     body: (block
       (expression_statement (method_invocation
-        object: (field_access
+        object: (primary_access (field_access
           object: (identifier)
-          field: (identifier))
+          field: (identifier)))
         name: (identifier)
         arguments: (argument_list (identifier)))))))
 
@@ -311,9 +311,9 @@ class WhileDemo {
                 right: (decimal_integer_literal)))
             body: (block
               (expression_statement (method_invocation
-                object: (field_access
+                object: (primary_access (field_access
                   object: (identifier)
-                  field: (identifier))
+                  field: (identifier)))
                 name: (identifier)
                 arguments: (argument_list
                   (binary_expression left: (string_literal) right: (identifier)))))
@@ -344,7 +344,7 @@ try (FileInputStream input = new FileInputStream("file.txt")) {
         declarator: (variable_declarator
           name: (identifier)
           value: (method_invocation
-            object: (identifier)
+            object: (primary_access (identifier))
             name: (identifier)
             arguments: (argument_list)))))))
 
@@ -542,9 +542,9 @@ public class SwitchDemo {
                 right: (string_literal)))
               (break_statement)))
           (expression_statement (method_invocation
-            object: (field_access
+            object: (primary_access (field_access
               object: (identifier)
-              field: (identifier))
+              field: (identifier)))
             name: (identifier)
             arguments: (argument_list (identifier)))))))))
 
@@ -643,7 +643,7 @@ class someClass <T> {
                 (variable_declarator
                   (identifier)
                   (method_invocation
-                    (identifier)
+                    (primary_access (identifier))
                     (type_arguments (type_identifier))
                     (identifier)
                     (argument_list))))
@@ -667,7 +667,7 @@ class someClass <T> {
                 (variable_declarator
                   (identifier)
                   (method_invocation
-                    (identifier)
+                    (primary_access (identifier))
                     (type_arguments (type_identifier))
                     (identifier)
                     (argument_list)))))))))
@@ -707,3 +707,98 @@ super::something;
   (expression_statement (method_reference (array_type (type_identifier) (dimensions))))
   (expression_statement (method_reference (generic_type (type_identifier) (type_arguments (type_identifier))) (identifier)))
   (expression_statement (method_reference (super) (identifier))))
+
+==================
+method invocations
+==================
+
+class A {
+  void func() {
+    call();
+    TypeName.call();
+    TypeName.<TypeArgument> call();
+    (new TypeName().get()).call();
+    obj.call();
+    obj.prop.call();
+    this.call();
+    super.call();
+    super.<TypeArgument> call();
+    TypeName.super.call();
+    TypeName.super.<TypeArgument> call();
+  }
+}
+
+---
+
+(program
+  (class_declaration (identifier)
+    (class_body
+      (method_declaration
+        (void_type)
+        (identifier)
+        (formal_parameters)
+        (block
+          (expression_statement
+            (method_invocation
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (identifier))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (identifier))
+              (type_arguments (type_identifier))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access
+                (parenthesized_expression
+                  (method_invocation
+                    (primary_access (object_creation_expression (type_identifier) (argument_list)))
+                    (identifier)
+                    (argument_list))))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (identifier))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (field_access (identifier) (identifier)))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (this))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (super)
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (super)
+              (type_arguments (type_identifier))
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (identifier))
+              (super)
+              (identifier)
+              (argument_list)))
+          (expression_statement
+            (method_invocation
+              (primary_access (identifier))
+              (super)
+              (type_arguments (type_identifier))
+              (identifier)
+              (argument_list))))))))

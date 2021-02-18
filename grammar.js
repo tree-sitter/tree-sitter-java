@@ -323,11 +323,14 @@ module.exports = grammar({
       ']',
     ),
 
+    // https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.12
     method_invocation: $ => seq(
       choice(
         field('name', choice($.identifier, $._reserved_identifier)),
         seq(
-          field('object', choice($.primary_expression, $.super)),
+          // 'primary_access' is a public alias for 'primary_expression' that allows to
+          // distinguish between the method name and field access.
+          field('object', choice(alias($.primary_expression, $.primary_access), $.super)),
           '.',
           optional(seq(
             $.super,

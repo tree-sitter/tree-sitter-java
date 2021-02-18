@@ -2655,8 +2655,13 @@
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "SYMBOL",
-                        "name": "primary_expression"
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "primary_expression"
+                        },
+                        "named": true,
+                        "value": "primary_access"
                       },
                       {
                         "type": "SYMBOL",
