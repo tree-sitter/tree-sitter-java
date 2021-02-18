@@ -328,9 +328,9 @@ module.exports = grammar({
       choice(
         field('name', choice($.identifier, $._reserved_identifier)),
         seq(
-          // 'primary_access' is a public alias for 'primary_expression' that allows to
+          // 'primary' is a public alias for 'primary_expression' that helps to
           // distinguish between the method name and field access.
-          field('object', choice(alias($.primary_expression, $.primary_access), $.super)),
+          field('object', choice(alias($.primary_expression, $.primary), $.super)),
           '.',
           optional(seq(
             $.super,

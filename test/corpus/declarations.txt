@@ -43,7 +43,7 @@ Integer[][] inputArrays = new Integer[0x100][];
     declarator: (variable_declarator
       name: (identifier)
       value: (method_invocation
-        object: (primary_access (method_invocation
+        object: (primary (method_invocation
           name: (identifier)
           arguments: (argument_list)))
         name: (identifier)

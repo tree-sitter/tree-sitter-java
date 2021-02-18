@@ -2393,7 +2393,7 @@
         "required": false,
         "types": [
           {
-            "type": "primary_access",
+            "type": "primary",
             "named": true
           },
           {

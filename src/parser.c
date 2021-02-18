@@ -286,7 +286,7 @@ enum {
   aux_sym__variable_declarator_list_repeat1 = 268,
   aux_sym_array_initializer_repeat1 = 269,
   aux_sym_formal_parameters_repeat1 = 270,
-  alias_sym_primary_access = 271,
+  alias_sym_primary = 271,
   alias_sym_type_identifier = 272,
 };
 
@@ -562,7 +562,7 @@ static const char *ts_symbol_names[] = {
   [aux_sym__variable_declarator_list_repeat1] = "_variable_declarator_list_repeat1",
   [aux_sym_array_initializer_repeat1] = "array_initializer_repeat1",
   [aux_sym_formal_parameters_repeat1] = "formal_parameters_repeat1",
-  [alias_sym_primary_access] = "primary_access",
+  [alias_sym_primary] = "primary",
   [alias_sym_type_identifier] = "type_identifier",
 };
 
@@ -838,7 +838,7 @@ static TSSymbol ts_symbol_map[] = {
   [aux_sym__variable_declarator_list_repeat1] = aux_sym__variable_declarator_list_repeat1,
   [aux_sym_array_initializer_repeat1] = aux_sym_array_initializer_repeat1,
   [aux_sym_formal_parameters_repeat1] = aux_sym_formal_parameters_repeat1,
-  [alias_sym_primary_access] = alias_sym_primary_access,
+  [alias_sym_primary] = alias_sym_primary,
   [alias_sym_type_identifier] = alias_sym_type_identifier,
 };
 
@@ -1934,7 +1934,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = false,
   },
-  [alias_sym_primary_access] = {
+  [alias_sym_primary] = {
     .visible = true,
     .named = true,
   },
@@ -2777,11 +2777,11 @@ static TSSymbol ts_alias_sequences[176][MAX_ALIAS_SEQUENCE_LENGTH] = {
     [3] = alias_sym_type_identifier,
   },
   [65] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
     [2] = sym_identifier,
   },
   [66] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
   },
   [71] = {
     [3] = alias_sym_type_identifier,
@@ -2793,11 +2793,11 @@ static TSSymbol ts_alias_sequences[176][MAX_ALIAS_SEQUENCE_LENGTH] = {
     [3] = sym_identifier,
   },
   [92] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
     [3] = sym_identifier,
   },
   [93] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
   },
   [98] = {
     [3] = sym_identifier,
@@ -2809,11 +2809,11 @@ static TSSymbol ts_alias_sequences[176][MAX_ALIAS_SEQUENCE_LENGTH] = {
     [4] = sym_identifier,
   },
   [115] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
     [4] = sym_identifier,
   },
   [116] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
   },
   [123] = {
     [0] = sym_identifier,
@@ -2826,11 +2826,11 @@ static TSSymbol ts_alias_sequences[176][MAX_ALIAS_SEQUENCE_LENGTH] = {
     [5] = sym_identifier,
   },
   [139] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
     [5] = sym_identifier,
   },
   [140] = {
-    [0] = alias_sym_primary_access,
+    [0] = alias_sym_primary,
   },
   [151] = {
     [1] = sym_identifier,
@@ -2844,7 +2844,7 @@ static TSSymbol ts_alias_sequences[176][MAX_ALIAS_SEQUENCE_LENGTH] = {
 static uint16_t ts_non_terminal_alias_map[] = {
   sym_primary_expression, 2,
     sym_primary_expression,
-    alias_sym_primary_access,
+    alias_sym_primary,
   0,
 };
 

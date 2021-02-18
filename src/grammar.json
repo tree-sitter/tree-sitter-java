@@ -2661,7 +2661,7 @@
                           "name": "primary_expression"
                         },
                         "named": true,
-                        "value": "primary_access"
+                        "value": "primary"
                       },
                       {
                         "type": "SYMBOL",
