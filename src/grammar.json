@@ -6598,6 +6598,7 @@
       "primary_expression"
     ]
   ],
+  "precedences": [],
   "externals": [],
   "inline": [
     "_name",
