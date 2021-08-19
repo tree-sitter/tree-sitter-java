@@ -5637,6 +5637,10 @@
               },
               {
                 "type": "SYMBOL",
+                "name": "enum_declaration"
+              },
+              {
+                "type": "SYMBOL",
                 "name": "class_declaration"
               },
               {
