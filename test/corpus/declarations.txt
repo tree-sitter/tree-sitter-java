@@ -400,6 +400,20 @@ interface with annotation type declaration
 (program
   (annotation_type_declaration (identifier) (annotation_type_body)))
 
+================================
+annotation type with inner enum
+================================
+
+@interface EditModifiers {
+  enum EditKind {}
+}
+
+---
+
+(program
+  (annotation_type_declaration (identifier) (annotation_type_body
+    (enum_declaration (identifier) (enum_body)))))
+
 ===================
 method declaration
 ===================

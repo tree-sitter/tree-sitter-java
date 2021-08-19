@@ -857,6 +857,7 @@ module.exports = grammar({
       '{', repeat(choice(
         $.annotation_type_element_declaration,
         $.constant_declaration,
+        $.enum_declaration,
         $.class_declaration,
         $.interface_declaration,
         $.annotation_type_declaration
