@@ -1074,3 +1074,24 @@ $cibleVisée2 = 2;
     (assignment_expression
       (identifier)
       (decimal_integer_literal))))
+
+===========================================
+array and object creation with annotations
+===========================================
+
+new @Nullable Object[size];
+new @Nullable Object();
+
+---
+
+(program
+  (expression_statement
+    (array_creation_expression
+      (marker_annotation name: (identifier))
+      type: (type_identifier)
+      dimensions: (dimensions_expr (identifier))))
+  (expression_statement
+    (object_creation_expression
+      (marker_annotation name: (identifier))
+      type: (type_identifier)
+      arguments: (argument_list))))
