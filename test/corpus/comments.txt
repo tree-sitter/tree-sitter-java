@@ -7,9 +7,21 @@ comment
 /* this comment /* // /** ends here: */
 /**/
 
+a /* dkjfhsdf + */ + b; /* ***** */
+
 ---
 
-(program (line_comment) (block_comment) (block_comment) (block_comment))
+(program 
+  (line_comment) 
+  (block_comment) 
+  (block_comment) 
+  (block_comment) 
+  (expression_statement 
+    (binary_expression 
+      (identifier) 
+      (block_comment) 
+      (identifier))) 
+  (block_comment)) 
 
 ======================
 comments and literals
