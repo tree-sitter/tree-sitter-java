@@ -31,7 +31,8 @@ module.exports = grammar({
   name: 'java',
 
   extras: $ => [
-    $.comment,
+    $.line_comment,
+    $.block_comment,
     /\s/
   ],
 
@@ -44,6 +45,7 @@ module.exports = grammar({
     $._type,
     $._simple_type,
     $._unannotated_type,
+    $.comment,
   ],
 
   inline: $ => [
@@ -113,9 +115,9 @@ module.exports = grammar({
 
     decimal_floating_point_literal: $ => token(choice(
       seq(DIGITS, '.', optional(DIGITS), optional(seq((/[eE]/), optional(choice('-', '+')), DIGITS)), optional(/[fFdD]/)),
-      seq('.', DIGITS, optional(seq((/[eE]/), optional(choice('-','+')), DIGITS)), optional(/[fFdD]/)),
-      seq(DIGITS, /[eEpP]/, optional(choice('-','+')), DIGITS, optional(/[fFdD]/)),
-      seq(DIGITS, optional(seq((/[eE]/), optional(choice('-','+')), DIGITS)), (/[fFdD]/))
+      seq('.', DIGITS, optional(seq((/[eE]/), optional(choice('-', '+')), DIGITS)), optional(/[fFdD]/)),
+      seq(DIGITS, /[eEpP]/, optional(choice('-', '+')), DIGITS, optional(/[fFdD]/)),
+      seq(DIGITS, optional(seq((/[eE]/), optional(choice('-', '+')), DIGITS)), (/[fFdD]/))
     )),
 
     hex_floating_point_literal: $ => token(seq(
@@ -126,7 +128,7 @@ module.exports = grammar({
       ),
       optional(seq(
         /[eEpP]/,
-        optional(choice('-','+')),
+        optional(choice('-', '+')),
         DIGITS,
         optional(/[fFdD]/)
       ))
@@ -166,7 +168,7 @@ module.exports = grammar({
       $.primary_expression,
       $.unary_expression,
       $.cast_expression,
-      prec(PREC.SWITCH_EXP, $.switch_expression), 
+      prec(PREC.SWITCH_EXP, $.switch_expression),
     ),
 
     cast_expression: $ => prec(PREC.CAST, seq(
@@ -189,32 +191,32 @@ module.exports = grammar({
 
     binary_expression: $ => choice(
       ...[
-      ['>', PREC.REL],
-      ['<', PREC.REL],
-      ['>=', PREC.REL],
-      ['<=', PREC.REL],
-      ['==', PREC.EQUALITY],
-      ['!=', PREC.EQUALITY],
-      ['&&', PREC.AND],
-      ['||', PREC.OR],
-      ['+', PREC.ADD],
-      ['-', PREC.ADD],
-      ['*', PREC.MULT],
-      ['/', PREC.MULT],
-      ['&', PREC.BIT_AND],
-      ['|', PREC.BIT_OR],
-      ['^', PREC.BIT_XOR],
-      ['%', PREC.MULT],
-      ['<<', PREC.SHIFT],
-      ['>>', PREC.SHIFT],
-      ['>>>', PREC.SHIFT],
-    ].map(([operator, precedence]) =>
-      prec.left(precedence, seq(
-        field('left', $.expression),
-        field('operator', operator),
-        field('right', $.expression)
-      ))
-    )),
+        ['>', PREC.REL],
+        ['<', PREC.REL],
+        ['>=', PREC.REL],
+        ['<=', PREC.REL],
+        ['==', PREC.EQUALITY],
+        ['!=', PREC.EQUALITY],
+        ['&&', PREC.AND],
+        ['||', PREC.OR],
+        ['+', PREC.ADD],
+        ['-', PREC.ADD],
+        ['*', PREC.MULT],
+        ['/', PREC.MULT],
+        ['&', PREC.BIT_AND],
+        ['|', PREC.BIT_OR],
+        ['^', PREC.BIT_XOR],
+        ['%', PREC.MULT],
+        ['<<', PREC.SHIFT],
+        ['>>', PREC.SHIFT],
+        ['>>>', PREC.SHIFT],
+      ].map(([operator, precedence]) =>
+        prec.left(precedence, seq(
+          field('left', $.expression),
+          field('operator', operator),
+          field('right', $.expression)
+        ))
+      )),
 
     instanceof_expression: $ => prec(PREC.REL, seq(
       field('left', $.expression),
@@ -386,22 +388,22 @@ module.exports = grammar({
     switch_block: $ => seq(
       '{',
       choice(
-        repeat($.switch_block_statement_group), 
+        repeat($.switch_block_statement_group),
         repeat($.switch_rule)
       ),
       '}'
     ),
 
-    switch_block_statement_group: $ => prec.left (seq(
-        repeat1(seq($.switch_label, ':')),
-        repeat($.statement),
+    switch_block_statement_group: $ => prec.left(seq(
+      repeat1(seq($.switch_label, ':')),
+      repeat($.statement),
     )),
 
     switch_rule: $ => seq(
       $.switch_label,
       '->',
       choice($.expression_statement, $.throw_statement, $.block)
-     ),
+    ),
 
     switch_label: $ => choice(
       seq('case', commaSep1($.expression)),
@@ -736,7 +738,7 @@ module.exports = grammar({
 
     type_parameter: $ => seq(
       repeat($._annotation),
-      $.identifier,
+      alias($.identifier, $.type_identifier),
       optional($.type_bound)
     ),
 
@@ -843,7 +845,7 @@ module.exports = grammar({
       'record',
       field('name', $.identifier),
       field('parameters', $.formal_parameters),
-      field('body', $.class_body) 
+      field('body', $.class_body)
     ),
 
     annotation_type_declaration: $ => seq(
@@ -1081,18 +1083,24 @@ module.exports = grammar({
     identifier: $ => /[\p{L}_$][\p{L}\p{Nd}_$]*/,
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    comment: $ => token(prec(PREC.COMMENT, choice(
-      seq('//', /.*/),
+    comment: $ => choice(
+      $.line_comment,
+      $.block_comment,
+    ),
+
+    line_comment: $ => token(prec(PREC.COMMENT, seq('//', /[^\n]*/))),
+
+    block_comment: $ => token(prec(PREC.COMMENT,
       seq(
         '/*',
         /[^*]*\*+([^/*][^*]*\*+)*/,
         '/'
       )
-    ))),
+    )),
   }
 });
 
-function sep1 (rule, separator) {
+function sep1(rule, separator) {
   return seq(rule, repeat(seq(separator, rule)));
 }
 
