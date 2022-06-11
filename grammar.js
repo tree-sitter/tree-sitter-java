@@ -46,6 +46,7 @@ module.exports = grammar({
     $._simple_type,
     $._unannotated_type,
     $.comment,
+    $.module_directive,
   ],
 
   inline: $ => [
@@ -87,6 +88,7 @@ module.exports = grammar({
       $.false,
       $.character_literal,
       $.string_literal,
+      $.text_block,
       $.null_literal
     ),
 
@@ -152,6 +154,10 @@ module.exports = grammar({
       seq('"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)), '"'),
       // TODO: support multiline string literals by debugging the following:
       // seq('"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)), '"', '+', /\n/, '"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)))
+    )),
+
+    text_block: $ => token(choice(
+      seq('"""', /\s*\n/, optional(repeat(choice(/[^\\"]/, /\\(.)/))), '"""'),
     )),
 
     null_literal: $ => 'null',
@@ -648,17 +654,61 @@ module.exports = grammar({
       '}'
     ),
 
-    module_directive: $ => seq(choice(
-      seq('requires', repeat($.requires_modifier), $._name),
-      seq('exports', $._name, optional('to'), optional($._name), repeat(seq(',', $._name))),
-      seq('opens', $._name, optional('to'), optional($._name), repeat(seq(',', $._name))),
-      seq('uses', $._name),
-      seq('provides', $._name, 'with', $._name, repeat(seq(',', $._name)))
-    ), ';'),
+    module_directive: $ => choice(
+      $.requires_module_directive,
+      $.exports_module_directive,
+      $.opens_module_directive,
+      $.uses_module_directive,
+      $.provides_module_directive
+    ),
+
+    requires_module_directive: $ => seq(
+      'requires',
+      repeat(field('modifiers', $.requires_modifier)),
+      field('module', $._name),
+      ';'
+    ),
 
     requires_modifier: $ => choice(
       'transitive',
       'static'
+    ),
+
+    exports_module_directive: $ => seq(
+      'exports',
+      field('package', $._name),
+      optional(seq(
+        'to',
+        field('modules', $._name),
+        repeat(seq(',', field('modules', $._name)))
+      )),
+      ';'
+    ),
+
+    opens_module_directive: $ => seq(
+      'opens',
+      field('package', $._name),
+      optional(seq(
+        'to',
+        field('modules', $._name),
+        repeat(seq(',', field('modules', $._name)))
+      )),
+      ';'
+    ),
+
+    uses_module_directive: $ => seq(
+      'uses',
+      field('type', $._name),
+      ';'
+    ),
+
+    provides_module_directive: $ => seq(
+      'provides',
+      field('provided', $._name),
+      'with',
+      $._name,
+      repeat(seq(',', (field('provider', $._name)))),
+      ';'
     ),
 
     package_declaration: $ => seq(
@@ -713,6 +763,7 @@ module.exports = grammar({
       optional(field('type_parameters', $.type_parameters)),
       optional(field('superclass', $.superclass)),
       optional(field('interfaces', $.super_interfaces)),
+      optional(field('permits', $.permits)),
       field('body', $.class_body)
     ),
 
@@ -729,7 +780,9 @@ module.exports = grammar({
       'synchronized',
       'native',
       'transient',
-      'volatile'
+      'volatile',
+      'sealed',
+      'non-sealed',
     )),
 
     type_parameters: $ => seq(
@@ -751,12 +804,17 @@ module.exports = grammar({
 
     super_interfaces: $ => seq(
       'implements',
-      $.interface_type_list
+      $.type_list
     ),
 
-    interface_type_list: $ => seq(
+    type_list: $ => seq(
       $._type,
       repeat(seq(',', $._type))
+    ),
+
+    permits: $ => seq(
+      'permits',
+      $.type_list
     ),
 
     class_body: $ => seq(
@@ -887,12 +945,13 @@ module.exports = grammar({
       field('name', $.identifier),
       field('type_parameters', optional($.type_parameters)),
       optional($.extends_interfaces),
+      optional(field('permits', $.permits)),
       field('body', $.interface_body)
     ),
 
     extends_interfaces: $ => seq(
       'extends',
-      $.interface_type_list
+      $.type_list
     ),
 
     interface_body: $ => seq(
