@@ -54,6 +54,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "text_block"
+        },
+        {
+          "type": "SYMBOL",
           "name": "null_literal"
         }
       ]
@@ -1091,6 +1095,55 @@
               {
                 "type": "STRING",
                 "value": "\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "text_block": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "\"\"\""
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\s*\\n"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "PATTERN",
+                          "value": "[^\\\\\"]"
+                        },
+                        {
+                          "type": "PATTERN",
+                          "value": "\\\\(.)"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "STRING",
+                "value": "\"\"\""
               }
             ]
           }
@@ -5014,6 +5067,22 @@
           ]
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "permits",
+              "content": {
+                "type": "SYMBOL",
+                "name": "permits"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "body",
           "content": {
@@ -5079,6 +5148,14 @@
           {
             "type": "STRING",
             "value": "volatile"
+          },
+          {
+            "type": "STRING",
+            "value": "sealed"
+          },
+          {
+            "type": "STRING",
+            "value": "non-sealed"
           }
         ]
       }
@@ -5205,11 +5282,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "interface_type_list"
+          "name": "type_list"
         }
       ]
     },
-    "interface_type_list": {
+    "type_list": {
       "type": "SEQ",
       "members": [
         {
@@ -5231,6 +5308,19 @@
               }
             ]
           }
+        }
+      ]
+    },
+    "permits": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "permits"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "type_list"
         }
       ]
     },
@@ -5876,6 +5966,22 @@
           ]
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "permits",
+              "content": {
+                "type": "SYMBOL",
+                "name": "permits"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "body",
           "content": {
@@ -5894,7 +6000,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "interface_type_list"
+          "name": "type_list"
         }
       ]
     },
