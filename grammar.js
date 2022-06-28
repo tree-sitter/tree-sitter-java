@@ -80,6 +80,7 @@ module.exports = grammar({
       $.false,
       $.character_literal,
       $.string_literal,
+      $.text_block,
       $.null_literal
     ),
 
@@ -143,6 +144,12 @@ module.exports = grammar({
 
     string_literal: $ => token(choice(
       seq('"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)), '"'),
+      // TODO: support multiline string literals by debugging the following:
+      // seq('"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)), '"', '+', /\n/, '"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)))
+    )),
+
+    text_block: $ => token(choice(
+      seq('"""', repeat(choice(/[^\\]/, /\\./)), '"""'),
       // TODO: support multiline string literals by debugging the following:
       // seq('"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)), '"', '+', /\n/, '"', repeat(choice(/[^\\"\n]/, /\\(.|\n)/)))
     )),
