@@ -160,6 +160,10 @@
       {
         "type": "package_declaration",
         "named": true
+      },
+      {
+        "type": "record_declaration",
+        "named": true
       }
     ]
   },

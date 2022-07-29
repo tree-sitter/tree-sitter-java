@@ -635,6 +635,7 @@ module.exports = grammar({
       $.package_declaration,
       $.import_declaration,
       $.class_declaration,
+      $.record_declaration,
       $.interface_declaration,
       $.annotation_type_declaration,
       $.enum_declaration,

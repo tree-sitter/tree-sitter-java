@@ -4368,6 +4368,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "record_declaration"
+          },
+          {
+            "type": "SYMBOL",
             "name": "interface_declaration"
           },
           {
