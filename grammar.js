@@ -903,6 +903,7 @@ module.exports = grammar({
       optional($.modifiers),
       'record',
       field('name', $.identifier),
+      optional(field('type_parameters', $.type_parameters)),
       field('parameters', $.formal_parameters),
       field('body', $.class_body)
     ),
