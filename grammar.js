@@ -227,7 +227,8 @@ module.exports = grammar({
     instanceof_expression: $ => prec(PREC.REL, seq(
       field('left', $.expression),
       'instanceof',
-      field('right', $._type)
+      field('right', $._type),
+      field('name', optional(choice($.identifier, $._reserved_identifier)))
     )),
 
     lambda_expression: $ => seq(
