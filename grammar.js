@@ -1134,7 +1134,8 @@ module.exports = grammar({
 
     _reserved_identifier: $ => alias(choice(
       'open',
-      'module'
+      'module',
+      'record'
     ), $.identifier),
 
     this: $ => 'this',

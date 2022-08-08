@@ -6927,6 +6927,10 @@
           {
             "type": "STRING",
             "value": "module"
+          },
+          {
+            "type": "STRING",
+            "value": "record"
           }
         ]
       },
