@@ -5803,6 +5803,22 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "interfaces",
+              "content": {
+                "type": "SYMBOL",
+                "name": "super_interfaces"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "body",
           "content": {
@@ -6105,6 +6121,10 @@
               {
                 "type": "SYMBOL",
                 "name": "class_declaration"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "record_declaration"
               },
               {
                 "type": "SYMBOL",
@@ -6956,10 +6976,6 @@
           {
             "type": "STRING",
             "value": "module"
-          },
-          {
-            "type": "STRING",
-            "value": "record"
           }
         ]
       },

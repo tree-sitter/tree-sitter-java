@@ -904,10 +904,12 @@ module.exports = grammar({
 
     record_declaration: $ => seq(
       optional($.modifiers),
-      'record',
+      'record',  // bkramer: `record A() implements B {}` fails to parse
+      //'recordx',  // bkramer: doing this instead, `recordx A() implements B {}` successfully parses
       field('name', $.identifier),
       optional(field('type_parameters', $.type_parameters)),
       field('parameters', $.formal_parameters),
+      optional(field('interfaces', $.super_interfaces)),
       field('body', $.class_body)
     ),
 
@@ -967,6 +969,7 @@ module.exports = grammar({
         $.enum_declaration,
         $.method_declaration,
         $.class_declaration,
+        $.record_declaration,
         $.interface_declaration,
         $.annotation_type_declaration,
         ';'
@@ -1138,7 +1141,7 @@ module.exports = grammar({
     _reserved_identifier: $ => alias(choice(
       'open',
       'module',
-      'record'
+      //'record',  // bkramer: does not help parse for `record A() implements B {}`
     ), $.identifier),
 
     this: $ => 'this',

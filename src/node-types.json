@@ -2230,6 +2230,10 @@
         {
           "type": "method_declaration",
           "named": true
+        },
+        {
+          "type": "record_declaration",
+          "named": true
         }
       ]
     }
@@ -2905,6 +2909,16 @@
         "types": [
           {
             "type": "class_body",
+            "named": true
+          }
+        ]
+      },
+      "interfaces": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "super_interfaces",
             "named": true
           }
         ]
