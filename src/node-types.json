@@ -180,6 +180,10 @@
         "named": true
       },
       {
+        "type": "capture",
+        "named": true
+      },
+      {
         "type": "cast_expression",
         "named": true
       },
@@ -770,6 +774,10 @@
             "named": true
           },
           {
+            "type": "capture",
+            "named": true
+          },
+          {
             "type": "field_access",
             "named": true
           },
@@ -980,6 +988,21 @@
     "children": {
       "multiple": false,
       "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "capture",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
       "types": [
         {
           "type": "identifier",
@@ -3813,6 +3836,10 @@
   },
   {
     "type": "!=",
+    "named": false
+  },
+  {
+    "type": "${",
     "named": false
   },
   {

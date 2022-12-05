@@ -1163,6 +1163,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "capture"
+        },
+        {
+          "type": "SYMBOL",
           "name": "binary_expression"
         },
         {
@@ -1272,6 +1276,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "identifier"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "capture"
                 },
                 {
                   "type": "SYMBOL",
@@ -7054,6 +7062,35 @@
     "identifier": {
       "type": "PATTERN",
       "value": "[\\p{L}_$][\\p{L}\\p{Nd}_$]*"
+    },
+    "capture": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "${"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "\\?\\*\\+"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
     },
     "comment": {
       "type": "CHOICE",

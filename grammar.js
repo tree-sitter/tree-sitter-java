@@ -169,6 +169,7 @@ module.exports = grammar({
 
     expression: $ => choice(
       $.assignment_expression,
+      $.capture,
       $.binary_expression,
       $.instanceof_expression,
       $.lambda_expression,
@@ -190,6 +191,7 @@ module.exports = grammar({
     assignment_expression: $ => prec.right(PREC.ASSIGN, seq(
       field('left', choice(
         $.identifier,
+        $.capture,
         $._reserved_identifier,
         $.field_access,
         $.array_access
@@ -1159,6 +1161,10 @@ module.exports = grammar({
 
     // https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-IdentifierChars
     identifier: $ => /[\p{L}_$][\p{L}\p{Nd}_$]*/,
+
+
+    capture: $ => seq('${', $.identifier, optional(/\?\*\+/),  '}'),
+
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     comment: $ => choice(
