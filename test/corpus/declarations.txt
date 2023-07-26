@@ -56,7 +56,8 @@ Integer[][] inputArrays = new Integer[0x100][];
       name: (identifier)
       value: (array_creation_expression
         type: (type_identifier)
-        dimensions: (dimensions_expr (hex_integer_literal))
+        dimensions: (dimensions_expr
+          (hex_integer_literal))
         dimensions: (dimensions)))))
 
 ==========
@@ -99,11 +100,24 @@ module com.foo { }
     (annotation
       (identifier)
       (annotation_argument_list
-        (element_value_pair (identifier) (decimal_integer_literal))
-        (element_value_pair (identifier) (string_literal (string_fragment)))
-        (element_value_pair (identifier) (string_literal (string_fragment)))
-        (element_value_pair (identifier) (string_literal (string_fragment)))))
-    (scoped_identifier (identifier) (identifier))
+        (element_value_pair
+          (identifier)
+          (decimal_integer_literal))
+        (element_value_pair
+          (identifier)
+          (string_literal
+            (string_fragment)))
+        (element_value_pair
+          (identifier)
+          (string_literal
+            (string_fragment)))
+        (element_value_pair
+          (identifier)
+          (string_literal
+            (string_fragment)))))
+    (scoped_identifier
+      (identifier)
+      (identifier))
     (module_body)))
 
 ==============================
@@ -117,12 +131,18 @@ module with marker annotation
 
 (program
   (module_declaration
-    (marker_annotation (identifier))
-    (scoped_identifier (identifier) (identifier))
+    (marker_annotation
+      (identifier))
+    (scoped_identifier
+      (identifier)
+      (identifier))
     (module_body))
   (module_declaration
-    (marker_annotation (identifier))
-    (scoped_identifier (identifier) (identifier))
+    (marker_annotation
+      (identifier))
+    (scoped_identifier
+      (identifier)
+      (identifier))
     (module_body)))
 
 ======================================
@@ -138,7 +158,9 @@ module com.foo {}
   (module_declaration
     (annotation
       (identifier)
-      (annotation_argument_list (string_literal (string_fragment))))
+      (annotation_argument_list
+        (string_literal
+          (string_fragment))))
     (scoped_identifier
       (identifier)
       (identifier))
@@ -152,7 +174,9 @@ package myVector;
 
 ---
 
- (program (package_declaration (identifier)))
+(program
+  (package_declaration
+    (identifier)))
 
 =================
 module directive
@@ -205,31 +229,85 @@ module com.example.foo {
 
 (program
   (module_declaration
-    (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))
+    (scoped_identifier
+      (scoped_identifier
+        (identifier)
+        (identifier))
+      (identifier))
     (module_body
       (requires_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (requires_module_directive
-        (scoped_identifier (identifier) (identifier)))
+        (scoped_identifier
+          (identifier)
+          (identifier)))
       (requires_module_directive
         (requires_modifier)
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (exports_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (exports_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (opens_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (opens_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (uses_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier)))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier)))
       (provides_module_directive
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))
-        (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))))))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier))
+        (scoped_identifier
+          (scoped_identifier
+            (identifier)
+            (identifier))
+          (identifier))))))
 
 ===============================
 single type import declaration
@@ -239,8 +317,13 @@ import java.util.Vector;
 
 ---
 
-(program (import_declaration
-  (scoped_identifier (scoped_identifier (identifier) (identifier)) (identifier))))
+(program
+  (import_declaration
+    (scoped_identifier
+      (scoped_identifier
+        (identifier)
+        (identifier))
+      (identifier))))
 
 ===========================
 type_import_on_declaraction
@@ -250,8 +333,12 @@ import java.util.*;
 
 ---
 
-(program (import_declaration
-  (scoped_identifier (identifier) (identifier)) (asterisk)))
+(program
+  (import_declaration
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (asterisk)))
 
 =================================
 single static import declaration
@@ -261,10 +348,13 @@ import static java.util.Vector;
 
 ---
 
-(program (import_declaration
-  (scoped_identifier
-    (scoped_identifier (identifier) (identifier))
-    (identifier))))
+(program
+  (import_declaration
+    (scoped_identifier
+      (scoped_identifier
+        (identifier)
+        (identifier))
+      (identifier))))
 
 ===================================
 static import on demand declaration
@@ -274,9 +364,12 @@ import static java.util.*;
 
 ---
 
-(program (import_declaration
-  (scoped_identifier (identifier) (identifier))
-  (asterisk)))
+(program
+  (import_declaration
+    (scoped_identifier
+      (identifier)
+      (identifier))
+    (asterisk)))
 
 =================
 class declaration
@@ -290,7 +383,7 @@ class Point {
 (program
   (class_declaration
     (identifier)
-      (class_body)))
+    (class_body)))
 
 =====================================================================
 class declaration involving public, private, abstract and superclass
@@ -308,9 +401,20 @@ abstract class ColoredPoint extends Point {
 ---
 
 (program
-  (class_declaration (modifiers) (identifier) (class_body))
-  (class_declaration (modifiers) (identifier) (class_body))
-  (class_declaration (modifiers) (identifier) (superclass (type_identifier)) (class_body)))
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body))
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body))
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (superclass
+      (type_identifier))
+    (class_body)))
 
 ==================================
 class declaration with implements
@@ -323,8 +427,12 @@ public class Dog implements ISpeak {
 
 (program
   (class_declaration
-     (modifiers) (identifier)
-     (super_interfaces (type_list (type_identifier))) (class_body)))
+    (modifiers)
+    (identifier)
+    (super_interfaces
+      (type_list
+        (type_identifier)))
+    (class_body)))
 
 ============================
 class declaration with body
@@ -346,14 +454,17 @@ class Point {
     (class_body
       (field_declaration
         (integral_type)
-        (variable_declarator (identifier)))
+        (variable_declarator
+          (identifier)))
       (method_declaration
         (void_type)
         (identifier)
         (formal_parameters)
         (block
           (expression_statement
-            (assignment_expression (identifier) (decimal_integer_literal))))))))
+            (assignment_expression
+              (identifier)
+              (decimal_integer_literal))))))))
 
 ======================
 interface declaration
@@ -383,11 +494,17 @@ interface Bottom extends Left, Right {}
 (program
   (interface_declaration
     (identifier)
-    (extends_interfaces (type_list (type_identifier)))
+    (extends_interfaces
+      (type_list
+        (type_identifier)))
     (interface_body))
   (interface_declaration
     (identifier)
-    (extends_interfaces (type_list (type_identifier) (type_identifier))) (interface_body)))
+    (extends_interfaces
+      (type_list
+        (type_identifier)
+        (type_identifier)))
+    (interface_body)))
 
 ===========================================
 interface with annotation type declaration
@@ -398,7 +515,9 @@ interface with annotation type declaration
 ---
 
 (program
-  (annotation_type_declaration (identifier) (annotation_type_body)))
+  (annotation_type_declaration
+    (identifier)
+    (annotation_type_body)))
 
 ===================
 method declaration
@@ -421,11 +540,20 @@ class Beyonce {
         (void_type)
         (identifier)
         (formal_parameters
-          (formal_parameter (floating_point_type) (identifier))
-          (formal_parameter (integral_type) (identifier))
-          (formal_parameter (floating_point_type) (identifier))
-          (formal_parameter (floating_point_type) (identifier)))
-        (block (line_comment))))))
+          (formal_parameter
+            (floating_point_type)
+            (identifier))
+          (formal_parameter
+            (integral_type)
+            (identifier))
+          (formal_parameter
+            (floating_point_type)
+            (identifier))
+          (formal_parameter
+            (floating_point_type)
+            (identifier)))
+        (block
+          (line_comment))))))
 
 ========================
 constructor declaration
@@ -451,8 +579,10 @@ class Point {
     body: (class_body
       (field_declaration
         type: (integral_type)
-        declarator: (variable_declarator name: (identifier))
-        declarator: (variable_declarator name: (identifier)))
+        declarator: (variable_declarator
+          name: (identifier))
+        declarator: (variable_declarator
+          name: (identifier)))
       (constructor_declaration
         name: (identifier)
         parameters: (formal_parameters
@@ -463,16 +593,18 @@ class Point {
             type: (integral_type)
             name: (identifier)))
         body: (constructor_body
-          (expression_statement (assignment_expression
-            left: (field_access
-              object: (this)
-              field: (identifier))
-            right: (identifier)))
-          (expression_statement (assignment_expression
-            left: (field_access
-              object: (this)
-              field: (identifier))
-            right: (identifier)))))
+          (expression_statement
+            (assignment_expression
+              left: (field_access
+                object: (this)
+                field: (identifier))
+              right: (identifier)))
+          (expression_statement
+            (assignment_expression
+              left: (field_access
+                object: (this)
+                field: (identifier))
+              right: (identifier)))))
       (constructor_declaration
         name: (identifier)
         parameters: (formal_parameters)
@@ -547,24 +679,26 @@ class Beyonce {
 (program
   (class_declaration
     (identifier)
-      (class_body
-        (method_declaration
-          (type_identifier)
-          (identifier)
-          (formal_parameters)
-          (throws (type_identifier))
-          (block
-            (expression_statement
-              (object_creation_expression
-                (type_identifier)
-                (argument_list
-                  (object_creation_expression
-                    (type_identifier)
-                    (argument_list
-                      (object_creation_expression
-                        (type_identifier)
-                        (argument_list (identifier)))
-                      (identifier)))))))))))
+    (class_body
+      (method_declaration
+        (type_identifier)
+        (identifier)
+        (formal_parameters)
+        (throws
+          (type_identifier))
+        (block
+          (expression_statement
+            (object_creation_expression
+              (type_identifier)
+              (argument_list
+                (object_creation_expression
+                  (type_identifier)
+                  (argument_list
+                    (object_creation_expression
+                      (type_identifier)
+                      (argument_list
+                        (identifier)))
+                    (identifier)))))))))))
 
 ======================
 object instantiation
@@ -640,10 +774,12 @@ enum HandSign {
   (enum_declaration
     name: (identifier)
     body: (enum_body
-      (enum_constant name: (identifier))
-      (enum_constant name: (identifier))
-      (enum_constant name: (identifier)))))
-
+      (enum_constant
+        name: (identifier))
+      (enum_constant
+        name: (identifier))
+      (enum_constant
+        name: (identifier)))))
 
 =================
 enum declaration inside an interface
@@ -657,24 +793,24 @@ public @interface Foo {
 
 ---
 
-    (program
-      (annotation_type_declaration
-        (modifiers)
+(program
+  (annotation_type_declaration
+    (modifiers)
+    name: (identifier)
+    body: (annotation_type_body
+      (enum_declaration
         name: (identifier)
-        body: (annotation_type_body
-          (enum_declaration
-            name: (identifier)
-            body: (enum_body
-              (enum_constant
-                name: (identifier))
-              (enum_constant
-                name: (identifier))
-              (enum_constant
-                name: (identifier)))))))
+        body: (enum_body
+          (enum_constant
+            name: (identifier))
+          (enum_constant
+            name: (identifier))
+          (enum_constant
+            name: (identifier)))))))
 
 =================
 record declaration
-==================
+=================
 
 public record Foo(int bar) {
 }
@@ -683,13 +819,13 @@ public record Foo(int bar) {
 
 (program
   (record_declaration
-        (modifiers)
-        name: (identifier)
-        parameters: (formal_parameters
-          (formal_parameter
-            type: (integral_type)
-            name: (identifier)))
-        body: (class_body)))
+    (modifiers)
+    name: (identifier)
+    parameters: (formal_parameters
+      (formal_parameter
+        type: (integral_type)
+        name: (identifier)))
+    body: (class_body)))
 
 ================================
 record declaration with generics
@@ -702,16 +838,16 @@ public record Foo<T>(T bar) {
 
 (program
   (record_declaration
-        (modifiers)
-        name: (identifier)
-        type_parameters: (type_parameters
-          (type_parameter
-            (type_identifier)))
-        parameters: (formal_parameters
-          (formal_parameter
-            type: (type_identifier)
-            name: (identifier)))
-        body: (class_body)))
+    (modifiers)
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        (type_identifier)))
+    parameters: (formal_parameters
+      (formal_parameter
+        type: (type_identifier)
+        name: (identifier)))
+    body: (class_body)))
 
 =================================
 record declaration inside a class
@@ -775,7 +911,6 @@ interface I { record R(int a) {} }
             (identifier)))
         (class_body)))))
 
-
 ===========================================
 record declaration with compact constructor
 ===========================================
@@ -810,7 +945,7 @@ record Person(int age) {
                 (type_identifier)
                 (argument_list
                   (string_literal
-                        (string_fragment)))))))))))
+                    (string_fragment)))))))))))
 
 ============================================
 record declaration that implements interface
@@ -828,7 +963,6 @@ record R() implements I {}
       (type_list
         (type_identifier)))
     (class_body)))
-
 
 ==============================================
 class declaration with dollar-sign identifiers
@@ -875,28 +1009,28 @@ non-sealed interface C extends A {}
 ---
 
 (program
-      (interface_declaration
-        (modifiers)
-        (identifier)
-        (permits
-          (type_list
-            (type_identifier)
-            (type_identifier)))
-        (interface_body))
-      (class_declaration
-        (modifiers)
-        (identifier)
-        (super_interfaces
-          (type_list
-            (type_identifier)))
-        (class_body))
-      (interface_declaration
-        (modifiers)
-        (identifier)
-        (extends_interfaces
-          (type_list
-            (type_identifier)))
-        (interface_body)))
+  (interface_declaration
+    (modifiers)
+    (identifier)
+    (permits
+      (type_list
+        (type_identifier)
+        (type_identifier)))
+    (interface_body))
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (super_interfaces
+      (type_list
+        (type_identifier)))
+    (class_body))
+  (interface_declaration
+    (modifiers)
+    (identifier)
+    (extends_interfaces
+      (type_list
+        (type_identifier)))
+    (interface_body)))
 
 ====================
 Reserved identifiers
@@ -943,3 +1077,37 @@ public class Keywords {
             (variable_declarator
               (identifier)
               (false))))))))
+
+============
+Annontations
+============
+
+public class Anno {
+  public void anno() {
+    this.ABCÃ¢ = new @Anno Point();
+  }
+}
+
+---
+
+(program
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body
+      (method_declaration
+        (modifiers)
+        (void_type)
+        (identifier)
+        (formal_parameters)
+        (block
+          (expression_statement
+            (assignment_expression
+              (field_access
+                (this)
+                (identifier))
+              (object_creation_expression
+                (marker_annotation
+                  (identifier))
+                (type_identifier)
+                (argument_list)))))))))
