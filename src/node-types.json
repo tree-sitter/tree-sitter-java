@@ -2237,9 +2237,19 @@
           }
         ]
       },
+      "pattern": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "record_pattern",
+            "named": true
+          }
+        ]
+      },
       "right": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "_type",
@@ -2764,7 +2774,15 @@
       "required": false,
       "types": [
         {
+          "type": "annotation",
+          "named": true
+        },
+        {
           "type": "class_body",
+          "named": true
+        },
+        {
+          "type": "marker_annotation",
           "named": true
         },
         {
@@ -2845,6 +2863,25 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "record_pattern",
+          "named": true
+        },
+        {
+          "type": "type_pattern",
           "named": true
         }
       ]
@@ -3020,6 +3057,67 @@
       "types": [
         {
           "type": "modifiers",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "record_pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "generic_type",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "record_pattern_body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "record_pattern_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "record_pattern",
+          "named": true
+        },
+        {
+          "type": "record_pattern_component",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "record_pattern_component",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_unannotated_type",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         }
       ]
@@ -3381,6 +3479,10 @@
         {
           "type": "expression",
           "named": true
+        },
+        {
+          "type": "pattern",
+          "named": true
         }
       ]
     }
@@ -3660,6 +3762,25 @@
       "types": [
         {
           "type": "type_parameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_unannotated_type",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         }
       ]
