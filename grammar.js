@@ -369,6 +369,7 @@ module.exports = grammar({
 
     _unqualified_object_creation_expression: $ => prec.right(seq(
       'new',
+      repeat($._annotation),
       field('type_arguments', optional($.type_arguments)),
       field('type', $._simple_type),
       field('arguments', $.argument_list),
@@ -1224,7 +1225,7 @@ module.exports = grammar({
     super: $ => 'super',
 
     // https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-IdentifierChars
-    identifier: $ => /[\p{L}_$][\p{L}\p{Nd}_$]*/,
+    identifier: $ => /[\p{L}_$][\p{L}\p{Nd}\u00A2_$]*/,
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     comment: $ => choice(
