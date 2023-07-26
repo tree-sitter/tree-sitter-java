@@ -483,6 +483,55 @@ class Point {
               (decimal_integer_literal)
               (decimal_integer_literal))))))))
 
+=============================================
+Nested field expression in receiver parameter
+=============================================
+
+public class Inner1<T> {
+    public class Inner2 {
+        public class Inner3 {
+            public Inner3(GetAnnotatedReceiverType.Inner1<T>.Inner2 GetAnnotatedReceiverType.Inner1.Inner2.this) {}
+        }
+    }
+}
+
+---
+
+(program
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (type_parameters
+      (type_parameter
+        (type_identifier)))
+    (class_body
+      (class_declaration
+        (modifiers)
+        (identifier)
+        (class_body
+          (class_declaration
+            (modifiers)
+            (identifier)
+            (class_body
+              (constructor_declaration
+                (modifiers)
+                (identifier)
+                (formal_parameters
+                  (receiver_parameter
+                    (scoped_type_identifier
+                      (generic_type
+                        (scoped_type_identifier
+                          (type_identifier)
+                          (type_identifier))
+                        (type_arguments
+                          (type_identifier)))
+                      (type_identifier))
+                    (identifier)
+                    (identifier)
+                    (identifier)
+                    (this)))
+                (constructor_body)))))))))
+
 =======
 throws
 =======

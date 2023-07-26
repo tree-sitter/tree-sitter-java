@@ -1173,7 +1173,7 @@ module.exports = grammar({
     receiver_parameter: $ => seq(
       repeat($._annotation),
       $._unannotated_type,
-      optional(seq($.identifier, '.')),
+      repeat(seq($.identifier, '.')),
       $.this
     ),
 
