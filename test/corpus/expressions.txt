@@ -7,9 +7,10 @@ x = 3;
 ---
 
 (program
-  (expression_statement (assignment_expression
-    (identifier)
-    (decimal_integer_literal))))
+  (expression_statement
+    (assignment_expression
+      (identifier)
+      (decimal_integer_literal))))
 
 ==================================
 standalone binary expression
@@ -38,25 +39,82 @@ a >>> b;
 ---
 
 (program
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (identifier) (identifier)))
-  (expression_statement (binary_expression (decimal_integer_literal) (decimal_integer_literal)))
-  (expression_statement (binary_expression (decimal_integer_literal) (decimal_integer_literal)))
-  (expression_statement (binary_expression (decimal_integer_literal) (decimal_integer_literal)))
-  (expression_statement (binary_expression (decimal_integer_literal) (decimal_integer_literal))))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (expression_statement
+    (binary_expression
+      (decimal_integer_literal)
+      (decimal_integer_literal)))
+  (expression_statement
+    (binary_expression
+      (decimal_integer_literal)
+      (decimal_integer_literal)))
+  (expression_statement
+    (binary_expression
+      (decimal_integer_literal)
+      (decimal_integer_literal)))
+  (expression_statement
+    (binary_expression
+      (decimal_integer_literal)
+      (decimal_integer_literal))))
 
 ==================================
 instanceof expressions
@@ -71,24 +129,35 @@ d instanceof final D bar;
 ---
 
 (program
-  (expression_statement (instanceof_expression
-    (identifier)
-    (scoped_type_identifier (type_identifier) (type_identifier))))
-  (expression_statement (instanceof_expression
-    (identifier)
-    (generic_type (type_identifier) (type_arguments (type_identifier)))))
-  (expression_statement (instanceof_expression
-    (identifier)
-    (array_type (type_identifier) (dimensions))))
-  (expression_statement (instanceof_expression
-    (identifier)
-    (type_identifier)
-    (identifier)))
-  (expression_statement (instanceof_expression
-    (identifier)
-    (type_identifier)
-    (identifier))))
-
+  (expression_statement
+    (instanceof_expression
+      (identifier)
+      (scoped_type_identifier
+        (type_identifier)
+        (type_identifier))))
+  (expression_statement
+    (instanceof_expression
+      (identifier)
+      (generic_type
+        (type_identifier)
+        (type_arguments
+          (type_identifier)))))
+  (expression_statement
+    (instanceof_expression
+      (identifier)
+      (array_type
+        (type_identifier)
+        (dimensions))))
+  (expression_statement
+    (instanceof_expression
+      (identifier)
+      (type_identifier)
+      (identifier)))
+  (expression_statement
+    (instanceof_expression
+      (identifier)
+      (type_identifier)
+      (identifier))))
 
 ===========================================================
 if statements
@@ -101,8 +170,10 @@ if (x)
 
 (program
   (if_statement
-    condition: (condition (identifier))
-    consequence: (expression_statement (identifier))))
+    condition: (condition
+      (identifier))
+    consequence: (expression_statement
+      (identifier))))
 
 ===========================================================
 if statements with nested parenthesized expression
@@ -115,9 +186,11 @@ if ((x))
 
 (program
   (if_statement
-    condition: (condition (parenthesized_expression
-            (identifier)))
-    consequence: (expression_statement (identifier))))
+    condition: (condition
+      (parenthesized_expression
+        (identifier)))
+    consequence: (expression_statement
+      (identifier))))
 
 ===========================================================
 if statements with braces
@@ -131,8 +204,11 @@ if (x) {
 
 (program
   (if_statement
-    condition: (condition (identifier))
-    consequence: (block (expression_statement (identifier)))))
+    condition: (condition
+      (identifier))
+    consequence: (block
+      (expression_statement
+        (identifier)))))
 
 ===========================================================
 if statements with assignment without braces
@@ -173,13 +249,15 @@ if (x = 3) {
         left: (identifier)
         right: (decimal_integer_literal)))
     consequence: (block
-      (expression_statement (assignment_expression
-        left: (identifier)
-        right: (decimal_integer_literal))))
+      (expression_statement
+        (assignment_expression
+          left: (identifier)
+          right: (decimal_integer_literal))))
     alternative: (block
-      (expression_statement (assignment_expression
-        left: (identifier)
-        right: (decimal_integer_literal))))))
+      (expression_statement
+        (assignment_expression
+          left: (identifier)
+          right: (decimal_integer_literal))))))
 
 ==================================
 nested if then else statements
@@ -195,11 +273,19 @@ if (a)
 
 (program
   (if_statement
-    (condition (identifier))
+    (condition
+      (identifier))
     (if_statement
-      (condition (identifier))
-      (expression_statement (method_invocation (identifier) (argument_list)))
-      (expression_statement (method_invocation (identifier) (argument_list))))))
+      (condition
+        (identifier))
+      (expression_statement
+        (method_invocation
+          (identifier)
+          (argument_list)))
+      (expression_statement
+        (method_invocation
+          (identifier)
+          (argument_list))))))
 
 ==================================
 ternary expressions
@@ -210,14 +296,16 @@ max = (a > b) ? a : b;
 ---
 
 (program
-  (expression_statement (assignment_expression
-    left: (identifier)
-    right: (ternary_expression
-      condition: (parenthesized_expression (binary_expression
-        left: (identifier)
-        right: (identifier)))
-      consequence: (identifier)
-      alternative: (identifier)))))
+  (expression_statement
+    (assignment_expression
+      left: (identifier)
+      right: (ternary_expression
+        condition: (parenthesized_expression
+          (binary_expression
+            left: (identifier)
+            right: (identifier)))
+        consequence: (identifier)
+        alternative: (identifier)))))
 
 ==================================
 for statement
@@ -243,21 +331,26 @@ for (j.init(i); j.check(); j.update()) {
     condition: (binary_expression
       left: (identifier)
       right: (decimal_integer_literal))
-    update: (update_expression (identifier))
+    update: (update_expression
+      (identifier))
     body: (block
-      (expression_statement (method_invocation
-        object: (field_access
-          object: (identifier)
-          field: (identifier))
-        name: (identifier)
-        arguments: (argument_list (binary_expression
-          left: (string_literal (string_fragment))
-          right: (identifier)))))))
+      (expression_statement
+        (method_invocation
+          object: (field_access
+            object: (identifier)
+            field: (identifier))
+          name: (identifier)
+          arguments: (argument_list
+            (binary_expression
+              left: (string_literal
+                (string_fragment))
+              right: (identifier)))))))
   (for_statement
     init: (method_invocation
       object: (identifier)
       name: (identifier)
-      arguments: (argument_list (identifier)))
+      arguments: (argument_list
+        (identifier)))
     condition: (method_invocation
       object: (identifier)
       name: (identifier)
@@ -267,12 +360,14 @@ for (j.init(i); j.check(); j.update()) {
       name: (identifier)
       arguments: (argument_list))
     body: (block
-      (expression_statement (method_invocation
-        object: (field_access
-          object: (identifier)
-          field: (identifier))
-        name: (identifier)
-        arguments: (argument_list (identifier)))))))
+      (expression_statement
+        (method_invocation
+          object: (field_access
+            object: (identifier)
+            field: (identifier))
+          name: (identifier)
+          arguments: (argument_list
+            (identifier)))))))
 
 ================================
 Enhanced for statements
@@ -290,9 +385,11 @@ for (A b : c) {
     (identifier)
     (identifier)
     (block
-      (expression_statement (method_invocation
-        (identifier)
-        (argument_list (identifier)))))))
+      (expression_statement
+        (method_invocation
+          (identifier)
+          (argument_list
+            (identifier)))))))
 
 ==================================
 while statement
@@ -310,7 +407,7 @@ class WhileDemo {
 
 ---
 
- (program
+(program
   (class_declaration
     name: (identifier)
     body: (class_body
@@ -336,14 +433,20 @@ class WhileDemo {
                 left: (identifier)
                 right: (decimal_integer_literal)))
             body: (block
-              (expression_statement (method_invocation
-                object: (field_access
-                  object: (identifier)
-                  field: (identifier))
-                name: (identifier)
-                arguments: (argument_list
-                  (binary_expression left: (string_literal (string_fragment)) right: (identifier)))))
-              (expression_statement (update_expression (identifier))))))))))
+              (expression_statement
+                (method_invocation
+                  object: (field_access
+                    object: (identifier)
+                    field: (identifier))
+                  name: (identifier)
+                  arguments: (argument_list
+                    (binary_expression
+                      left: (string_literal
+                        (string_fragment))
+                      right: (identifier)))))
+              (expression_statement
+                (update_expression
+                  (identifier))))))))))
 
 ==================================
 try-with-resources statements
@@ -363,7 +466,9 @@ try (FileInputStream input = new FileInputStream("file.txt")) {
         name: (identifier)
         value: (object_creation_expression
           type: (type_identifier)
-          arguments: (argument_list (string_literal (string_fragment))))))
+          arguments: (argument_list
+            (string_literal
+              (string_fragment))))))
     body: (block
       (local_variable_declaration
         type: (integral_type)
@@ -386,10 +491,21 @@ return fire(x);
 ---
 
 (program
-  (return_statement (identifier))
-  (return_statement (binary_expression (identifier) (identifier)))
-  (return_statement (binary_expression (identifier) (decimal_integer_literal)))
-  (return_statement (method_invocation (identifier) (argument_list (identifier)))))
+  (return_statement
+    (identifier))
+  (return_statement
+    (binary_expression
+      (identifier)
+      (identifier)))
+  (return_statement
+    (binary_expression
+      (identifier)
+      (decimal_integer_literal)))
+  (return_statement
+    (method_invocation
+      (identifier)
+      (argument_list
+        (identifier)))))
 
 ==================================
 annotation
@@ -411,7 +527,8 @@ class Duck {
         (annotation_argument_list
           (element_value_pair
             (identifier)
-            (string_literal (string_fragment)))))
+            (string_literal
+              (string_fragment)))))
       (annotation
         (identifier)
         (annotation_argument_list
@@ -437,11 +554,15 @@ class Quack {
 
 (program
   (class_declaration
-    (modifiers (marker_annotation (identifier)))
+    (modifiers
+      (marker_annotation
+        (identifier)))
     (identifier)
     (class_body
       (method_declaration
-        (modifiers (marker_annotation (identifier)))
+        (modifiers
+          (marker_annotation
+            (identifier)))
         (void_type)
         (identifier)
         (formal_parameters)
@@ -462,8 +583,17 @@ class Quack {
 (program
   (class_declaration
     (modifiers
-      (annotation (identifier) (annotation_argument_list (field_access (identifier) (identifier))))
-      (annotation (identifier) (annotation_argument_list (string_literal (string_fragment)))))
+      (annotation
+        (identifier)
+        (annotation_argument_list
+          (field_access
+            (identifier)
+            (identifier))))
+      (annotation
+        (identifier)
+        (annotation_argument_list
+          (string_literal
+            (string_fragment)))))
     (identifier)
     (class_body)))
 
@@ -475,19 +605,19 @@ String[] allMyStrings = new @Nullable String[5];
 
 ---
 
-    (program
-      (local_variable_declaration
-        (array_type
-          (type_identifier)
-          (dimensions))
-        (variable_declarator
-          (identifier)
-          (array_creation_expression
-            (marker_annotation
-              (identifier))
-            (type_identifier)
-            (dimensions_expr
-              (decimal_integer_literal))))))
+(program
+  (local_variable_declaration
+    (array_type
+      (type_identifier)
+      (dimensions))
+    (variable_declarator
+      (identifier)
+      (array_creation_expression
+        (marker_annotation
+          (identifier))
+        (type_identifier)
+        (dimensions_expr
+          (decimal_integer_literal))))))
 
 ==================================
 lambda expression
@@ -511,12 +641,18 @@ class LambdaTest {
         (identifier)
         (formal_parameters)
         (block
-          (expression_statement (lambda_expression
-            (identifier)
-            (identifier)))
-          (expression_statement (lambda_expression
-            (inferred_parameters (identifier) (identifier))
-            (binary_expression (identifier) (identifier)))))))))
+          (expression_statement
+            (lambda_expression
+              (identifier)
+              (identifier)))
+          (expression_statement
+            (lambda_expression
+              (inferred_parameters
+                (identifier)
+                (identifier))
+              (binary_expression
+                (identifier)
+                (identifier)))))))))
 
 ==================================
 traditional switch statement
@@ -761,7 +897,7 @@ class Test {
                         name: (identifier)
                         arguments: (argument_list
                           (string_literal
-                                (string_fragment)))))
+                            (string_fragment)))))
                     (yield_statement
                       (decimal_integer_literal))))))))))))
 
@@ -967,40 +1103,252 @@ class Test {
 
 ---
 
-    (program
-      (class_declaration
+(program
+  (class_declaration
+    (identifier)
+    (class_body
+      (field_declaration
+        (integral_type)
+        (variable_declarator
+          (identifier)))
+      (method_declaration
+        (modifiers)
+        (void_type)
         (identifier)
-        (class_body
-          (field_declaration
+        (formal_parameters
+          (formal_parameter
+            (boolean_type)
+            (identifier)))
+        (block
+          (local_variable_declaration
             (integral_type)
             (variable_declarator
               (identifier)))
-          (method_declaration
-            (modifiers)
-            (void_type)
-            (identifier)
-            (formal_parameters
-              (formal_parameter
-                (boolean_type)
-                (identifier)))
-            (block
-              (local_variable_declaration
-                (integral_type)
-                (variable_declarator
-                  (identifier)))
-              (switch_expression
-                (parenthesized_expression
-                  (identifier))
-                (switch_block
-                  (switch_block_statement_group
-                    (switch_label)
-                    (expression_statement
-                      (assignment_expression
-                        (identifier)
-                        (decimal_integer_literal))))))
-              (expression_statement
-                (update_expression
-                  (identifier))))))))
+          (switch_expression
+            (parenthesized_expression
+              (identifier))
+            (switch_block
+              (switch_block_statement_group
+                (switch_label)
+                (expression_statement
+                  (assignment_expression
+                    (identifier)
+                    (decimal_integer_literal))))))
+          (expression_statement
+            (update_expression
+              (identifier))))))))
+
+======================================
+Pattern matching
+======================================
+
+public class Patterns {
+    static void patterns() {
+        Rectangle r = new Rectangle(new ColoredPoint(c1), new ColoredPoint(c2));
+        if (obj instanceof Point(int x)) {
+        }
+        if (r instanceof Rectangle(ColoredPoint ul)) {
+        }
+        if (r instanceof Rectangle(ColoredPoint(Point p, Color c),
+                  ColoredPoint lr)) {
+        }
+        if (r instanceof Rectangle(ColoredPoint(Point(var x, var y), var c),
+                    var lr)) {
+        }
+    }
+}
+
+---
+
+(program
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body
+      (method_declaration
+        (modifiers)
+        (void_type)
+        (identifier)
+        (formal_parameters)
+        (block
+          (local_variable_declaration
+            (type_identifier)
+            (variable_declarator
+              (identifier)
+              (object_creation_expression
+                (type_identifier)
+                (argument_list
+                  (object_creation_expression
+                    (type_identifier)
+                    (argument_list
+                      (identifier)))
+                  (object_creation_expression
+                    (type_identifier)
+                    (argument_list
+                      (identifier)))))))
+          (if_statement
+            (condition
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (identifier)
+                  (record_pattern_body
+                    (record_pattern_component
+                      (integral_type)
+                      (identifier))))))
+            (block))
+          (if_statement
+            (condition
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (identifier)
+                  (record_pattern_body
+                    (record_pattern_component
+                      (type_identifier)
+                      (identifier))))))
+            (block))
+          (if_statement
+            (condition
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (identifier)
+                  (record_pattern_body
+                    (record_pattern
+                      (identifier)
+                      (record_pattern_body
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))))
+                    (record_pattern_component
+                      (type_identifier)
+                      (identifier))))))
+            (block))
+          (if_statement
+            (condition
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (identifier)
+                  (record_pattern_body
+                    (record_pattern
+                      (identifier)
+                      (record_pattern_body
+                        (record_pattern
+                          (identifier)
+                          (record_pattern_body
+                            (record_pattern_component
+                              (type_identifier)
+                              (identifier))
+                            (record_pattern_component
+                              (type_identifier)
+                              (identifier))))
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))))
+                    (record_pattern_component
+                      (type_identifier)
+                      (identifier))))))
+            (block)))))))
+
+======================================
+Switch statements
+======================================
+
+public class Switches {
+    static void switches() {
+        switch (s) {
+            case Rectangle r: return 2;
+        }
+        switch (pair) {
+          case MyPair(var f, var s) -> 2;
+        }
+        if (bbs instanceof Box<String>(Box(var s))) {
+        }
+        return switch (s) {
+            case rectangle r -> 2;
+        };
+    }
+}
+
+---
+
+(program
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body
+      (method_declaration
+        (modifiers)
+        (void_type)
+        (identifier)
+        (formal_parameters)
+        (block
+          (switch_expression
+            (parenthesized_expression
+              (identifier))
+            (switch_block
+              (switch_block_statement_group
+                (switch_label
+                  (pattern
+                    (type_pattern
+                      (type_identifier)
+                      (identifier))))
+                (return_statement
+                  (decimal_integer_literal)))))
+          (switch_expression
+            (parenthesized_expression
+              (identifier))
+            (switch_block
+              (switch_rule
+                (switch_label
+                  (pattern
+                    (record_pattern
+                      (identifier)
+                      (record_pattern_body
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))))))
+                (expression_statement
+                  (decimal_integer_literal)))))
+          (if_statement
+            (condition
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (generic_type
+                    (type_identifier)
+                    (type_arguments
+                      (type_identifier)))
+                  (record_pattern_body
+                    (record_pattern
+                      (identifier)
+                      (record_pattern_body
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))))))))
+            (block))
+          (return_statement
+            (switch_expression
+              (parenthesized_expression
+                (identifier))
+              (switch_block
+                (switch_rule
+                  (switch_label
+                    (pattern
+                      (type_pattern
+                        (type_identifier)
+                        (identifier))))
+                  (expression_statement
+                    (decimal_integer_literal)))))))))))
+
 ==================================
 type arguments
 ==================================
@@ -1016,14 +1364,15 @@ class Box <T> {
 (program
   (class_declaration
     (identifier)
-      (type_parameters
-        (type_parameter
-          (type_identifier)))
+    (type_parameters
+      (type_parameter
+        (type_identifier)))
     (class_body
       (field_declaration
         (modifiers)
-          (type_identifier)
-          (variable_declarator (identifier)))
+        (type_identifier)
+        (variable_declarator
+          (identifier)))
       (constructor_declaration
         (modifiers)
         (identifier)
@@ -1032,8 +1381,9 @@ class Box <T> {
             (type_identifier)
             (identifier)))
         (constructor_body
-          (expression_statement (assignment_expression
-            (identifier)
+          (expression_statement
+            (assignment_expression
+              (identifier)
               (identifier)))))
       (line_comment))))
 
@@ -1050,13 +1400,15 @@ class WildcardDemo {
 (program
   (class_declaration
     (identifier)
-      (class_body
-        (field_declaration
-          (generic_type
-            (type_identifier)
-            (type_arguments
-              (wildcard (type_identifier))))
-          (variable_declarator (identifier))))))
+    (class_body
+      (field_declaration
+        (generic_type
+          (type_identifier)
+          (type_arguments
+            (wildcard
+              (type_identifier))))
+        (variable_declarator
+          (identifier))))))
 
 ==================================
 type arguments with generic types
@@ -1080,50 +1432,56 @@ class someClass <T> {
     (type_parameters
       (type_parameter
         (type_identifier)))
-      (class_body
-        (method_declaration
-          (modifiers)
+    (class_body
+      (method_declaration
+        (modifiers)
+        (generic_type
+          (type_identifier)
+          (type_arguments
+            (type_identifier)))
+        (identifier)
+        (formal_parameters)
+        (block
+          (local_variable_declaration
             (generic_type
               (type_identifier)
-              (type_arguments (type_identifier)))
-            (identifier)
-            (formal_parameters)
-            (block
-              (local_variable_declaration
-                (generic_type
-                  (type_identifier)
-                  (type_arguments (type_identifier)))
-                (variable_declarator
-                  (identifier)
-                  (method_invocation
-                    (identifier)
-                    (type_arguments (type_identifier))
-                    (identifier)
-                    (argument_list))))
-              (return_statement (identifier))))
-        (method_declaration
-          (modifiers)
-          (type_parameters
-            (type_parameter
-              (type_identifier)))
-          (void_type)
-            (identifier)
-            (formal_parameters
-              (formal_parameter
-                (type_identifier)
-                (identifier)))
-            (block
-              (local_variable_declaration
-                (generic_type
-                  (type_identifier)
-                  (type_arguments (type_identifier)))
-                (variable_declarator
-                  (identifier)
-                  (method_invocation
-                    (identifier)
-                    (type_arguments (type_identifier))
-                    (identifier)
-                    (argument_list)))))))))
+              (type_arguments
+                (type_identifier)))
+            (variable_declarator
+              (identifier)
+              (method_invocation
+                (identifier)
+                (type_arguments
+                  (type_identifier))
+                (identifier)
+                (argument_list))))
+          (return_statement
+            (identifier))))
+      (method_declaration
+        (modifiers)
+        (type_parameters
+          (type_parameter
+            (type_identifier)))
+        (void_type)
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (block
+          (local_variable_declaration
+            (generic_type
+              (type_identifier)
+              (type_arguments
+                (type_identifier)))
+            (variable_declarator
+              (identifier)
+              (method_invocation
+                (identifier)
+                (type_arguments
+                  (type_identifier))
+                (identifier)
+                (argument_list)))))))))
 
 ==================================
 empty type arguments
@@ -1135,11 +1493,16 @@ Box<Integer> integerBox = new Box<>();
 
 (program
   (local_variable_declaration
-    (generic_type (type_identifier) (type_arguments (type_identifier)))
+    (generic_type
+      (type_identifier)
+      (type_arguments
+        (type_identifier)))
     (variable_declarator
       (identifier)
       (object_creation_expression
-        (generic_type (type_identifier) (type_arguments))
+        (generic_type
+          (type_identifier)
+          (type_arguments))
         (argument_list)))))
 
 =================
@@ -1155,11 +1518,34 @@ super::something;
 ---
 
 (program
-  (expression_statement (assignment_expression (identifier) (method_reference (identifier) (identifier))))
-  (expression_statement (method_reference (field_access (identifier) (identifier)) (identifier)))
-  (expression_statement (method_reference (array_type (type_identifier) (dimensions))))
-  (expression_statement (method_reference (generic_type (type_identifier) (type_arguments (type_identifier))) (identifier)))
-  (expression_statement (method_reference (super) (identifier))))
+  (expression_statement
+    (assignment_expression
+      (identifier)
+      (method_reference
+        (identifier)
+        (identifier))))
+  (expression_statement
+    (method_reference
+      (field_access
+        (identifier)
+        (identifier))
+      (identifier)))
+  (expression_statement
+    (method_reference
+      (array_type
+        (type_identifier)
+        (dimensions))))
+  (expression_statement
+    (method_reference
+      (generic_type
+        (type_identifier)
+        (type_arguments
+          (type_identifier)))
+      (identifier)))
+  (expression_statement
+    (method_reference
+      (super)
+      (identifier))))
 
 ================================================================================
 Non-ascii identifiers

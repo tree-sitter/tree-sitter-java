@@ -54,7 +54,7 @@ module.exports = grammar({
     $._name,
     $._simple_type,
     $._class_body_declaration,
-    $._variable_initializer
+    $._variable_initializer,
   ],
 
   conflicts: $ => [
@@ -70,7 +70,7 @@ module.exports = grammar({
     // Only conflicts in switch expressions
     [$.lambda_expression, $.primary_expression],
     [$.inferred_parameters, $.primary_expression],
-    [$.class_literal, $.field_access],
+    [$.argument_list, $.record_pattern_body],
   ],
 
   word: $ => $.identifier,
@@ -272,8 +272,13 @@ module.exports = grammar({
       field('left', $.expression),
       'instanceof',
       optional('final'),
-      field('right', $._type),
-      field('name', optional(choice($.identifier, $._reserved_identifier)))
+      choice(
+        seq(
+          field('right', $._type),
+          optional(field('name', choice($.identifier, $._reserved_identifier))),
+        ),
+        field('pattern', $.record_pattern),
+      ),
     )),
 
     lambda_expression: $ => seq(
@@ -461,8 +466,20 @@ module.exports = grammar({
     ),
 
     switch_label: $ => choice(
-      seq('case', commaSep1($.expression)),
+      seq('case', choice($.pattern, commaSep1($.expression))),
       'default'
+    ),
+
+    pattern: $ => choice(
+      $.type_pattern,
+      $.record_pattern,
+    ),
+    type_pattern: $ => seq($._unannotated_type, choice($.identifier, $._reserved_identifier)),
+    record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type), $.record_pattern_body),
+    record_pattern_body: $ => seq('(', commaSep(choice($.record_pattern_component, $.record_pattern)), ')'),
+    record_pattern_component: $ => seq(
+      $._unannotated_type,
+      choice($.identifier, $._reserved_identifier)
     ),
 
     // Statements
