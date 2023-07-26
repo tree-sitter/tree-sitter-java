@@ -53,7 +53,6 @@ module.exports = grammar({
   inline: $ => [
     $._name,
     $._simple_type,
-    $._reserved_identifier,
     $._class_body_declaration,
     $._variable_initializer
   ],
@@ -982,7 +981,7 @@ module.exports = grammar({
     annotation_type_element_declaration: $ => seq(
       optional($.modifiers),
       field('type', $._unannotated_type),
-      field('name', $.identifier),
+      field('name', choice($.identifier, $._reserved_identifier)),
       '(', ')',
       field('dimensions', optional($.dimensions)),
       optional($._default_value),
@@ -1191,11 +1190,17 @@ module.exports = grammar({
       field('body', $.block)
     ),
 
-    _reserved_identifier: $ => alias(choice(
-      'open',
-      'module',
-      'record'
-    ), $.identifier),
+    _reserved_identifier: $ => prec(-3, alias(
+      choice(
+        'open',
+        'module',
+        'record',
+        'with',
+        'yield',
+        'sealed',
+      ),
+      $.identifier,
+    )),
 
     this: $ => 'this',
 
