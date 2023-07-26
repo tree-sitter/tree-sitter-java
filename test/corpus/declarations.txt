@@ -848,3 +848,49 @@ non-sealed interface C extends A {}
           (type_list
             (type_identifier)))
         (interface_body)))
+
+====================
+Reserved identifiers
+====================
+
+public @interface Reserved {
+    String module();
+}
+
+public class Keywords {
+  public void demo() {
+    int sealed = 0;
+    bool yield = false;
+  }
+}
+
+---
+
+(program
+  (annotation_type_declaration
+    (modifiers)
+    (identifier)
+    (annotation_type_body
+      (annotation_type_element_declaration
+        (type_identifier)
+        (identifier))))
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body
+      (method_declaration
+        (modifiers)
+        (void_type)
+        (identifier)
+        (formal_parameters)
+        (block
+          (local_variable_declaration
+            (integral_type)
+            (variable_declarator
+              (identifier)
+              (decimal_integer_literal)))
+          (local_variable_declaration
+            (type_identifier)
+            (variable_declarator
+              (identifier)
+              (false))))))))
