@@ -12,9 +12,11 @@ ifeq (, $(PARSER_NAME))
 endif
 
 ifeq (, $(PARSER_URL))
-	PARSER_URL := $(subst :,/,$(PARSER_REPO_URL))
+	PARSER_URL := $(subst .git,,$(PARSER_REPO_URL))
+ifeq ($(shell echo $(PARSER_URL) | grep '^[a-z][-+.0-9a-z]*://'),)
+	PARSER_URL := $(subst :,/,$(PARSER_URL))
 	PARSER_URL := $(subst git@,https://,$(PARSER_URL))
-	PARSER_URL := $(subst .git,,$(PARSER_URL))
+endif
 endif
 
 UPPER_PARSER_NAME := $(shell echo $(PARSER_NAME) | tr a-z A-Z )
