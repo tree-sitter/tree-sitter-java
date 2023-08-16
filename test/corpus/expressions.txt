@@ -1771,3 +1771,138 @@ switch (c) {
                 (dimensions))
               (identifier))))
         (block)))))
+
+================================================================================
+switch with unnamed pattern
+================================================================================
+
+switch (c) {
+    case Point(int x, _) -> {
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (switch_expression
+    (parenthesized_expression
+      (identifier))
+    (switch_block
+      (switch_rule
+        (switch_label
+          (pattern
+            (record_pattern
+              (identifier)
+              (record_pattern_body
+                (record_pattern_component
+                  (integral_type)
+                  (identifier))
+                (record_pattern_component
+                  (underscore_pattern))))))
+        (block)))))
+
+================================================================================
+switch with unnamed pattern variable
+================================================================================
+
+switch (c) {
+    case Point(int x, int _) -> {
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (switch_expression
+    (parenthesized_expression
+      (identifier))
+    (switch_block
+      (switch_rule
+        (switch_label
+          (pattern
+            (record_pattern
+              (identifier)
+              (record_pattern_body
+                (record_pattern_component
+                  (integral_type)
+                  (identifier))
+                (record_pattern_component
+                  (integral_type)
+                  (identifier))))))
+        (block)))))
+
+================================================================================
+underscore pattern
+================================================================================
+
+int _ = 2;
+
+try {
+} catch (NumberFormatException _) {
+}
+
+(int x, int _) -> x + x;
+
+--------------------------------------------------------------------------------
+
+(program
+  (local_variable_declaration
+    (integral_type)
+    (variable_declarator
+      (underscore_pattern)
+      (decimal_integer_literal)))
+  (try_statement
+    (block)
+    (catch_clause
+      (catch_formal_parameter
+        (catch_type
+          (type_identifier))
+        (underscore_pattern))
+      (block)))
+  (expression_statement
+    (lambda_expression
+      (formal_parameters
+        (formal_parameter
+          (integral_type)
+          (identifier))
+        (formal_parameter
+          (integral_type)
+          (underscore_pattern)))
+      (binary_expression
+        (identifier)
+        (identifier)))))
+
+================================================================================
+for loops and underscore pattern
+================================================================================
+
+for (Order _ : orders) {
+}
+
+for (int i = 0, _ = sideEffect(); i < 10; i++) { }
+
+--------------------------------------------------------------------------------
+
+(program
+  (enhanced_for_statement
+    (type_identifier)
+    (underscore_pattern)
+ (identifier)
+    (block))
+  (for_statement
+    (local_variable_declaration
+      (integral_type)
+      (variable_declarator
+        (identifier)
+        (decimal_integer_literal))
+      (variable_declarator
+        (underscore_pattern)
+        (method_invocation
+          (identifier)
+          (argument_list))))
+    (binary_expression
+      (identifier)
+      (decimal_integer_literal))
+    (update_expression
+      (identifier))
+    (block)))
