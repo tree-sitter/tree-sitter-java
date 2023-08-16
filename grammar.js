@@ -499,10 +499,14 @@ module.exports = grammar({
     type_pattern: $ => seq($._unannotated_type, choice($.identifier, $._reserved_identifier)),
     record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type), $.record_pattern_body),
     record_pattern_body: $ => seq('(', commaSep(choice($.record_pattern_component, $.record_pattern)), ')'),
-    record_pattern_component: $ => seq(
-      $._unannotated_type,
-      choice($.identifier, $._reserved_identifier)
-    ),
+    record_pattern_component: $ => choice(
+      $.underscore_pattern,
+      seq(
+        $._unannotated_type,
+        choice($.identifier, $._reserved_identifier)
+    )),
+
+    underscore_pattern: $ => '_',
 
     guard: $ => seq('when', $.expression),
 
@@ -1081,7 +1085,7 @@ module.exports = grammar({
     ),
 
     _variable_declarator_id: $ => seq(
-      field('name', choice($.identifier, $._reserved_identifier)),
+      field('name', choice($.identifier, $._reserved_identifier, $.underscore_pattern)),
       field('dimensions', optional($.dimensions))
     ),
 

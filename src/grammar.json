@@ -3831,26 +3831,39 @@
       ]
     },
     "record_pattern_component": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_unannotated_type"
+          "name": "underscore_pattern"
         },
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
               "type": "SYMBOL",
-              "name": "identifier"
+              "name": "_unannotated_type"
             },
             {
-              "type": "SYMBOL",
-              "name": "_reserved_identifier"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "identifier"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_reserved_identifier"
+                }
+              ]
             }
           ]
         }
       ]
+    },
+    "underscore_pattern": {
+      "type": "STRING",
+      "value": "_"
     },
     "guard": {
       "type": "SEQ",
@@ -6884,6 +6897,10 @@
               {
                 "type": "SYMBOL",
                 "name": "_reserved_identifier"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "underscore_pattern"
               }
             ]
           }
