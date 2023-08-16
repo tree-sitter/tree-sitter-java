@@ -122,6 +122,7 @@
   "provides"
   "public"
   "requires"
+  "record"
   "return"
   "sealed"
   "static"
