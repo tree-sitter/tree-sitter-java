@@ -280,6 +280,10 @@
         "named": true
       },
       {
+        "type": "template_expression",
+        "named": true
+      },
+      {
         "type": "this",
         "named": true
       }
@@ -3352,6 +3356,21 @@
     }
   },
   {
+    "type": "string_interpolation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "string_literal",
     "named": true,
     "fields": {},
@@ -3369,6 +3388,10 @@
         },
         {
           "type": "string_fragment",
+          "named": true
+        },
+        {
+          "type": "string_interpolation",
           "named": true
         }
       ]
@@ -3538,6 +3561,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "template_expression",
+    "named": true,
+    "fields": {
+      "template_argument": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string_literal",
+            "named": true
+          }
+        ]
+      },
+      "template_processor": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "primary_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -4141,6 +4190,10 @@
   },
   {
     "type": "[",
+    "named": false
+  },
+  {
+    "type": "\\{",
     "named": false
   },
   {
