@@ -1676,3 +1676,98 @@ STR."We can have \{many(of)} \{them.in} a \{row}";
         (string_fragment)
         (string_interpolation
           (identifier))))))
+
+================================================================================
+switch with qualified enum constant
+================================================================================
+
+switch (c) {
+    case Coin.HEADS -> {
+    }
+    case Coin.TAILS -> {
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (switch_expression
+    (parenthesized_expression
+      (identifier))
+    (switch_block
+      (switch_rule
+        (switch_label
+          (field_access
+            (identifier)
+            (identifier)))
+        (block))
+      (switch_rule
+        (switch_label
+          (field_access
+            (identifier)
+            (identifier)))
+        (block)))))
+
+================================================================================
+switch with guarded case
+================================================================================
+
+switch (c) {
+    case 1 when true -> {
+    }
+    case 2 when f("hi") == "foo" -> {
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (switch_expression
+    (parenthesized_expression
+      (identifier))
+    (switch_block
+      (switch_rule
+        (switch_label
+          (decimal_integer_literal)
+          (guard
+            (true)))
+        (block))
+      (switch_rule
+        (switch_label
+          (decimal_integer_literal)
+          (guard
+            (binary_expression
+              (method_invocation
+                (identifier)
+                (argument_list
+                  (string_literal
+                    (string_fragment))))
+              (string_literal
+                (string_fragment)))))
+        (block)))))
+
+================================================================================
+switch with complex type
+================================================================================
+
+switch (c) {
+    case int[] a -> {
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (switch_expression
+    (parenthesized_expression
+      (identifier))
+    (switch_block
+      (switch_rule
+        (switch_label
+          (pattern
+            (type_pattern
+              (array_type
+                (integral_type)
+                (dimensions))
+              (identifier))))
+        (block)))))

@@ -482,7 +482,13 @@ module.exports = grammar({
     ),
 
     switch_label: $ => choice(
-      seq('case', choice($.pattern, commaSep1($.expression))),
+      seq('case',
+        choice(
+          $.pattern,
+          commaSep1($.expression)
+        ),
+        optional($.guard)
+      ),
       'default'
     ),
 
@@ -497,6 +503,8 @@ module.exports = grammar({
       $._unannotated_type,
       choice($.identifier, $._reserved_identifier)
     ),
+
+    guard: $ => seq('when', $.expression),
 
     // Statements
 
