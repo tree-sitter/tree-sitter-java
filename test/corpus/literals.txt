@@ -194,6 +194,9 @@ at new line
 \\
 """;
 
+"""
+string="has a quote with an escaped end quote\"""";
+
 ---
 
 (program
@@ -231,6 +234,10 @@ at new line
           (multiline_string_fragment)))
       (expression_statement
         (string_literal
+        (multiline_string_fragment)))
+      (expression_statement
+        (string_literal
+          (multiline_string_fragment)
           (multiline_string_fragment))))
 
 ===============
