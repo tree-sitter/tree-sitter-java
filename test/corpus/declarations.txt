@@ -665,6 +665,37 @@ public class Inner1<T> {
                 (constructor_body)))))))))
 
 ================================================================================
+Receiver parameter with additional parameters
+================================================================================
+
+public class A {
+  public B(A this) {}
+
+  public C(A this, D that) {}
+}
+
+---
+
+(program
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body
+      (constructor_declaration
+        (modifiers)
+        (identifier)
+        (formal_parameters
+          (receiver_parameter (type_identifier) (this)))
+        (constructor_body))
+      (constructor_declaration
+        (modifiers)
+        (identifier)
+        (formal_parameters
+          (receiver_parameter (type_identifier) (this))
+          (formal_parameter (type_identifier) (identifier)))
+        (constructor_body)))))
+
+================================================================================
 throws
 ================================================================================
 
