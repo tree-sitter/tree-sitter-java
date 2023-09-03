@@ -1192,8 +1192,13 @@ module.exports = grammar({
 
     formal_parameters: $ => seq(
       '(',
-      optional($.receiver_parameter),
-      commaSep(choice($.formal_parameter, $.spread_parameter)),
+      choice(
+        $.receiver_parameter,
+        seq(
+          optional(seq($.receiver_parameter, ',')),
+          commaSep(choice($.formal_parameter, $.spread_parameter)),
+        ),
+      ),
       ')'
     ),
 
