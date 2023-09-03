@@ -1158,3 +1158,41 @@ void main() {
     (identifier)
     (formal_parameters)
     (block)))
+
+================================================================================
+Annotation following type arguments
+================================================================================
+
+public class A {
+  public B() {
+    return new <@BG Inner> @BH Inner<@BI Inner>(null);
+  }
+}
+
+---
+
+(program
+  (class_declaration
+    (modifiers)
+    (identifier)
+    (class_body
+      (constructor_declaration
+        (modifiers)
+        (identifier)
+        (formal_parameters)
+        (constructor_body
+          (return_statement
+            (object_creation_expression
+              (type_arguments
+                (annotated_type
+                  (marker_annotation (identifier))
+                  (type_identifier)))
+              (marker_annotation (identifier))
+              (generic_type
+                (type_identifier)
+                (type_arguments
+                  (annotated_type
+                    (marker_annotation (identifier))
+                    (type_identifier))))
+              (argument_list
+                (null_literal)))))))))
