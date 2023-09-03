@@ -179,14 +179,12 @@ module.exports = grammar({
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
     // We give names to the token() constructs containing a regexp
     // so as to obtain a node in the CST.
-    //
-    string_fragment: $ =>
-      token.immediate(prec(1, /[^"\\]+/)),
-    _multiline_string_fragment: () =>
-      prec.right(choice(
-        /[^"]+/,
-        seq(/"[^"]*/, repeat(/[^"]+/))
-      )),
+
+    string_fragment: _ => token.immediate(prec(1, /[^"\\]+/)),
+    _multiline_string_fragment: _ => choice(
+      /[^"]+/,
+      seq(/"([^"]|\\")*/),
+    ),
 
     string_interpolation: $ => seq(
       '\\{',
@@ -194,12 +192,11 @@ module.exports = grammar({
       '}'
     ),
 
-    _escape_sequence: $ =>
-      choice(
-        prec(2, token.immediate(seq('\\', /[^abfnrtvxu'\"\\\?]/))),
-        prec(1, $.escape_sequence)
-      ),
-    escape_sequence: () => token.immediate(seq(
+    _escape_sequence: $ => choice(
+      prec(2, token.immediate(seq('\\', /[^abfnrtvxu'\"\\\?]/))),
+      prec(1, $.escape_sequence)
+    ),
+    escape_sequence: _ => token.immediate(seq(
       '\\',
       choice(
         /[^xu0-7]/,
@@ -209,7 +206,7 @@ module.exports = grammar({
         /u{[0-9a-fA-F]+}/
       ))),
 
-    null_literal: $ => 'null',
+    null_literal: _ => 'null',
 
     // Expressions
 
