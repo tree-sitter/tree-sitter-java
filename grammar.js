@@ -1020,13 +1020,15 @@ module.exports = grammar({
     ),
 
     annotation_type_body: $ => seq(
-      '{', repeat(choice(
+      '{',
+      repeat(choice(
         $.annotation_type_element_declaration,
         $.constant_declaration,
         $.class_declaration,
         $.interface_declaration,
         $.enum_declaration,
-        $.annotation_type_declaration
+        $.annotation_type_declaration,
+        ';',
       )),
       '}'
     ),
