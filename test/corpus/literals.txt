@@ -234,6 +234,8 @@ string="has a quote with an escaped end quote\"""";
           (multiline_string_fragment)))
       (expression_statement
         (string_literal
+        (multiline_string_fragment)
+        (escape_sequence)
         (multiline_string_fragment)))
       (expression_statement
         (string_literal
