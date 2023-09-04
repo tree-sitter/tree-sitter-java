@@ -1640,6 +1640,11 @@ string interpolation
 STR."Hello There";
 STR."Hello \{x + y}";
 STR."We can have \{many(of)} \{them.in} a \{row}";
+compPass("""
+        StringTemplate result = RAW.\"""
+              \\{}
+              \""";
+         """);
 
 --------------------------------------------------------------------------------
 
@@ -1675,7 +1680,21 @@ STR."We can have \{many(of)} \{them.in} a \{row}";
             (identifier)))
         (string_fragment)
         (string_interpolation
-          (identifier))))))
+          (identifier)))))
+  (expression_statement
+    (method_invocation
+      (identifier)
+      (argument_list
+        (string_literal
+          (multiline_string_fragment)
+          (escape_sequence)
+          (multiline_string_fragment)
+          (multiline_string_fragment)
+          (escape_sequence)
+          (multiline_string_fragment)
+          (escape_sequence)
+          (multiline_string_fragment)
+          (multiline_string_fragment))))))
 
 ================================================================================
 switch with qualified enum constant
