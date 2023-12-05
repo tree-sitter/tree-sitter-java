@@ -7723,7 +7723,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[\\p{L}_$][\\p{L}\\p{Nd}\\u00A2_$]*"
+      "value": "[\\p{XID_Start}_$][\\p{XID_Continue}\\u00A2_$]*"
     },
     "comment": {
       "type": "CHOICE",
