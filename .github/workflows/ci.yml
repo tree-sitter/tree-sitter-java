@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - run: sudo -H pip install setuptools
       - run: npm install
       - run: npm test
   test_windows:
