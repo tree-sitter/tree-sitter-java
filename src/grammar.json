@@ -4027,11 +4027,11 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "class_declaration"
+                "name": "statement"
               },
               {
                 "type": "SYMBOL",
-                "name": "statement"
+                "name": "class_declaration"
               }
             ]
           }
