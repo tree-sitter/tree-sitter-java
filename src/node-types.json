@@ -338,7 +338,7 @@
     ]
   },
   {
-    "type": "top_level_class_or_interface_declaration",
+    "type": "top_level_declaration",
     "named": true,
     "subtypes": [
       {
@@ -2942,7 +2942,7 @@
           "named": true
         },
         {
-          "type": "top_level_class_or_interface_declaration",
+          "type": "top_level_declaration",
           "named": true
         }
       ]

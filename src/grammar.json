@@ -31,7 +31,7 @@
               "type": "REPEAT",
               "content": {
                 "type": "SYMBOL",
-                "name": "top_level_class_or_interface_declaration"
+                "name": "top_level_declaration"
               }
             }
           ]
@@ -5070,7 +5070,7 @@
         }
       ]
     },
-    "top_level_class_or_interface_declaration": {
+    "top_level_declaration": {
       "type": "PREC",
       "value": 2,
       "content": {
@@ -7899,7 +7899,7 @@
     "_unannotated_type",
     "comment",
     "module_directive",
-    "top_level_class_or_interface_declaration"
+    "top_level_declaration"
   ]
 }
 
