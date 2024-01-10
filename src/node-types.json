@@ -951,6 +951,10 @@
       "required": false,
       "types": [
         {
+          "type": "class_declaration",
+          "named": true
+        },
+        {
           "type": "statement",
           "named": true
         }

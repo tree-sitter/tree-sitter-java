@@ -4023,8 +4023,17 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "statement"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "class_declaration"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "statement"
+              }
+            ]
           }
         },
         {
