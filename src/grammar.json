@@ -3,22 +3,54 @@
   "word": "identifier",
   "rules": {
     "program": {
-      "type": "REPEAT",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_toplevel_statement"
-      }
-    },
-    "_toplevel_statement": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "statement"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "package_declaration"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "import_declaration"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "top_level_class_or_interface_declaration"
+              }
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "method_declaration"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "import_declaration"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "module_declaration"
+            }
+          ]
         }
       ]
     },
@@ -3901,10 +3933,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "declaration"
-        },
-        {
-          "type": "SYMBOL",
           "name": "expression_statement"
         },
         {
@@ -5033,24 +5061,12 @@
         }
       ]
     },
-    "declaration": {
+    "top_level_class_or_interface_declaration": {
       "type": "PREC",
       "value": 2,
       "content": {
         "type": "CHOICE",
         "members": [
-          {
-            "type": "SYMBOL",
-            "name": "module_declaration"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "package_declaration"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "import_declaration"
-          },
           {
             "type": "SYMBOL",
             "name": "class_declaration"
@@ -5788,69 +5804,73 @@
     "modifiers": {
       "type": "REPEAT1",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_annotation"
-          },
-          {
-            "type": "STRING",
-            "value": "public"
-          },
-          {
-            "type": "STRING",
-            "value": "protected"
-          },
-          {
-            "type": "STRING",
-            "value": "private"
-          },
-          {
-            "type": "STRING",
-            "value": "abstract"
-          },
-          {
-            "type": "STRING",
-            "value": "static"
-          },
-          {
-            "type": "STRING",
-            "value": "final"
-          },
-          {
-            "type": "STRING",
-            "value": "strictfp"
-          },
-          {
-            "type": "STRING",
-            "value": "default"
-          },
-          {
-            "type": "STRING",
-            "value": "synchronized"
-          },
-          {
-            "type": "STRING",
-            "value": "native"
-          },
-          {
-            "type": "STRING",
-            "value": "transient"
-          },
-          {
-            "type": "STRING",
-            "value": "volatile"
-          },
-          {
-            "type": "STRING",
-            "value": "sealed"
-          },
-          {
-            "type": "STRING",
-            "value": "non-sealed"
-          }
-        ]
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_annotation"
+            },
+            {
+              "type": "STRING",
+              "value": "public"
+            },
+            {
+              "type": "STRING",
+              "value": "protected"
+            },
+            {
+              "type": "STRING",
+              "value": "private"
+            },
+            {
+              "type": "STRING",
+              "value": "abstract"
+            },
+            {
+              "type": "STRING",
+              "value": "static"
+            },
+            {
+              "type": "STRING",
+              "value": "final"
+            },
+            {
+              "type": "STRING",
+              "value": "strictfp"
+            },
+            {
+              "type": "STRING",
+              "value": "default"
+            },
+            {
+              "type": "STRING",
+              "value": "synchronized"
+            },
+            {
+              "type": "STRING",
+              "value": "native"
+            },
+            {
+              "type": "STRING",
+              "value": "transient"
+            },
+            {
+              "type": "STRING",
+              "value": "volatile"
+            },
+            {
+              "type": "STRING",
+              "value": "sealed"
+            },
+            {
+              "type": "STRING",
+              "value": "non-sealed"
+            }
+          ]
+        }
       }
     },
     "type_parameters": {
@@ -7862,7 +7882,6 @@
   ],
   "supertypes": [
     "expression",
-    "declaration",
     "statement",
     "primary_expression",
     "_literal",
@@ -7870,7 +7889,8 @@
     "_simple_type",
     "_unannotated_type",
     "comment",
-    "module_directive"
+    "module_directive",
+    "top_level_class_or_interface_declaration"
   ]
 }
 

@@ -126,44 +126,6 @@
     ]
   },
   {
-    "type": "declaration",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "annotation_type_declaration",
-        "named": true
-      },
-      {
-        "type": "class_declaration",
-        "named": true
-      },
-      {
-        "type": "enum_declaration",
-        "named": true
-      },
-      {
-        "type": "import_declaration",
-        "named": true
-      },
-      {
-        "type": "interface_declaration",
-        "named": true
-      },
-      {
-        "type": "module_declaration",
-        "named": true
-      },
-      {
-        "type": "package_declaration",
-        "named": true
-      },
-      {
-        "type": "record_declaration",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "expression",
     "named": true,
     "subtypes": [
@@ -314,10 +276,6 @@
         "named": true
       },
       {
-        "type": "declaration",
-        "named": true
-      },
-      {
         "type": "do_statement",
         "named": true
       },
@@ -375,6 +333,32 @@
       },
       {
         "type": "yield_statement",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "top_level_class_or_interface_declaration",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "annotation_type_declaration",
+        "named": true
+      },
+      {
+        "type": "class_declaration",
+        "named": true
+      },
+      {
+        "type": "enum_declaration",
+        "named": true
+      },
+      {
+        "type": "interface_declaration",
+        "named": true
+      },
+      {
+        "type": "record_declaration",
         "named": true
       }
     ]
@@ -2942,11 +2926,19 @@
       "required": false,
       "types": [
         {
-          "type": "method_declaration",
+          "type": "import_declaration",
           "named": true
         },
         {
-          "type": "statement",
+          "type": "module_declaration",
+          "named": true
+        },
+        {
+          "type": "package_declaration",
+          "named": true
+        },
+        {
+          "type": "top_level_class_or_interface_declaration",
           "named": true
         }
       ]
