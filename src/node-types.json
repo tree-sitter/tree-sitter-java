@@ -2930,7 +2930,27 @@
       "required": false,
       "types": [
         {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "compact_constructor_declaration",
+          "named": true
+        },
+        {
+          "type": "constructor_declaration",
+          "named": true
+        },
+        {
+          "type": "field_declaration",
+          "named": true
+        },
+        {
           "type": "import_declaration",
+          "named": true
+        },
+        {
+          "type": "method_declaration",
           "named": true
         },
         {
@@ -2939,6 +2959,10 @@
         },
         {
           "type": "package_declaration",
+          "named": true
+        },
+        {
+          "type": "static_initializer",
           "named": true
         },
         {

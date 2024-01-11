@@ -85,7 +85,8 @@ module.exports = grammar({
         seq(
            repeat($.import_declaration),
            $.module_declaration
-        )
+        ),
+        repeat($._class_body_declaration)
     ),
 
     // Literals

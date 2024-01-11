@@ -51,6 +51,13 @@
               "name": "module_declaration"
             }
           ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_class_body_declaration"
+          }
         }
       ]
     },
