@@ -176,6 +176,7 @@ module.exports = grammar({
       )),
       '"""'
     ),
+
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
     // We give names to the token() constructs containing a regexp
     // so as to obtain a node in the CST.
@@ -193,7 +194,7 @@ module.exports = grammar({
     ),
 
     _escape_sequence: $ => choice(
-      prec(2, token.immediate(seq('\\', /[^abfnrtvxu'\"\\\?]/))),
+      prec(2, token.immediate(seq('\\', /[^bfnrts'\"\\]/))),
       prec(1, $.escape_sequence)
     ),
     escape_sequence: _ => token.immediate(seq(
@@ -512,7 +513,7 @@ module.exports = grammar({
       seq(
         $._unannotated_type,
         choice($.identifier, $._reserved_identifier)
-    )),
+      )),
 
     underscore_pattern: $ => '_',
 
@@ -1267,7 +1268,7 @@ module.exports = grammar({
     super: $ => 'super',
 
     // https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-IdentifierChars
-    identifier: $ => /[\p{L}_$][\p{L}\p{Nd}\u00A2_$]*/,
+    identifier: $ => /[\p{XID_Start}_$][\p{XID_Continue}\u00A2_$]*/,
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     comment: $ => choice(
