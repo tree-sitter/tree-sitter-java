@@ -14,10 +14,11 @@
   },
   "homepage": "https://github.com/tree-sitter/tree-sitter-java#readme",
   "dependencies": {
-    "nan": "^2.14.1"
+    "nan": "^2.18.0"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.20.6"
+    "tree-sitter-cli": "^0.20.8",
+    "node-gyp": "^10.0.1"
   },
   "scripts": {
     "build": "tree-sitter generate && node-gyp rebuild",
