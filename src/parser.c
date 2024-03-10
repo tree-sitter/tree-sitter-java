@@ -1,7 +1,6 @@
 #include "tree_sitter/parser.h"
 
 #if defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
@@ -6858,6 +6857,7 @@ static inline bool sym_identifier_character_set_4(int32_t c) {
 
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
   START_LEXER();
+  eof = lexer->eof(lexer);
   switch (state) {
     case 0:
       if (eof) ADVANCE(69);
@@ -8125,6 +8125,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
 
 static bool ts_lex_keywords(TSLexer *lexer, TSStateId state) {
   START_LEXER();
+  eof = lexer->eof(lexer);
   switch (state) {
     case 0:
       if (lookahead == '_') ADVANCE(1);
@@ -78394,10 +78395,12 @@ static const TSParseActionEntry ts_parse_actions[] = {
 extern "C" {
 #endif
 #ifdef _WIN32
-#define extern __declspec(dllexport)
+#define TS_PUBLIC __declspec(dllexport)
+#else
+#define TS_PUBLIC __attribute__((visibility("default")))
 #endif
 
-extern const TSLanguage *tree_sitter_java(void) {
+TS_PUBLIC const TSLanguage *tree_sitter_java() {
   static const TSLanguage language = {
     .version = LANGUAGE_VERSION,
     .symbol_count = SYMBOL_COUNT,

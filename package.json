@@ -17,7 +17,7 @@
     "nan": "^2.14.1"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.20.6"
+    "tree-sitter-cli": "^0.21.0"
   },
   "scripts": {
     "build": "tree-sitter generate && node-gyp rebuild",
@@ -34,6 +34,9 @@
       "scope": "source.java",
       "file-types": [
         "java"
+      ],
+      "highlights": [
+        "queries/highlights.scm"
       ]
     }
   ]
