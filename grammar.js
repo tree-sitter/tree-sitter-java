@@ -39,7 +39,6 @@ module.exports = grammar({
 
   supertypes: $ => [
     $.expression,
-    $.declaration,
     $.statement,
     $.primary_expression,
     $._literal,
@@ -48,6 +47,7 @@ module.exports = grammar({
     $._unannotated_type,
     $.comment,
     $.module_directive,
+    $.top_level_declaration,
   ],
 
   inline: $ => [
@@ -76,11 +76,17 @@ module.exports = grammar({
   word: $ => $.identifier,
 
   rules: {
-    program: $ => repeat($._toplevel_statement),
-
-    _toplevel_statement: $ => choice(
-      $.statement,
-      $.method_declaration,
+    program: $ => choice(
+        seq(
+            optional($.package_declaration),
+            repeat($.import_declaration),
+            repeat($.top_level_declaration)
+        ),
+        seq(
+           repeat($.import_declaration),
+           $.module_declaration
+        ),
+        repeat($._class_body_declaration)
     ),
 
     // Literals
@@ -522,7 +528,6 @@ module.exports = grammar({
     // Statements
 
     statement: $ => choice(
-      $.declaration,
       $.expression_statement,
       $.labeled_statement,
       $.if_statement,
@@ -546,7 +551,12 @@ module.exports = grammar({
     ),
 
     block: $ => seq(
-      '{', repeat($.statement), '}'
+      '{',
+      repeat(choice(
+        $.statement,
+        $.class_declaration
+      )),
+      '}'
     ),
 
     expression_statement: $ => seq(
@@ -733,10 +743,7 @@ module.exports = grammar({
 
     // Declarations
 
-    declaration: $ => prec(PREC.DECL, choice(
-      $.module_declaration,
-      $.package_declaration,
-      $.import_declaration,
+    top_level_declaration: $ => prec(PREC.DECL, choice(
       $.class_declaration,
       $.record_declaration,
       $.interface_declaration,
@@ -871,7 +878,7 @@ module.exports = grammar({
       field('body', $.class_body)
     ),
 
-    modifiers: $ => repeat1(choice(
+    modifiers: $ => repeat1(prec(PREC.DECL, choice(
       $._annotation,
       'public',
       'protected',
@@ -887,7 +894,7 @@ module.exports = grammar({
       'volatile',
       'sealed',
       'non-sealed',
-    )),
+    ))),
 
     type_parameters: $ => seq(
       '<', commaSep1($.type_parameter), '>'

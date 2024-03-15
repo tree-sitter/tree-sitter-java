@@ -13,8 +13,9 @@ extern "C" {
 #define ts_builtin_sym_end 0
 #define TREE_SITTER_SERIALIZATION_BUFFER_SIZE 1024
 
-#ifndef TREE_SITTER_API_H_
 typedef uint16_t TSStateId;
+
+#ifndef TREE_SITTER_API_H_
 typedef uint16_t TSSymbol;
 typedef uint16_t TSFieldId;
 typedef struct TSLanguage TSLanguage;
@@ -172,7 +173,7 @@ struct TSLanguage {
  *  Parse Table Macros
  */
 
-#define SMALL_STATE(id) ((id) - LARGE_STATE_COUNT)
+#define SMALL_STATE(id) id - LARGE_STATE_COUNT
 
 #define STATE(id) id
 
@@ -182,7 +183,7 @@ struct TSLanguage {
   {{                                  \
     .shift = {                        \
       .type = TSParseActionTypeShift, \
-      .state = (state_value)          \
+      .state = state_value            \
     }                                 \
   }}
 
@@ -190,7 +191,7 @@ struct TSLanguage {
   {{                                  \
     .shift = {                        \
       .type = TSParseActionTypeShift, \
-      .state = (state_value),         \
+      .state = state_value,           \
       .repetition = true              \
     }                                 \
   }}
