@@ -685,14 +685,20 @@ public class A {
         (modifiers)
         (identifier)
         (formal_parameters
-          (receiver_parameter (type_identifier) (this)))
+          (receiver_parameter
+            (type_identifier)
+            (this)))
         (constructor_body))
       (constructor_declaration
         (modifiers)
         (identifier)
         (formal_parameters
-          (receiver_parameter (type_identifier) (this))
-          (formal_parameter (type_identifier) (identifier)))
+          (receiver_parameter
+            (type_identifier)
+            (this))
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
         (constructor_body)))))
 
 ================================================================================
@@ -967,7 +973,7 @@ record Person(int age) {
         (identifier)
         (block
           (if_statement
-            (condition
+            (parenthesized_expression
               (binary_expression
                 (identifier)
                 (decimal_integer_literal)))
@@ -1185,14 +1191,17 @@ public class A {
             (object_creation_expression
               (type_arguments
                 (annotated_type
-                  (marker_annotation (identifier))
+                  (marker_annotation
+                    (identifier))
                   (type_identifier)))
-              (marker_annotation (identifier))
+              (marker_annotation
+                (identifier))
               (generic_type
                 (type_identifier)
                 (type_arguments
                   (annotated_type
-                    (marker_annotation (identifier))
+                    (marker_annotation
+                      (identifier))
                     (type_identifier))))
               (argument_list
                 (null_literal)))))))))

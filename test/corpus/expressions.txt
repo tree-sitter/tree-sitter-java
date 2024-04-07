@@ -170,7 +170,7 @@ if (x)
 
 (program
   (if_statement
-    condition: (condition
+    condition: (parenthesized_expression
       (identifier))
     consequence: (expression_statement
       (identifier))))
@@ -186,7 +186,7 @@ if ((x))
 
 (program
   (if_statement
-    condition: (condition
+    condition: (parenthesized_expression
       (parenthesized_expression
         (identifier)))
     consequence: (expression_statement
@@ -204,7 +204,7 @@ if (x) {
 
 (program
   (if_statement
-    condition: (condition
+    condition: (parenthesized_expression
       (identifier))
     consequence: (block
       (expression_statement
@@ -221,7 +221,7 @@ if (x = 3)
 
 (program
   (if_statement
-    condition: (condition
+    condition: (parenthesized_expression
       (assignment_expression
         left: (identifier)
         right: (decimal_integer_literal)))
@@ -244,7 +244,7 @@ if (x = 3) {
 
 (program
   (if_statement
-    condition: (condition
+    condition: (parenthesized_expression
       (assignment_expression
         left: (identifier)
         right: (decimal_integer_literal)))
@@ -273,10 +273,10 @@ if (a)
 
 (program
   (if_statement
-    (condition
+    (parenthesized_expression
       (identifier))
     (if_statement
-      (condition
+      (parenthesized_expression
         (identifier))
       (expression_statement
         (method_invocation
@@ -428,7 +428,7 @@ class WhileDemo {
               name: (identifier)
               value: (decimal_integer_literal)))
           (while_statement
-            condition: (condition
+            condition: (parenthesized_expression
               (binary_expression
                 left: (identifier)
                 right: (decimal_integer_literal)))
@@ -1187,7 +1187,7 @@ public class Patterns {
                     (argument_list
                       (identifier)))))))
           (if_statement
-            (condition
+            (parenthesized_expression
               (instanceof_expression
                 (identifier)
                 (record_pattern
@@ -1198,7 +1198,7 @@ public class Patterns {
                       (identifier))))))
             (block))
           (if_statement
-            (condition
+            (parenthesized_expression
               (instanceof_expression
                 (identifier)
                 (record_pattern
@@ -1209,7 +1209,7 @@ public class Patterns {
                       (identifier))))))
             (block))
           (if_statement
-            (condition
+            (parenthesized_expression
               (instanceof_expression
                 (identifier)
                 (record_pattern
@@ -1229,7 +1229,7 @@ public class Patterns {
                       (identifier))))))
             (block))
           (if_statement
-            (condition
+            (parenthesized_expression
               (instanceof_expression
                 (identifier)
                 (record_pattern
@@ -1319,7 +1319,7 @@ public class Switches {
                 (expression_statement
                   (decimal_integer_literal)))))
           (if_statement
-            (condition
+            (parenthesized_expression
               (instanceof_expression
                 (identifier)
                 (record_pattern
@@ -1906,7 +1906,7 @@ for (int i = 0, _ = sideEffect(); i < 10; i++) { }
   (enhanced_for_statement
     (type_identifier)
     (underscore_pattern)
- (identifier)
+    (identifier)
     (block))
   (for_statement
     (local_variable_declaration
