@@ -5,6 +5,7 @@
 [![matrix][matrix]](https://matrix.to/#/#tree-sitter-chat:matrix.org)
 [![crates][crates]](https://crates.io/crates/tree-sitter-java)
 [![npm][npm]](https://www.npmjs.com/package/tree-sitter-java)
+[![pypi][pypi]](https://pypi.org/project/tree-sitter-java)
 
 Java grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter).
 
@@ -13,3 +14,4 @@ Java grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter).
 [matrix]: https://img.shields.io/matrix/tree-sitter-chat%3Amatrix.org?logo=matrix&label=matrix
 [npm]: https://img.shields.io/npm/v/tree-sitter-java?logo=npm
 [crates]: https://img.shields.io/crates/v/tree-sitter-java?logo=rust
+[pypi]: https://img.shields.io/pypi/v/tree-sitter-java?logo=pypi&logoColor=ffd242
