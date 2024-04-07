@@ -369,8 +369,6 @@ module.exports = grammar({
 
     parenthesized_expression: $ => seq('(', $.expression, ')'),
 
-    condition: $ => seq('(', $.expression, ')'),
-
     class_literal: $ => prec.dynamic(PREC.CLASS_LITERAL, seq($._unannotated_type, '.', 'class')),
 
     object_creation_expression: $ => choice(
@@ -648,14 +646,14 @@ module.exports = grammar({
 
     if_statement: $ => prec.right(seq(
       'if',
-      field('condition', $.condition),
+      field('condition', $.parenthesized_expression),
       field('consequence', $.statement),
       optional(seq('else', field('alternative', $.statement)))
     )),
 
     while_statement: $ => seq(
       'while',
-      field('condition', $.condition),
+      field('condition', $.parenthesized_expression),
       field('body', $.statement)
     ),
 
