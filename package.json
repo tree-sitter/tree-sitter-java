@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-java",
-  "version": "0.23.1",
+  "version": "0.23.2",
   "description": "Java grammar for tree-sitter",
   "repository": "github:tree-sitter/tree-sitter-java",
   "license": "MIT",
