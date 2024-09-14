@@ -121,6 +121,7 @@
   "open"
   "opens"
   "package"
+  "permits"
   "private"
   "protected"
   "provides"
@@ -141,6 +142,8 @@
   "try"
   "uses"
   "volatile"
+  "when"
   "while"
   "with"
+  "yield"
 ] @keyword
