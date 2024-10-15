@@ -7704,19 +7704,6 @@
       "type": "PATTERN",
       "value": "[\\p{XID_Start}_$][\\p{XID_Continue}\\u00A2_$]*"
     },
-    "comment": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "line_comment"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "block_comment"
-        }
-      ]
-    },
     "line_comment": {
       "type": "TOKEN",
       "content": {
@@ -7848,7 +7835,6 @@
     "_type",
     "_simple_type",
     "_unannotated_type",
-    "comment",
     "module_directive"
   ]
 }
