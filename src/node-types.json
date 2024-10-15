@@ -112,20 +112,6 @@
     ]
   },
   {
-    "type": "comment",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "block_comment",
-        "named": true
-      },
-      {
-        "type": "line_comment",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "declaration",
     "named": true,
     "subtypes": [
@@ -2921,6 +2907,7 @@
   {
     "type": "program",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
