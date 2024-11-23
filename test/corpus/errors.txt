@@ -1,0 +1,36 @@
+=================================================
+Error detected at globally reserved keyword
+=================================================
+
+class Test {
+    void example() {
+        object.    // incomplete field access
+        if (condition) {  // keyword should be recognized as error here
+            doSomething();
+        }
+    }
+}
+
+---
+
+(program
+  (class_declaration
+    (identifier)
+    (class_body
+      (method_declaration
+        (void_type)
+        (identifier)
+        (formal_parameters)
+        (block
+          (ERROR
+            (identifier))
+          (line_comment)
+          (if_statement
+            (parenthesized_expression
+              (identifier))
+            (block
+              (line_comment)
+              (expression_statement
+                (method_invocation
+                  (identifier)
+                  (argument_list))))))))))
