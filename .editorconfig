@@ -3,7 +3,7 @@ root = true
 [*]
 charset = utf-8
 
-[*.{json,toml,yml,gyp}]
+[*.{json,toml,yml,gyp,xml}]
 indent_style = space
 indent_size = 2
 
