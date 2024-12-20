@@ -1081,6 +1081,7 @@ public class Keywords {
   public void demo() {
     int sealed = 0;
     bool yield = false;
+    yield(1, 2);
   }
 }
 
@@ -1113,7 +1114,13 @@ public class Keywords {
             (type_identifier)
             (variable_declarator
               (identifier)
-              (false))))))))
+              (false)))
+          (expression_statement
+            (method_invocation
+              (identifier)
+              (argument_list
+                (decimal_integer_literal)
+                (decimal_integer_literal)))))))))
 
 ================================================================================
 Annontations
