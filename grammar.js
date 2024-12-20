@@ -86,6 +86,7 @@ module.exports = grammar({
     [$.lambda_expression, $.primary_expression],
     [$.inferred_parameters, $.primary_expression],
     [$.argument_list, $.record_pattern_body],
+    [$.yield_statement, $._reserved_identifier],
   ],
 
   word: $ => $.identifier,
@@ -1266,17 +1267,19 @@ module.exports = grammar({
       field('body', $.block),
     ),
 
-    _reserved_identifier: $ => prec(-3, alias(
-      choice(
-        'open',
-        'module',
-        'record',
-        'with',
-        'yield',
-        'sealed',
-      ),
-      $.identifier,
-    )),
+    _reserved_identifier: $ => choice(
+      prec(-3, alias(
+        choice(
+          'open',
+          'module',
+          'record',
+          'with',
+          'sealed',
+        ),
+        $.identifier,
+      )),
+      alias('yield', $.identifier),
+    ),
 
     this: _ => 'this',
 
