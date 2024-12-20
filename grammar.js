@@ -88,6 +88,59 @@ module.exports = grammar({
     [$.argument_list, $.record_pattern_body],
   ],
 
+  reserved: {
+    global: $ => [
+      'abstract',
+      'assert',
+      'boolean',
+      'break',
+      'byte',
+      'case',
+      'catch',
+      'char',
+      'class',
+      'continue',
+      'default',
+      'do',
+      'double',
+      'else',
+      'enum',
+      'extends',
+      'final',
+      'finally',
+      'float',
+      'for',
+      'if',
+      'implements',
+      'import',
+      'instanceof',
+      'int',
+      'interface',
+      'long',
+      'native',
+      'new',
+      'package',
+      'private',
+      'protected',
+      'public',
+      'return',
+      'short',
+      'static',
+      'strictfp',
+      'super',
+      'switch',
+      'synchronized',
+      'this',
+      'throw',
+      'throws',
+      'transient',
+      'try',
+      'void',
+      'volatile',
+      'while',
+    ],
+  },
+
   word: $ => $.identifier,
 
   rules: {
@@ -256,7 +309,6 @@ module.exports = grammar({
     assignment_expression: $ => prec.right(PREC.ASSIGN, seq(
       field('left', choice(
         $.identifier,
-        $._reserved_identifier,
         $.field_access,
         $.array_access,
       )),
@@ -301,7 +353,7 @@ module.exports = grammar({
       choice(
         seq(
           field('right', $._type),
-          optional(field('name', choice($.identifier, $._reserved_identifier))),
+          optional(field('name', $.identifier)),
         ),
         field('pattern', $.record_pattern),
       ),
@@ -309,7 +361,9 @@ module.exports = grammar({
 
     lambda_expression: $ => seq(
       field('parameters', choice(
-        $.identifier, $.formal_parameters, $.inferred_parameters, $._reserved_identifier,
+        $.identifier,
+        $.formal_parameters,
+        $.inferred_parameters,
       )),
       '->',
       field('body', choice($.expression, $.block)),
@@ -317,7 +371,7 @@ module.exports = grammar({
 
     inferred_parameters: $ => seq(
       '(',
-      commaSep1(choice($.identifier, $._reserved_identifier)),
+      commaSep1($.identifier),
       ')',
     ),
 
@@ -355,7 +409,6 @@ module.exports = grammar({
       $.class_literal,
       $.this,
       $.identifier,
-      $._reserved_identifier,
       $.parenthesized_expression,
       $.object_creation_expression,
       $.field_access,
@@ -415,7 +468,7 @@ module.exports = grammar({
         $.super,
       )),
       '.',
-      field('field', choice($.identifier, $._reserved_identifier, $.this)),
+      field('field', choice($.identifier, $.this)),
     ),
 
     template_expression: $ => seq(
@@ -433,7 +486,7 @@ module.exports = grammar({
 
     method_invocation: $ => seq(
       choice(
-        field('name', choice($.identifier, $._reserved_identifier)),
+        field('name', $.identifier),
         seq(
           field('object', choice($.primary_expression, $.super)),
           '.',
@@ -442,7 +495,7 @@ module.exports = grammar({
             '.',
           )),
           field('type_arguments', optional($.type_arguments)),
-          field('name', choice($.identifier, $._reserved_identifier)),
+          field('name', $.identifier),
         ),
       ),
       field('arguments', $.argument_list),
@@ -519,14 +572,14 @@ module.exports = grammar({
       $.type_pattern,
       $.record_pattern,
     ),
-    type_pattern: $ => seq($._unannotated_type, choice($.identifier, $._reserved_identifier)),
-    record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type), $.record_pattern_body),
+    type_pattern: $ => seq($._unannotated_type, $.identifier),
+    record_pattern: $ => seq(choice($.identifier, $.generic_type), $.record_pattern_body),
     record_pattern_body: $ => seq('(', commaSep(choice($.record_pattern_component, $.record_pattern)), ')'),
     record_pattern_component: $ => choice(
       $.underscore_pattern,
       seq(
         $._unannotated_type,
-        choice($.identifier, $._reserved_identifier),
+        $.identifier,
       ),
     ),
 
@@ -999,11 +1052,7 @@ module.exports = grammar({
       ';',
     ),
 
-    _name: $ => choice(
-      $.identifier,
-      $._reserved_identifier,
-      $.scoped_identifier,
-    ),
+    _name: $ => choice($.identifier, $.scoped_identifier),
 
     scoped_identifier: $ => seq(
       field('scope', $._name),
@@ -1052,7 +1101,7 @@ module.exports = grammar({
     annotation_type_element_declaration: $ => seq(
       optional($.modifiers),
       field('type', $._unannotated_type),
-      field('name', choice($.identifier, $._reserved_identifier)),
+      field('name', $.identifier),
       '(', ')',
       field('dimensions', optional($.dimensions)),
       optional($._default_value),
@@ -1111,7 +1160,10 @@ module.exports = grammar({
     ),
 
     _variable_declarator_id: $ => seq(
-      field('name', choice($.identifier, $._reserved_identifier, $.underscore_pattern)),
+      field('name', choice(
+        $.identifier,
+        $.underscore_pattern,
+      )),
       field('dimensions', optional($.dimensions)),
     ),
 
@@ -1206,7 +1258,7 @@ module.exports = grammar({
     ),
 
     _method_declarator: $ => seq(
-      field('name', choice($.identifier, $._reserved_identifier)),
+      field('name', $.identifier),
       field('parameters', $.formal_parameters),
       field('dimensions', optional($.dimensions)),
     ),
@@ -1265,18 +1317,6 @@ module.exports = grammar({
       field('name', $.identifier),
       field('body', $.block),
     ),
-
-    _reserved_identifier: $ => prec(-3, alias(
-      choice(
-        'open',
-        'module',
-        'record',
-        'with',
-        'yield',
-        'sealed',
-      ),
-      $.identifier,
-    )),
 
     this: _ => 'this',
 
