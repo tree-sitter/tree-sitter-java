@@ -3341,6 +3341,14 @@
           "named": true
         },
         {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "marker_annotation",
+          "named": true
+        },
+        {
           "type": "modifiers",
           "named": true
         },
