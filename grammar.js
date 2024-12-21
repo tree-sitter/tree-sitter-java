@@ -729,7 +729,7 @@ module.exports = grammar({
     ),
 
     element_value_pair: $ => seq(
-      field('key', $.identifier),
+      field('key', choice($.identifier, $._reserved_identifier)),
       '=',
       field('value', $._element_value),
     ),
