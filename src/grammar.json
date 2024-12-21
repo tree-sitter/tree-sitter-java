@@ -727,7 +727,7 @@
               },
               {
                 "type": "PATTERN",
-                "value": "[eEpP]"
+                "value": "[eE]"
               },
               {
                 "type": "CHOICE",
@@ -1090,7 +1090,7 @@
                 "members": [
                   {
                     "type": "PATTERN",
-                    "value": "[eEpP]"
+                    "value": "[pP]"
                   },
                   {
                     "type": "CHOICE",
@@ -4915,8 +4915,17 @@
           "type": "FIELD",
           "name": "key",
           "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_reserved_identifier"
+              }
+            ]
           }
         },
         {
@@ -7511,6 +7520,13 @@
           "value": "..."
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_annotation"
+          }
+        },
+        {
           "type": "SYMBOL",
           "name": "variable_declarator"
         }
@@ -7655,42 +7671,52 @@
       ]
     },
     "_reserved_identifier": {
-      "type": "PREC",
-      "value": -3,
-      "content": {
-        "type": "ALIAS",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "open"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": -3,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "open"
+                },
+                {
+                  "type": "STRING",
+                  "value": "module"
+                },
+                {
+                  "type": "STRING",
+                  "value": "record"
+                },
+                {
+                  "type": "STRING",
+                  "value": "with"
+                },
+                {
+                  "type": "STRING",
+                  "value": "sealed"
+                }
+              ]
             },
-            {
-              "type": "STRING",
-              "value": "module"
-            },
-            {
-              "type": "STRING",
-              "value": "record"
-            },
-            {
-              "type": "STRING",
-              "value": "with"
-            },
-            {
-              "type": "STRING",
-              "value": "yield"
-            },
-            {
-              "type": "STRING",
-              "value": "sealed"
-            }
-          ]
+            "named": true,
+            "value": "identifier"
+          }
         },
-        "named": true,
-        "value": "identifier"
-      }
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "yield"
+          },
+          "named": true,
+          "value": "identifier"
+        }
+      ]
     },
     "this": {
       "type": "STRING",
@@ -7816,6 +7842,10 @@
     [
       "argument_list",
       "record_pattern_body"
+    ],
+    [
+      "yield_statement",
+      "_reserved_identifier"
     ]
   ],
   "precedences": [],
