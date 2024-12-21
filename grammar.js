@@ -141,7 +141,7 @@ module.exports = grammar({
     decimal_floating_point_literal: _ => token(choice(
       seq(DECIMAL_DIGITS, '.', optional(DECIMAL_DIGITS), optional(seq((/[eE]/), optional(choice('-', '+')), DECIMAL_DIGITS)), optional(/[fFdD]/)),
       seq('.', DECIMAL_DIGITS, optional(seq((/[eE]/), optional(choice('-', '+')), DECIMAL_DIGITS)), optional(/[fFdD]/)),
-      seq(DIGITS, /[eEpP]/, optional(choice('-', '+')), DECIMAL_DIGITS, optional(/[fFdD]/)),
+      seq(DIGITS, /[eE]/, optional(choice('-', '+')), DECIMAL_DIGITS, optional(/[fFdD]/)),
       seq(DIGITS, optional(seq((/[eE]/), optional(choice('-', '+')), DECIMAL_DIGITS)), (/[fFdD]/)),
     )),
 
@@ -152,7 +152,7 @@ module.exports = grammar({
         seq(optional(HEX_DIGITS), '.', HEX_DIGITS),
       ),
       optional(seq(
-        /[eEpP]/,
+        /[pP]/,
         optional(choice('-', '+')),
         DIGITS,
         optional(/[fFdD]/),
