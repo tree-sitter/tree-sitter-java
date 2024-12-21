@@ -512,7 +512,7 @@ annotation
 ================================================================================
 
 @SuppressWarnings(value = "unchecked")
-@GwtCompatible(emulated = true)
+@GwtCompatible(module = "foo", emulated = true)
 class Duck {
 
 }
@@ -532,6 +532,10 @@ class Duck {
       (annotation
         (identifier)
         (annotation_argument_list
+          (element_value_pair
+            (identifier)
+            (string_literal
+              (string_fragment)))
           (element_value_pair
             (identifier)
             (true)))))
@@ -1924,4 +1928,26 @@ for (int i = 0, _ = sideEffect(); i < 10; i++) { }
       (decimal_integer_literal))
     (update_expression
       (identifier))
+    (block)))
+
+================================================================================
+Annotations before a spread parameter's ellipsis
+================================================================================
+
+void foo(int... @Foo x) {
+}
+
+---
+
+(program
+  (method_declaration
+    (void_type)
+    (identifier)
+    (formal_parameters
+      (spread_parameter
+        (integral_type)
+        (marker_annotation
+          (identifier))
+        (variable_declarator
+          (identifier))))
     (block)))
