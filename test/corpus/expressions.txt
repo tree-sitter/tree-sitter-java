@@ -512,7 +512,7 @@ annotation
 ================================================================================
 
 @SuppressWarnings(value = "unchecked")
-@GwtCompatible(emulated = true)
+@GwtCompatible(module = "foo", emulated = true)
 class Duck {
 
 }
@@ -532,6 +532,10 @@ class Duck {
       (annotation
         (identifier)
         (annotation_argument_list
+          (element_value_pair
+            (identifier)
+            (string_literal
+              (string_fragment)))
           (element_value_pair
             (identifier)
             (true)))))
