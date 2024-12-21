@@ -20,13 +20,15 @@ hex integer literals
 0xa_bcd_ef0;
 0Xa_bcd_ef0;
 0X8000L;
+0x7e-0x21;
 
 ---
 
 (program
   (expression_statement (hex_integer_literal))
   (expression_statement (hex_integer_literal))
-  (expression_statement (hex_integer_literal)))
+  (expression_statement (hex_integer_literal))
+  (expression_statement (binary_expression (hex_integer_literal) (hex_integer_literal))))
 
 ======================
 octal integer literals
@@ -77,7 +79,7 @@ floating point literals
 0.0e-4;
 .2e-2;
 0x5.4;
-0x5.4e-10;
+0x5.4p-10;
 
 ---
 
