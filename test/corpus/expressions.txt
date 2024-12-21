@@ -1925,3 +1925,25 @@ for (int i = 0, _ = sideEffect(); i < 10; i++) { }
     (update_expression
       (identifier))
     (block)))
+
+================================================================================
+Annotations before a spread parameter's ellipsis
+================================================================================
+
+void foo(int... @Foo x) {
+}
+
+---
+
+(program
+  (method_declaration
+    (void_type)
+    (identifier)
+    (formal_parameters
+      (spread_parameter
+        (integral_type)
+        (marker_annotation
+          (identifier))
+        (variable_declarator
+          (identifier))))
+    (block)))

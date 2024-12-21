@@ -1241,6 +1241,7 @@ module.exports = grammar({
       optional($.modifiers),
       $._unannotated_type,
       '...',
+      repeat($._annotation),
       $.variable_declarator,
     ),
 
