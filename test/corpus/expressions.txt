@@ -1986,3 +1986,28 @@ try {
             (type_identifier)))
         (identifier))
       (block))))
+
+================================================================================
+Annotations before an array's bracket
+================================================================================
+
+void foo(int @Foo @Bar [] x) {
+}
+
+---
+
+(program
+  (method_declaration
+    (void_type)
+    (identifier)
+    (formal_parameters
+      (formal_parameter
+        (array_type
+          (integral_type)
+          (dimensions
+            (marker_annotation
+              (identifier))
+            (marker_annotation
+              (identifier))))
+        (identifier)))
+    (block)))
