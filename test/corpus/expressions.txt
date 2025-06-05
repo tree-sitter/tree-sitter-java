@@ -1934,7 +1934,7 @@ for (int i = 0, _ = sideEffect(); i < 10; i++) { }
 Annotations before a spread parameter's ellipsis
 ================================================================================
 
-void foo(int... @Foo x) {
+void foo(int @Foo ... x) {
 }
 
 ---

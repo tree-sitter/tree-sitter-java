@@ -1240,8 +1240,8 @@ module.exports = grammar({
     spread_parameter: $ => seq(
       optional($.modifiers),
       $._unannotated_type,
-      '...',
       repeat($._annotation),
+      '...',
       $.variable_declarator,
     ),
 
