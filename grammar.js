@@ -634,7 +634,10 @@ module.exports = grammar({
       $._variable_declarator_id,
     ),
 
-    catch_type: $ => sep1($._unannotated_type, '|'),
+    catch_type: $ => seq(
+      $._unannotated_type, // first type's annotations will be parsed as modifiers
+      repeat(seq('|', $._type)),
+    ),
 
     finally_clause: $ => seq('finally', $.block),
 

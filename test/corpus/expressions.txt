@@ -1951,3 +1951,38 @@ void foo(int @Foo ... x) {
         (variable_declarator
           (identifier))))
     (block)))
+
+================================================================================
+Annotations in a catch type
+================================================================================
+
+try {
+} catch (@A1 @A2 final @A3 @A4 T1 | @A5 @A6 T2 e) {
+}
+
+---
+
+(program
+  (try_statement
+    (block)
+    (catch_clause
+      (catch_formal_parameter
+        (modifiers
+          (marker_annotation
+            (identifier))
+          (marker_annotation
+            (identifier))
+          (marker_annotation
+            (identifier))
+          (marker_annotation
+            (identifier)))
+        (catch_type
+          (type_identifier)
+          (annotated_type
+            (marker_annotation
+              (identifier))
+            (marker_annotation
+              (identifier))
+            (type_identifier)))
+        (identifier))
+      (block))))
