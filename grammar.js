@@ -165,10 +165,14 @@ module.exports = grammar({
 
     character_literal: _ => token(seq(
       '\'',
+      // this accepts multiple characters while java doesn't
+      // hence multiple characters (even unicode ones) are allowed
       repeat1(choice(
         /[^\\'\n]/,
         /\\./,
         /\\\n/,
+        /\\u+005[cC]./,
+        /\\u+005[cC]\n/,
       )),
       '\'',
     )),

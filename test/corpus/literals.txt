@@ -125,10 +125,14 @@ character literals
 '\uFFFF';
 '\177';
 '™';
+'\u005cn';
+'\u005c'';
 
 ---
 
 (program
+  (expression_statement (character_literal))
+  (expression_statement (character_literal))
   (expression_statement (character_literal))
   (expression_statement (character_literal))
   (expression_statement (character_literal))
