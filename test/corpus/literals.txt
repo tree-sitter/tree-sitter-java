@@ -125,10 +125,14 @@ character literals
 '\uFFFF';
 '\177';
 '™';
+'\u005cn';
+'\u005c'';
 
 ---
 
 (program
+  (expression_statement (character_literal))
+  (expression_statement (character_literal))
   (expression_statement (character_literal))
   (expression_statement (character_literal))
   (expression_statement (character_literal))
@@ -147,6 +151,8 @@ string literals
 "\"";
 "This is a string";
 "'";
+"\uuu0041";
+"\u005c"";
 
 ---
 
@@ -161,7 +167,13 @@ string literals
           (string_fragment)))
       (expression_statement
         (string_literal
-          (string_fragment))))
+          (string_fragment)))
+      (expression_statement
+        (string_literal
+          (escape_sequence)))
+      (expression_statement
+        (string_literal
+          (escape_sequence))))
 
 ===============
 text block

@@ -165,10 +165,14 @@ module.exports = grammar({
 
     character_literal: _ => token(seq(
       '\'',
+      // this accepts multiple characters while java doesn't
+      // hence multiple characters (even unicode ones) are allowed
       repeat1(choice(
         /[^\\'\n]/,
         /\\./,
         /\\\n/,
+        /\\u+005[cC]./,
+        /\\u+005[cC]\n/,
       )),
       '\'',
     )),
@@ -213,12 +217,12 @@ module.exports = grammar({
       prec(1, $.escape_sequence),
     ),
     escape_sequence: _ => token.immediate(seq(
-      '\\',
+      choice('\\', /\\u+005[cC]/),
       choice(
         /[^xu0-7]/,
         /[0-7]{1,3}/,
         /x[0-9a-fA-F]{2}/,
-        /u[0-9a-fA-F]{4}/,
+        /u+[0-9a-fA-F]{4}/,
         /u\{[0-9a-fA-F]+\}/,
       ))),
 
