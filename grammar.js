@@ -887,11 +887,13 @@ module.exports = grammar({
       field('body', $.class_body),
     ),
 
-    modifiers: $ => repeat1(choice(
-      $._annotation,
+    visibility: $ => choice(
       'public',
       'protected',
       'private',
+    ),
+
+    _modifier: $ => choice(
       'abstract',
       'static',
       'final',
@@ -903,6 +905,12 @@ module.exports = grammar({
       'volatile',
       'sealed',
       'non-sealed',
+    ),
+
+    modifiers: $ => repeat1(choice(
+      $._annotation,
+      $.visibility,
+      alias($._modifier, $.modifier),
     )),
 
     type_parameters: $ => seq(
