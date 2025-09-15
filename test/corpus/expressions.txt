@@ -1934,7 +1934,7 @@ for (int i = 0, _ = sideEffect(); i < 10; i++) { }
 Annotations before a spread parameter's ellipsis
 ================================================================================
 
-void foo(int... @Foo x) {
+void foo(int @Foo ... x) {
 }
 
 ---
@@ -1950,4 +1950,64 @@ void foo(int... @Foo x) {
           (identifier))
         (variable_declarator
           (identifier))))
+    (block)))
+
+================================================================================
+Annotations in a catch type
+================================================================================
+
+try {
+} catch (@A1 @A2 final @A3 @A4 T1 | @A5 @A6 T2 e) {
+}
+
+---
+
+(program
+  (try_statement
+    (block)
+    (catch_clause
+      (catch_formal_parameter
+        (modifiers
+          (marker_annotation
+            (identifier))
+          (marker_annotation
+            (identifier))
+          (marker_annotation
+            (identifier))
+          (marker_annotation
+            (identifier)))
+        (catch_type
+          (type_identifier)
+          (annotated_type
+            (marker_annotation
+              (identifier))
+            (marker_annotation
+              (identifier))
+            (type_identifier)))
+        (identifier))
+      (block))))
+
+================================================================================
+Annotations before an array's bracket
+================================================================================
+
+void foo(int @Foo @Bar [] x) {
+}
+
+---
+
+(program
+  (method_declaration
+    (void_type)
+    (identifier)
+    (formal_parameters
+      (formal_parameter
+        (array_type
+          (integral_type)
+          (dimensions
+            (marker_annotation
+              (identifier))
+            (marker_annotation
+              (identifier))))
+        (identifier)))
     (block)))
