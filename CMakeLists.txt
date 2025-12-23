@@ -7,6 +7,7 @@ project(tree-sitter-java
         LANGUAGES C)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(BUILD_TESTING "Build tests" ON)
 option(TREE_SITTER_REUSE_ALLOCATOR "Reuse the library allocator" OFF)
 
 set(TREE_SITTER_ABI_VERSION 14 CACHE STRING "Tree-sitter ABI version")
@@ -53,6 +54,8 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-java.pc"
 install(TARGETS tree-sitter-java
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
-add_custom_target(ts-test "${TREE_SITTER_CLI}" test
-                  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                  COMMENT "tree-sitter test")
+if(BUILD_TESTING)
+    add_custom_target(ts-java-test "${TREE_SITTER_CLI}" test
+                      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                      COMMENT "tree-sitter test")
+endif()
