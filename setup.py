@@ -1,5 +1,6 @@
 from os.path import isdir, join
 from platform import system
+from sysconfig import get_config_var
 
 from setuptools import Extension, find_packages, setup
 from setuptools.command.build import build
@@ -17,7 +18,7 @@ class Build(build):
 class BdistWheel(bdist_wheel):
     def get_tag(self):
         python, abi, platform = super().get_tag()
-        if python.startswith("cp"):
+        if python.startswith("cp") and not get_config_var("Py_GIL_DISABLED"):
             python, abi = "cp39", "abi3"
         return python, abi, platform
 
@@ -45,12 +46,11 @@ setup(
                 "/utf-8",
             ],
             define_macros=[
-                ("Py_LIMITED_API", "0x03090000"),
                 ("PY_SSIZE_T_CLEAN", None),
                 ("TREE_SITTER_HIDE_SYMBOLS", None),
-            ],
+            ] + ([("Py_LIMITED_API", "0x03090000")] if not get_config_var("Py_GIL_DISABLED") else []),
             include_dirs=["src"],
-            py_limited_api=True,
+            py_limited_api=not get_config_var("Py_GIL_DISABLED"),
         )
     ],
     cmdclass={
