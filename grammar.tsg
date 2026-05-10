@@ -1,0 +1,1304 @@
+// Java grammar for tree-sitter (native DSL).
+// Translated from grammar.js.
+
+let u = import("util.tsg")
+
+let DIGITS: rule_t = token(choice(
+    "0",
+    seq(
+        regexp(r"[1-9]"),
+        optional(seq(
+            optional("_"),
+            u::sep1(regexp(r"[0-9]+"), regexp(r"_+")),
+        )),
+    ),
+))
+
+let DECIMAL_DIGITS: rule_t = token(u::sep1(regexp(r"[0-9]+"), "_"))
+let HEX_DIGITS: rule_t = token(u::sep1(regexp(r"[A-Fa-f0-9]+"), "_"))
+
+let PREC = {
+    // https://introcs.cs.princeton.edu/java/11precedence/
+    COMMENT: 0,
+    ASSIGN: 1,
+    DECL: 2,
+    ELEMENT_VAL: 2,
+    TERNARY: 3,
+    OR: 4,
+    AND: 5,
+    BIT_OR: 6,
+    BIT_XOR: 7,
+    BIT_AND: 8,
+    EQUALITY: 9,
+    GENERIC: 10,
+    REL: 10,
+    SHIFT: 11,
+    ADD: 12,
+    MULT: 13,
+    CAST: 14,
+    OBJ_INST: 14,
+    UNARY: 15,
+    ARRAY: 16,
+    OBJ_ACCESS: 16,
+    PARENS: 16,
+    CLASS_LITERAL: 17,
+}
+
+grammar {
+    language: "java",
+    extras: [line_comment, block_comment, regexp(r"\s")],
+    supertypes: [
+        expression,
+        declaration,
+        statement,
+        primary_expression,
+        _literal,
+        _type,
+        _simple_type,
+        _unannotated_type,
+        module_directive,
+    ],
+    inline: [_name, _simple_type, _class_body_declaration, _variable_initializer],
+    conflicts: [
+        [modifiers, annotated_type, receiver_parameter],
+        [modifiers, annotated_type, module_declaration, package_declaration],
+        [_unannotated_type, primary_expression, inferred_parameters],
+        [_unannotated_type, primary_expression],
+        [_unannotated_type, primary_expression, scoped_type_identifier],
+        [_unannotated_type, scoped_type_identifier],
+        [_unannotated_type, generic_type],
+        [generic_type, primary_expression],
+        [expression, statement],
+        // Only conflicts in switch expressions
+        [lambda_expression, primary_expression],
+        [inferred_parameters, primary_expression],
+        [argument_list, record_pattern_body],
+        [yield_statement, _reserved_identifier],
+    ],
+    word: identifier,
+}
+
+// ---------------------------------------------------------------------------
+// Top level
+// ---------------------------------------------------------------------------
+
+rule program { repeat(_toplevel_statement) }
+
+rule _toplevel_statement { choice(statement, method_declaration) }
+
+// ---------------------------------------------------------------------------
+// Literals
+// ---------------------------------------------------------------------------
+
+rule _literal {
+    choice(
+        decimal_integer_literal,
+        hex_integer_literal,
+        octal_integer_literal,
+        binary_integer_literal,
+        decimal_floating_point_literal,
+        hex_floating_point_literal,
+        true,
+        false,
+        character_literal,
+        string_literal,
+        null_literal,
+    )
+}
+
+rule decimal_integer_literal {
+    token(seq(DIGITS, optional(choice("l", "L"))))
+}
+
+rule hex_integer_literal {
+    token(seq(choice("0x", "0X"), HEX_DIGITS, optional(choice("l", "L"))))
+}
+
+rule octal_integer_literal {
+    token(seq(
+        choice("0o", "0O", "0"),
+        u::sep1(regexp(r"[0-7]+"), "_"),
+        optional(choice("l", "L")),
+    ))
+}
+
+rule binary_integer_literal {
+    token(seq(
+        choice("0b", "0B"),
+        u::sep1(regexp(r"[01]+"), "_"),
+        optional(choice("l", "L")),
+    ))
+}
+
+rule decimal_floating_point_literal {
+    token(choice(
+        seq(
+            DECIMAL_DIGITS, ".", optional(DECIMAL_DIGITS),
+            optional(seq(regexp(r"[eE]"), optional(choice("-", "+")), DECIMAL_DIGITS)),
+            optional(regexp(r"[fFdD]")),
+        ),
+        seq(
+            ".", DECIMAL_DIGITS,
+            optional(seq(regexp(r"[eE]"), optional(choice("-", "+")), DECIMAL_DIGITS)),
+            optional(regexp(r"[fFdD]")),
+        ),
+        seq(
+            DIGITS, regexp(r"[eE]"), optional(choice("-", "+")), DECIMAL_DIGITS,
+            optional(regexp(r"[fFdD]")),
+        ),
+        seq(
+            DIGITS,
+            optional(seq(regexp(r"[eE]"), optional(choice("-", "+")), DECIMAL_DIGITS)),
+            regexp(r"[fFdD]"),
+        ),
+    ))
+}
+
+rule hex_floating_point_literal {
+    token(seq(
+        choice("0x", "0X"),
+        choice(
+            seq(HEX_DIGITS, optional(".")),
+            seq(optional(HEX_DIGITS), ".", HEX_DIGITS),
+        ),
+        optional(seq(
+            regexp(r"[pP]"),
+            optional(choice("-", "+")),
+            DIGITS,
+            optional(regexp(r"[fFdD]")),
+        )),
+    ))
+}
+
+rule true { "true" }
+rule false { "false" }
+
+rule character_literal {
+    token(seq(
+        "'",
+        repeat1(choice(
+            regexp(r"[^\\'\n]"),
+            regexp(r"\\."),
+            regexp(r"\\\n"),
+        )),
+        "'",
+    ))
+}
+
+rule string_literal { choice(_string_literal, _multiline_string_literal) }
+
+rule _string_literal {
+    seq(
+        "\"",
+        repeat(choice(string_fragment, escape_sequence, string_interpolation)),
+        "\"",
+    )
+}
+
+rule _multiline_string_literal {
+    seq(
+        "\"\"\"",
+        repeat(choice(
+            alias(_multiline_string_fragment, multiline_string_fragment),
+            _escape_sequence,
+            string_interpolation,
+        )),
+        "\"\"\"",
+    )
+}
+
+// Workaround for tree-sitter/tree-sitter#1156: name token() constructs with
+// regex content so that they appear as nodes in the CST.
+
+rule string_fragment { token_immediate(prec(1, regexp(r#"[^"\\]+"#))) }
+rule _multiline_string_fragment {
+    choice(regexp(r#"[^"\\]+"#), regexp(r#""([^"\\]|\\")*"#))
+}
+
+rule string_interpolation { seq("\\{", expression, "}") }
+
+rule _escape_sequence {
+    choice(
+        prec(2, token_immediate(seq("\\", regexp(r#"[^bfnrts'\"\\]"#)))),
+        prec(1, escape_sequence),
+    )
+}
+
+rule escape_sequence {
+    token_immediate(seq(
+        "\\",
+        choice(
+            regexp(r"[^xu0-7]"),
+            regexp(r"[0-7]{1,3}"),
+            regexp(r"x[0-9a-fA-F]{2}"),
+            regexp(r"u[0-9a-fA-F]{4}"),
+            regexp(r"u\{[0-9a-fA-F]+\}"),
+        ),
+    ))
+}
+
+rule null_literal { "null" }
+
+// ---------------------------------------------------------------------------
+// Expressions
+// ---------------------------------------------------------------------------
+
+rule expression {
+    choice(
+        assignment_expression,
+        binary_expression,
+        instanceof_expression,
+        lambda_expression,
+        ternary_expression,
+        update_expression,
+        primary_expression,
+        unary_expression,
+        cast_expression,
+        switch_expression,
+    )
+}
+
+rule cast_expression {
+    prec(PREC.CAST, choice(
+        seq("(", field(type, _type), ")", field(value, expression)),
+        seq(
+            "(",
+            u::sep1(field(type, _type), "&"),
+            ")",
+            field(value, choice(primary_expression, lambda_expression)),
+        ),
+    ))
+}
+
+rule assignment_expression {
+    prec_right(PREC.ASSIGN, seq(
+        field(left, choice(identifier, _reserved_identifier, field_access, array_access)),
+        field(operator, choice("=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", ">>=", ">>>=")),
+        field(right, expression),
+    ))
+}
+
+rule binary_expression {
+    choice(
+        for (op: str_t, p: int_t) in [
+            (">", PREC.REL),
+            ("<", PREC.REL),
+            (">=", PREC.REL),
+            ("<=", PREC.REL),
+            ("==", PREC.EQUALITY),
+            ("!=", PREC.EQUALITY),
+            ("&&", PREC.AND),
+            ("||", PREC.OR),
+            ("+", PREC.ADD),
+            ("-", PREC.ADD),
+            ("*", PREC.MULT),
+            ("/", PREC.MULT),
+            ("&", PREC.BIT_AND),
+            ("|", PREC.BIT_OR),
+            ("^", PREC.BIT_XOR),
+            ("%", PREC.MULT),
+            ("<<", PREC.SHIFT),
+            (">>", PREC.SHIFT),
+            (">>>", PREC.SHIFT),
+        ] {
+            prec_left(p, seq(
+                field(left, expression),
+                field(operator, op),
+                field(right, expression),
+            ))
+        },
+    )
+}
+
+rule instanceof_expression {
+    prec(PREC.REL, seq(
+        field(left, expression),
+        "instanceof",
+        optional("final"),
+        choice(
+            seq(
+                field(right, _type),
+                optional(field(name, choice(identifier, _reserved_identifier))),
+            ),
+            field(pattern, record_pattern),
+        ),
+    ))
+}
+
+rule lambda_expression {
+    seq(
+        field(parameters, choice(identifier, formal_parameters, inferred_parameters, _reserved_identifier)),
+        "->",
+        field(body, choice(expression, block)),
+    )
+}
+
+rule inferred_parameters {
+    seq("(", u::commaSep1(choice(identifier, _reserved_identifier)), ")")
+}
+
+rule ternary_expression {
+    prec_right(PREC.TERNARY, seq(
+        field(condition, expression),
+        "?",
+        field(consequence, expression),
+        ":",
+        field(alternative, expression),
+    ))
+}
+
+rule unary_expression {
+    choice(
+        for (op: str_t, p: int_t) in [
+            ("+", PREC.UNARY),
+            ("-", PREC.UNARY),
+            ("!", PREC.UNARY),
+            ("~", PREC.UNARY),
+        ] {
+            prec_left(p, seq(field(operator, op), field(operand, expression)))
+        },
+    )
+}
+
+rule update_expression {
+    prec_left(PREC.UNARY, choice(
+        seq(expression, "++"),
+        seq(expression, "--"),
+        seq("++", expression),
+        seq("--", expression),
+    ))
+}
+
+rule primary_expression {
+    choice(
+        _literal,
+        class_literal,
+        this,
+        identifier,
+        _reserved_identifier,
+        parenthesized_expression,
+        object_creation_expression,
+        field_access,
+        array_access,
+        method_invocation,
+        method_reference,
+        array_creation_expression,
+        template_expression,
+    )
+}
+
+rule array_creation_expression {
+    prec_right(0, seq(
+        "new",
+        repeat(_annotation),
+        field(type, _simple_type),
+        choice(
+            seq(
+                field(dimensions, repeat1(dimensions_expr)),
+                field(dimensions, optional(dimensions)),
+            ),
+            seq(
+                field(dimensions, dimensions),
+                field(value, array_initializer),
+            ),
+        ),
+    ))
+}
+
+rule dimensions_expr { seq(repeat(_annotation), "[", expression, "]") }
+
+rule parenthesized_expression { seq("(", expression, ")") }
+
+rule class_literal {
+    prec_dynamic(PREC.CLASS_LITERAL, seq(_unannotated_type, ".", "class"))
+}
+
+rule object_creation_expression {
+    choice(
+        _unqualified_object_creation_expression,
+        seq(primary_expression, ".", _unqualified_object_creation_expression),
+    )
+}
+
+rule _unqualified_object_creation_expression {
+    prec_right(0, seq(
+        "new",
+        choice(
+            seq(
+                repeat(_annotation),
+                field(type_arguments, type_arguments),
+                repeat(_annotation),
+            ),
+            repeat(_annotation),
+        ),
+        field(type, _simple_type),
+        field(arguments, argument_list),
+        optional(class_body),
+    ))
+}
+
+rule field_access {
+    seq(
+        field(object, choice(primary_expression, super)),
+        optional(seq(".", super)),
+        ".",
+        field(field, choice(identifier, _reserved_identifier, this)),
+    )
+}
+
+rule template_expression {
+    seq(
+        field(template_processor, primary_expression),
+        ".",
+        field(template_argument, string_literal),
+    )
+}
+
+rule array_access {
+    seq(
+        field(array, primary_expression),
+        "[",
+        field(index, expression),
+        "]",
+    )
+}
+
+rule method_invocation {
+    seq(
+        choice(
+            field(name, choice(identifier, _reserved_identifier)),
+            seq(
+                field(object, choice(primary_expression, super)),
+                ".",
+                optional(seq(super, ".")),
+                field(type_arguments, optional(type_arguments)),
+                field(name, choice(identifier, _reserved_identifier)),
+            ),
+        ),
+        field(arguments, argument_list),
+    )
+}
+
+rule argument_list { seq("(", u::commaSep(expression), ")") }
+
+rule method_reference {
+    seq(
+        choice(_type, primary_expression, super),
+        "::",
+        optional(type_arguments),
+        choice("new", identifier),
+    )
+}
+
+rule type_arguments {
+    seq("<", u::commaSep(choice(_type, wildcard)), ">")
+}
+
+rule wildcard {
+    seq(repeat(_annotation), "?", optional(_wildcard_bounds))
+}
+
+rule _wildcard_bounds {
+    choice(seq("extends", _type), seq(super, _type))
+}
+
+rule dimensions {
+    prec_right(0, repeat1(seq(repeat(_annotation), "[", "]")))
+}
+
+// ---------------------------------------------------------------------------
+// Switch
+// ---------------------------------------------------------------------------
+
+rule switch_expression {
+    seq(
+        "switch",
+        field(condition, parenthesized_expression),
+        field(body, switch_block),
+    )
+}
+
+rule switch_block {
+    seq(
+        "{",
+        choice(
+            repeat(switch_block_statement_group),
+            repeat(switch_rule),
+        ),
+        "}",
+    )
+}
+
+rule switch_block_statement_group {
+    prec_left(0, seq(repeat1(seq(switch_label, ":")), repeat(statement)))
+}
+
+rule switch_rule {
+    seq(switch_label, "->", choice(expression_statement, throw_statement, block))
+}
+
+rule switch_label {
+    choice(
+        seq("case", choice(pattern, u::commaSep1(expression)), optional(guard)),
+        "default",
+    )
+}
+
+rule pattern { choice(type_pattern, record_pattern) }
+
+rule type_pattern {
+    seq(_unannotated_type, choice(identifier, _reserved_identifier))
+}
+
+rule record_pattern {
+    seq(choice(identifier, _reserved_identifier, generic_type), record_pattern_body)
+}
+
+rule record_pattern_body {
+    seq("(", u::commaSep(choice(record_pattern_component, record_pattern)), ")")
+}
+
+rule record_pattern_component {
+    choice(
+        underscore_pattern,
+        seq(_unannotated_type, choice(identifier, _reserved_identifier)),
+    )
+}
+
+rule underscore_pattern { "_" }
+
+rule guard { seq("when", expression) }
+
+// ---------------------------------------------------------------------------
+// Statements
+// ---------------------------------------------------------------------------
+
+rule statement {
+    choice(
+        declaration,
+        expression_statement,
+        labeled_statement,
+        if_statement,
+        while_statement,
+        for_statement,
+        enhanced_for_statement,
+        block,
+        ";",
+        assert_statement,
+        do_statement,
+        break_statement,
+        continue_statement,
+        return_statement,
+        yield_statement,
+        switch_expression,
+        synchronized_statement,
+        local_variable_declaration,
+        throw_statement,
+        try_statement,
+        try_with_resources_statement,
+    )
+}
+
+rule block { seq("{", repeat(statement), "}") }
+
+rule expression_statement { seq(expression, ";") }
+
+rule labeled_statement { seq(identifier, ":", statement) }
+
+rule assert_statement {
+    choice(
+        seq("assert", expression, ";"),
+        seq("assert", expression, ":", expression, ";"),
+    )
+}
+
+rule do_statement {
+    seq(
+        "do",
+        field(body, statement),
+        "while",
+        field(condition, parenthesized_expression),
+        ";",
+    )
+}
+
+rule break_statement { seq("break", optional(identifier), ";") }
+rule continue_statement { seq("continue", optional(identifier), ";") }
+rule return_statement { seq("return", optional(expression), ";") }
+rule yield_statement { seq("yield", expression, ";") }
+
+rule synchronized_statement {
+    seq("synchronized", parenthesized_expression, field(body, block))
+}
+
+rule throw_statement { seq("throw", expression, ";") }
+
+rule try_statement {
+    seq(
+        "try",
+        field(body, block),
+        choice(
+            repeat1(catch_clause),
+            seq(repeat(catch_clause), finally_clause),
+        ),
+    )
+}
+
+rule catch_clause {
+    seq("catch", "(", catch_formal_parameter, ")", field(body, block))
+}
+
+rule catch_formal_parameter {
+    seq(optional(modifiers), catch_type, _variable_declarator_id)
+}
+
+rule catch_type { u::sep1(_unannotated_type, "|") }
+
+rule finally_clause { seq("finally", block) }
+
+rule try_with_resources_statement {
+    seq(
+        "try",
+        field(resources, resource_specification),
+        field(body, block),
+        repeat(catch_clause),
+        optional(finally_clause),
+    )
+}
+
+rule resource_specification {
+    seq("(", u::sep1(resource, ";"), optional(";"), ")")
+}
+
+rule resource {
+    choice(
+        seq(
+            optional(modifiers),
+            field(type, _unannotated_type),
+            _variable_declarator_id,
+            "=",
+            field(value, expression),
+        ),
+        identifier,
+        field_access,
+    )
+}
+
+rule if_statement {
+    prec_right(0, seq(
+        "if",
+        field(condition, parenthesized_expression),
+        field(consequence, statement),
+        optional(seq("else", field(alternative, statement))),
+    ))
+}
+
+rule while_statement {
+    seq(
+        "while",
+        field(condition, parenthesized_expression),
+        field(body, statement),
+    )
+}
+
+rule for_statement {
+    seq(
+        "for", "(",
+        choice(
+            field(init, local_variable_declaration),
+            seq(u::commaSep(field(init, expression)), ";"),
+        ),
+        field(condition, optional(expression)), ";",
+        u::commaSep(field(update, expression)), ")",
+        field(body, statement),
+    )
+}
+
+rule enhanced_for_statement {
+    seq(
+        "for", "(",
+        optional(modifiers),
+        field(type, _unannotated_type),
+        _variable_declarator_id,
+        ":",
+        field(value, expression),
+        ")",
+        field(body, statement),
+    )
+}
+
+// ---------------------------------------------------------------------------
+// Annotations
+// ---------------------------------------------------------------------------
+
+rule _annotation { choice(marker_annotation, annotation) }
+
+rule marker_annotation { seq("@", field(name, _name)) }
+
+rule annotation {
+    seq("@", field(name, _name), field(arguments, annotation_argument_list))
+}
+
+rule annotation_argument_list {
+    seq("(", choice(_element_value, u::commaSep(element_value_pair)), ")")
+}
+
+rule element_value_pair {
+    seq(
+        field(key, choice(identifier, _reserved_identifier)),
+        "=",
+        field(value, _element_value),
+    )
+}
+
+rule _element_value {
+    prec(PREC.ELEMENT_VAL, choice(expression, element_value_array_initializer, _annotation))
+}
+
+rule element_value_array_initializer {
+    seq("{", u::commaSep(_element_value), optional(","), "}")
+}
+
+// ---------------------------------------------------------------------------
+// Declarations
+// ---------------------------------------------------------------------------
+
+rule declaration {
+    prec(PREC.DECL, choice(
+        module_declaration,
+        package_declaration,
+        import_declaration,
+        class_declaration,
+        record_declaration,
+        interface_declaration,
+        annotation_type_declaration,
+        enum_declaration,
+    ))
+}
+
+rule module_declaration {
+    seq(
+        repeat(_annotation),
+        optional("open"),
+        "module",
+        field(name, _name),
+        field(body, module_body),
+    )
+}
+
+rule module_body { seq("{", repeat(module_directive), "}") }
+
+rule module_directive {
+    choice(
+        requires_module_directive,
+        exports_module_directive,
+        opens_module_directive,
+        uses_module_directive,
+        provides_module_directive,
+    )
+}
+
+rule requires_module_directive {
+    seq(
+        "requires",
+        repeat(field(modifiers, requires_modifier)),
+        field(module, _name),
+        ";",
+    )
+}
+
+rule requires_modifier { choice("transitive", "static") }
+
+rule exports_module_directive {
+    seq(
+        "exports",
+        field(package, _name),
+        optional(seq(
+            "to",
+            field(modules, _name),
+            repeat(seq(",", field(modules, _name))),
+        )),
+        ";",
+    )
+}
+
+rule opens_module_directive {
+    seq(
+        "opens",
+        field(package, _name),
+        optional(seq(
+            "to",
+            field(modules, _name),
+            repeat(seq(",", field(modules, _name))),
+        )),
+        ";",
+    )
+}
+
+rule uses_module_directive { seq("uses", field(type, _name), ";") }
+
+rule provides_module_directive {
+    seq(
+        "provides",
+        field(provided, _name),
+        "with",
+        _name,
+        repeat(seq(",", field(provider, _name))),
+        ";",
+    )
+}
+
+rule package_declaration {
+    seq(repeat(_annotation), "package", _name, ";")
+}
+
+rule import_declaration {
+    seq(
+        "import",
+        optional("static"),
+        _name,
+        optional(seq(".", asterisk)),
+        ";",
+    )
+}
+
+rule asterisk { "*" }
+
+rule enum_declaration {
+    seq(
+        optional(modifiers),
+        "enum",
+        field(name, identifier),
+        field(interfaces, optional(super_interfaces)),
+        field(body, enum_body),
+    )
+}
+
+rule enum_body {
+    seq(
+        "{",
+        u::commaSep(enum_constant),
+        optional(","),
+        optional(enum_body_declarations),
+        "}",
+    )
+}
+
+rule enum_body_declarations { seq(";", repeat(_class_body_declaration)) }
+
+rule enum_constant {
+    seq(
+        optional(modifiers),
+        field(name, identifier),
+        field(arguments, optional(argument_list)),
+        field(body, optional(class_body)),
+    )
+}
+
+rule class_declaration {
+    seq(
+        optional(modifiers),
+        "class",
+        field(name, identifier),
+        optional(field(type_parameters, type_parameters)),
+        optional(field(superclass, superclass)),
+        optional(field(interfaces, super_interfaces)),
+        optional(field(permits, permits)),
+        field(body, class_body),
+    )
+}
+
+rule modifiers {
+    repeat1(choice(
+        _annotation,
+        "public", "protected", "private", "abstract", "static",
+        "final", "strictfp", "default", "synchronized", "native",
+        "transient", "volatile", "sealed", "non-sealed",
+    ))
+}
+
+rule type_parameters { seq("<", u::commaSep1(type_parameter), ">") }
+
+rule type_parameter {
+    seq(
+        repeat(_annotation),
+        alias(identifier, type_identifier),
+        optional(type_bound),
+    )
+}
+
+rule type_bound { seq("extends", _type, repeat(seq("&", _type))) }
+
+rule superclass { seq("extends", _type) }
+
+rule super_interfaces { seq("implements", type_list) }
+
+rule type_list { seq(_type, repeat(seq(",", _type))) }
+
+rule permits { seq("permits", type_list) }
+
+rule class_body { seq("{", repeat(_class_body_declaration), "}") }
+
+rule _class_body_declaration {
+    choice(
+        field_declaration,
+        record_declaration,
+        method_declaration,
+        compact_constructor_declaration,
+        class_declaration,
+        interface_declaration,
+        annotation_type_declaration,
+        enum_declaration,
+        block,
+        static_initializer,
+        constructor_declaration,
+        ";",
+    )
+}
+
+rule static_initializer { seq("static", block) }
+
+rule constructor_declaration {
+    seq(
+        optional(modifiers),
+        _constructor_declarator,
+        optional(throws),
+        field(body, constructor_body),
+    )
+}
+
+rule _constructor_declarator {
+    seq(
+        field(type_parameters, optional(type_parameters)),
+        field(name, identifier),
+        field(parameters, formal_parameters),
+    )
+}
+
+rule constructor_body {
+    seq("{", optional(explicit_constructor_invocation), repeat(statement), "}")
+}
+
+rule explicit_constructor_invocation {
+    seq(
+        choice(
+            seq(
+                field(type_arguments, optional(type_arguments)),
+                field(constructor, choice(this, super)),
+            ),
+            seq(
+                field(object, choice(primary_expression)),
+                ".",
+                field(type_arguments, optional(type_arguments)),
+                field(constructor, super),
+            ),
+        ),
+        field(arguments, argument_list),
+        ";",
+    )
+}
+
+rule _name { choice(identifier, _reserved_identifier, scoped_identifier) }
+
+rule scoped_identifier {
+    seq(field(scope, _name), ".", field(name, identifier))
+}
+
+rule field_declaration {
+    seq(
+        optional(modifiers),
+        field(type, _unannotated_type),
+        _variable_declarator_list,
+        ";",
+    )
+}
+
+rule record_declaration {
+    seq(
+        optional(modifiers),
+        "record",
+        field(name, identifier),
+        optional(field(type_parameters, type_parameters)),
+        field(parameters, formal_parameters),
+        optional(field(interfaces, super_interfaces)),
+        field(body, class_body),
+    )
+}
+
+rule annotation_type_declaration {
+    seq(
+        optional(modifiers),
+        "@interface",
+        field(name, identifier),
+        field(body, annotation_type_body),
+    )
+}
+
+rule annotation_type_body {
+    seq(
+        "{",
+        repeat(choice(
+            annotation_type_element_declaration,
+            constant_declaration,
+            class_declaration,
+            interface_declaration,
+            enum_declaration,
+            annotation_type_declaration,
+            ";",
+        )),
+        "}",
+    )
+}
+
+rule annotation_type_element_declaration {
+    seq(
+        optional(modifiers),
+        field(type, _unannotated_type),
+        field(name, choice(identifier, _reserved_identifier)),
+        "(", ")",
+        field(dimensions, optional(dimensions)),
+        optional(_default_value),
+        ";",
+    )
+}
+
+rule _default_value { seq("default", field(value, _element_value)) }
+
+rule interface_declaration {
+    seq(
+        optional(modifiers),
+        "interface",
+        field(name, identifier),
+        field(type_parameters, optional(type_parameters)),
+        optional(extends_interfaces),
+        optional(field(permits, permits)),
+        field(body, interface_body),
+    )
+}
+
+rule extends_interfaces { seq("extends", type_list) }
+
+rule interface_body {
+    seq(
+        "{",
+        repeat(choice(
+            constant_declaration,
+            enum_declaration,
+            method_declaration,
+            class_declaration,
+            interface_declaration,
+            record_declaration,
+            annotation_type_declaration,
+            ";",
+        )),
+        "}",
+    )
+}
+
+rule constant_declaration {
+    seq(
+        optional(modifiers),
+        field(type, _unannotated_type),
+        _variable_declarator_list,
+        ";",
+    )
+}
+
+rule _variable_declarator_list {
+    u::commaSep1(field(declarator, variable_declarator))
+}
+
+rule variable_declarator {
+    seq(
+        _variable_declarator_id,
+        optional(seq("=", field(value, _variable_initializer))),
+    )
+}
+
+rule _variable_declarator_id {
+    seq(
+        field(name, choice(identifier, _reserved_identifier, underscore_pattern)),
+        field(dimensions, optional(dimensions)),
+    )
+}
+
+rule _variable_initializer { choice(expression, array_initializer) }
+
+rule array_initializer {
+    seq("{", u::commaSep(_variable_initializer), optional(","), "}")
+}
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+rule _type { choice(_unannotated_type, annotated_type) }
+
+rule _unannotated_type { choice(_simple_type, array_type) }
+
+rule _simple_type {
+    choice(
+        void_type,
+        integral_type,
+        floating_point_type,
+        boolean_type,
+        alias(identifier, type_identifier),
+        scoped_type_identifier,
+        generic_type,
+    )
+}
+
+rule annotated_type { seq(repeat1(_annotation), _unannotated_type) }
+
+rule scoped_type_identifier {
+    seq(
+        choice(
+            alias(identifier, type_identifier),
+            scoped_type_identifier,
+            generic_type,
+        ),
+        ".",
+        repeat(_annotation),
+        alias(identifier, type_identifier),
+    )
+}
+
+rule generic_type {
+    prec_dynamic(PREC.GENERIC, seq(
+        choice(
+            alias(identifier, type_identifier),
+            scoped_type_identifier,
+        ),
+        type_arguments,
+    ))
+}
+
+rule array_type {
+    seq(field(element, _unannotated_type), field(dimensions, dimensions))
+}
+
+rule integral_type { choice("byte", "short", "int", "long", "char") }
+rule floating_point_type { choice("float", "double") }
+rule boolean_type { "boolean" }
+rule void_type { "void" }
+
+// ---------------------------------------------------------------------------
+// Methods
+// ---------------------------------------------------------------------------
+
+rule _method_header {
+    seq(
+        optional(seq(
+            field(type_parameters, type_parameters),
+            repeat(_annotation),
+        )),
+        field(type, _unannotated_type),
+        _method_declarator,
+        optional(throws),
+    )
+}
+
+rule _method_declarator {
+    seq(
+        field(name, choice(identifier, _reserved_identifier)),
+        field(parameters, formal_parameters),
+        field(dimensions, optional(dimensions)),
+    )
+}
+
+rule formal_parameters {
+    seq(
+        "(",
+        choice(
+            receiver_parameter,
+            seq(
+                optional(seq(receiver_parameter, ",")),
+                u::commaSep(choice(formal_parameter, spread_parameter)),
+            ),
+        ),
+        ")",
+    )
+}
+
+rule formal_parameter {
+    seq(
+        optional(modifiers),
+        field(type, _unannotated_type),
+        _variable_declarator_id,
+    )
+}
+
+rule receiver_parameter {
+    seq(
+        repeat(_annotation),
+        _unannotated_type,
+        repeat(seq(identifier, ".")),
+        this,
+    )
+}
+
+rule spread_parameter {
+    seq(
+        optional(modifiers),
+        _unannotated_type,
+        "...",
+        repeat(_annotation),
+        variable_declarator,
+    )
+}
+
+rule throws { seq("throws", u::commaSep1(_type)) }
+
+rule local_variable_declaration {
+    seq(
+        optional(modifiers),
+        field(type, _unannotated_type),
+        _variable_declarator_list,
+        ";",
+    )
+}
+
+rule method_declaration {
+    seq(
+        optional(modifiers),
+        _method_header,
+        choice(field(body, block), ";"),
+    )
+}
+
+rule compact_constructor_declaration {
+    seq(
+        optional(modifiers),
+        field(name, identifier),
+        field(body, block),
+    )
+}
+
+rule _reserved_identifier {
+    choice(
+        prec(-3, alias(
+            choice("open", "module", "record", "with", "sealed"),
+            identifier,
+        )),
+        alias("yield", identifier),
+    )
+}
+
+rule this { "this" }
+rule super { "super" }
+
+// https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-IdentifierChars
+rule identifier { regexp(r"[\p{XID_Start}_$][\p{XID_Continue}¢_$]*") }
+
+rule line_comment {
+    token(prec(PREC.COMMENT, seq("//", regexp(r"[^\n]*"))))
+}
+
+// http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+rule block_comment {
+    token(prec(PREC.COMMENT, seq(
+        "/*",
+        regexp(r"[^*]*\*+([^/*][^*]*\*+)*"),
+        "/",
+    )))
+}
