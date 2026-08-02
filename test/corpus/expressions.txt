@@ -1951,3 +1951,83 @@ void foo(int... @Foo x) {
         (variable_declarator
           (identifier))))
     (block)))
+
+================================================================================
+qualified record patterns
+================================================================================
+
+class Outer {
+    sealed interface Event permits Created {}
+    record Created(String id) implements Event {}
+
+    void m(Object o, Event e) {
+        if (o instanceof Outer.Created(String id)) {}
+        switch (e) {
+            case Outer.Created(String id) -> {}
+        }
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (class_declaration
+    (identifier)
+    (class_body
+      (interface_declaration
+        (modifiers)
+        (identifier)
+        (permits
+          (type_list
+            (type_identifier)))
+        (interface_body))
+      (record_declaration
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (super_interfaces
+          (type_list
+            (type_identifier)))
+        (class_body))
+      (method_declaration
+        (void_type)
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier))
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (block
+          (if_statement
+            (parenthesized_expression
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (scoped_type_identifier
+                    (type_identifier)
+                    (type_identifier))
+                  (record_pattern_body
+                    (record_pattern_component
+                      (type_identifier)
+                      (identifier))))))
+            (block))
+          (switch_expression
+            (parenthesized_expression
+              (identifier))
+            (switch_block
+              (switch_rule
+                (switch_label
+                  (pattern
+                    (record_pattern
+                      (scoped_type_identifier
+                        (type_identifier)
+                        (type_identifier))
+                      (record_pattern_body
+                        (record_pattern_component
+                          (type_identifier)
+                          (identifier))))))
+                (block)))))))))
