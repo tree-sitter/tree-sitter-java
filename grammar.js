@@ -521,7 +521,7 @@ module.exports = grammar({
       $.record_pattern,
     ),
     type_pattern: $ => seq($._unannotated_type, choice($.identifier, $._reserved_identifier)),
-    record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type), $.record_pattern_body),
+    record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type, $.scoped_type_identifier), $.record_pattern_body),
     record_pattern_body: $ => seq('(', commaSep(choice($.record_pattern_component, $.record_pattern)), ')'),
     record_pattern_component: $ => choice(
       $.underscore_pattern,
