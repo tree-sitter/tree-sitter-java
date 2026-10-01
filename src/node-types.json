@@ -3088,6 +3088,10 @@
         {
           "type": "record_pattern_body",
           "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
+          "named": true
         }
       ]
     }
@@ -4249,7 +4253,8 @@
   },
   {
     "type": "block_comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "boolean_type",
@@ -4385,7 +4390,8 @@
   },
   {
     "type": "line_comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "long",
