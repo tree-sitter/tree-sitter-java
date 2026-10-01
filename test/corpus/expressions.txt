@@ -1951,3 +1951,88 @@ void foo(int... @Foo x) {
         (variable_declarator
           (identifier))))
     (block)))
+
+================================================================================
+Pattern matching with qualified record patterns
+================================================================================
+
+class Patterns {
+    static void scoped(Object obj) {
+        if (obj instanceof Shapes.Rectangle(Shapes.ColoredPoint ul)) {
+        }
+    }
+
+    static String scopedSwitch(Object obj) {
+        return switch (obj) {
+            case Result.Authorized(Contracts.Id id) -> id.toString();
+            default -> "";
+        };
+    }
+}
+
+--------------------------------------------------------------------------------
+
+(program
+  (class_declaration
+    (identifier)
+    (class_body
+      (method_declaration
+        (modifiers)
+        (void_type)
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (block
+          (if_statement
+            (parenthesized_expression
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (scoped_type_identifier
+                    (type_identifier)
+                    (type_identifier))
+                  (record_pattern_body
+                    (record_pattern_component
+                      (scoped_type_identifier
+                        (type_identifier)
+                        (type_identifier))
+                      (identifier))))))
+            (block))))
+      (method_declaration
+        (modifiers)
+        (type_identifier)
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (block
+          (return_statement
+            (switch_expression
+              (parenthesized_expression
+                (identifier))
+              (switch_block
+                (switch_rule
+                  (switch_label
+                    (pattern
+                      (record_pattern
+                        (scoped_type_identifier
+                          (type_identifier)
+                          (type_identifier))
+                        (record_pattern_body
+                          (record_pattern_component
+                            (scoped_type_identifier
+                              (type_identifier)
+                              (type_identifier))
+                            (identifier))))))
+                  (expression_statement
+                    (method_invocation
+                      (identifier)
+                      (identifier)
+                      (argument_list))))
+                (switch_rule
+                  (switch_label)
+                  (expression_statement
+                    (string_literal)))))))))))

@@ -3754,6 +3754,10 @@
             {
               "type": "SYMBOL",
               "name": "generic_type"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "scoped_type_identifier"
             }
           ]
         },
@@ -7866,5 +7870,6 @@
     "_simple_type",
     "_unannotated_type",
     "module_directive"
-  ]
+  ],
+  "reserved": {}
 }
