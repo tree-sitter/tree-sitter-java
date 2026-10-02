@@ -1,0 +1,127 @@
+================================================================================
+Record pattern qualified
+================================================================================
+
+class A { void f(Object o) { if (o instanceof Shapes.Point(var x, var y)) {} } }
+
+--------------------------------------------------------------------------------
+
+(program
+  (class_declaration
+    (identifier)
+    (class_body
+      (method_declaration
+        (void_type)
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (block
+          (if_statement
+            (parenthesized_expression
+              (instanceof_expression
+                (identifier)
+                (record_pattern
+                  (scoped_type_identifier
+                    (type_identifier)
+                    (type_identifier))
+                  (record_pattern_body
+                    (record_pattern_component
+                      (type_identifier)
+                      (identifier))
+                    (record_pattern_component
+                      (type_identifier)
+                      (identifier))))))
+            (block)))))))
+
+================================================================================
+Module import
+================================================================================
+
+import module java.base;
+class A {}
+
+--------------------------------------------------------------------------------
+
+(program
+  (import_declaration
+    (scoped_identifier
+      (identifier)
+      (identifier)))
+  (class_declaration
+    (identifier)
+    (class_body)))
+
+================================================================================
+Flexible ctor
+================================================================================
+
+class A extends B { A(int x) { if (x < 0) throw new IllegalArgumentException(); super(x); } }
+
+--------------------------------------------------------------------------------
+
+(program
+  (class_declaration
+    (identifier)
+    (superclass
+      (type_identifier))
+    (class_body
+      (constructor_declaration
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (integral_type)
+            (identifier)))
+        (constructor_body
+          (if_statement
+            (parenthesized_expression
+              (binary_expression
+                (identifier)
+                (decimal_integer_literal)))
+            (throw_statement
+              (object_creation_expression
+                (type_identifier)
+                (argument_list))))
+          (explicit_constructor_invocation
+            (super)
+            (argument_list
+              (identifier))))))))
+
+================================================================================
+Switch final type pattern
+================================================================================
+
+class A { int f(Object o) { return switch (o) { case final String s -> 1; default -> 0; }; } }
+
+--------------------------------------------------------------------------------
+
+(program
+  (class_declaration
+    (identifier)
+    (class_body
+      (method_declaration
+        (integral_type)
+        (identifier)
+        (formal_parameters
+          (formal_parameter
+            (type_identifier)
+            (identifier)))
+        (block
+          (return_statement
+            (switch_expression
+              (parenthesized_expression
+                (identifier))
+              (switch_block
+                (switch_rule
+                  (switch_label
+                    (pattern
+                      (type_pattern
+                        (type_identifier)
+                        (identifier))))
+                  (expression_statement
+                    (decimal_integer_literal)))
+                (switch_rule
+                  (switch_label)
+                  (expression_statement
+                    (decimal_integer_literal)))))))))))

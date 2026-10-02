@@ -520,8 +520,8 @@ module.exports = grammar({
       $.type_pattern,
       $.record_pattern,
     ),
-    type_pattern: $ => seq($._unannotated_type, choice($.identifier, $._reserved_identifier)),
-    record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type), $.record_pattern_body),
+    type_pattern: $ => seq(optional('final'), $._unannotated_type, choice($.identifier, $._reserved_identifier)),
+    record_pattern: $ => seq(choice($.identifier, $._reserved_identifier, $.generic_type, $.scoped_type_identifier), $.record_pattern_body),
     record_pattern_body: $ => seq('(', commaSep(choice($.record_pattern_component, $.record_pattern)), ')'),
     record_pattern_component: $ => choice(
       $.underscore_pattern,
@@ -840,7 +840,8 @@ module.exports = grammar({
 
     import_declaration: $ => seq(
       'import',
-      optional('static'),
+      // Java 25: `import module java.base;` (JEP 511)
+      optional(choice('static', 'module')),
       $._name,
       optional(seq('.', $.asterisk)),
       ';',
@@ -976,10 +977,11 @@ module.exports = grammar({
       field('parameters', $.formal_parameters),
     ),
 
+    // Java 25 flexible constructor bodies (JEP 513): statements may come before this(…) / super(…)
     constructor_body: $ => seq(
       '{',
-      optional($.explicit_constructor_invocation),
       repeat($.statement),
+      optional(seq($.explicit_constructor_invocation, repeat($.statement))),
       '}',
     ),
 

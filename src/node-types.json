@@ -3088,6 +3088,10 @@
         {
           "type": "record_pattern_body",
           "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
+          "named": true
         }
       ]
     }
