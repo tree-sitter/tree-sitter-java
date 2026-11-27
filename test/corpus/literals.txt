@@ -245,6 +245,28 @@ string="has a quote with an escaped end quote\"""";
           (multiline_string_fragment))))
 
 ===============
+text block with comment markers
+===============
+
+"""
+//comment""";
+"""
+/* "quoted" */
+""";
+
+---
+
+(program
+  (expression_statement
+    (string_literal
+      (multiline_string_fragment)))
+  (expression_statement
+    (string_literal
+      (multiline_string_fragment)
+      (multiline_string_fragment)
+      (multiline_string_fragment))))
+
+===============
 escape sequences
 ===============
 

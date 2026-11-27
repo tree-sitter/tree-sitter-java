@@ -198,7 +198,7 @@ module.exports = grammar({
 
     string_fragment: _ => token.immediate(prec(1, /[^"\\]+/)),
     _multiline_string_fragment: _ => choice(
-      /[^"\\]+/,
+      token(prec(1, /[^"\\]+/)),
       /"([^"\\]|\\")*/,
     ),
 
